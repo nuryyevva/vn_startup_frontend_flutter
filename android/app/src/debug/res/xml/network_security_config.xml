@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Debug builds only: allows plain http:// (cleartext) traffic, which Android
+  blocks by default from API 28 onward. Core Backend runs over plain HTTP in
+  local dev (no TLS cert to bind), so without this every request from a
+  debug build to API_BASE_URL/WS_BASE_URL fails immediately with
+  ERR_CLEARTEXT_NOT_PERMITTED before it ever reaches the network — this is
+  the most common cause of "can't connect to backend" when running on a
+  real device or emulator. Release builds intentionally do NOT get this
+  file, so a production build against a real https:// backend stays locked
+  down to encrypted traffic only.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

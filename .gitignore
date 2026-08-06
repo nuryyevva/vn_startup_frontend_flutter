@@ -1,3 +1,7 @@
+# Local env config (copied from config/.env.*.example.json) — never committed.
+config/.env.*.json
+!config/.env.*.example.json
+
 # Miscellaneous
 *.class
 *.lock
@@ -117,3 +121,9 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+# Others
+.idea
+*.iml
+*.lock
+!pubspec.lock

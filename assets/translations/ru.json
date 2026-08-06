@@ -1,0 +1,180 @@
+{
+  "common": {
+    "retry": "Повторить",
+    "back": "Назад",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "save": "Сохранить",
+    "continue": "Продолжить",
+    "skip": "Заполню позже",
+    "loading": "Загрузка…",
+    "comingSoon": "Скоро",
+    "notAvailableYet": "Пока недоступно",
+    "signOut": "Выйти",
+    "signOutConfirmTitle": "Выйти из аккаунта?",
+    "signOutConfirmBody": "Чтобы снова получить доступ к библиотеке и кошельку, нужно будет войти заново.",
+    "reconnecting": "Переподключение…"
+  },
+  "nav": {
+    "stories": "Истории",
+    "shop": "Магазин",
+    "profile": "Профиль"
+  },
+  "genres": {
+    "all": "Все",
+    "romance": "Романтика",
+    "fantasy": "Фэнтези",
+    "sciFi": "Фантастика",
+    "mystery": "Детектив",
+    "drama": "Драма",
+    "sliceOfLife": "Повседневность",
+    "horror": "Ужасы",
+    "adventure": "Приключения"
+  },
+  "auth": {
+    "tagline": "Визуальные новеллы, ради которых стоит не спать",
+    "signIn": "Вход",
+    "signUp": "Регистрация",
+    "email": "Email",
+    "password": "Пароль",
+    "emailHint": "you@example.com",
+    "continueAsGuest": "Продолжить как гость",
+    "guestLimitTitle": "Нужна авторизация",
+    "guestLimitBody": "Зарегистрируйтесь бесплатно, чтобы получить доступ к библиотеке, кошельку и разговорам с персонажами.",
+    "validation": {
+      "emailRequired": "Введите email",
+      "emailInvalid": "Введите корректный email",
+      "passwordRequired": "Введите пароль",
+      "passwordTooShort": "Пароль должен быть не короче 8 символов"
+    }
+  },
+  "onboarding": {
+    "stepOf": "Шаг {} из {}",
+    "nameTitle": "Как вас называть?",
+    "nameHint": "Отображаемое имя",
+    "genderTitle": "Как вы себя идентифицируете?",
+    "genderOptional": "Необязательно — можно изменить позже",
+    "genderFemale": "Женский",
+    "genderMale": "Мужской",
+    "genderOther": "Другое",
+    "genderPreferNotToSay": "Не хочу указывать",
+    "genresTitle": "Выберите любимые жанры",
+    "genresSubtitle": "Это поможет настроить каталог под вас. Необязательно — можно изменить позже.",
+    "finish": "Начать"
+  },
+  "stories": {
+    "continueReading": "Продолжить чтение",
+    "complete": "{}% пройдено",
+    "ongoing": "Продолжается",
+    "completed": "Завершена",
+    "chapterCount": "{} гл.",
+    "emptyCatalogTitle": "Пока нет историй",
+    "emptyCatalogBody": "Загляните позже — в этом жанре скоро появятся новые истории."
+  },
+  "storyDetail": {
+    "reads": "{} прочтений",
+    "chapters": "{} глав",
+    "startReading": "Начать чтение",
+    "continueReading": "Продолжить чтение",
+    "chapterLabel": "Глава {}",
+    "chapterUnlockCost": "{} ◇ чтобы открыть",
+    "chapterRead": "Прочитано",
+    "chapterUnread": "Не прочитано"
+  },
+  "scenePlayer": {
+    "talkTo": "Поговорить с {}",
+    "logTitle": "История реплик",
+    "autoPlay": "Авто",
+    "skip": "Пропустить",
+    "customReplyHint": "Напишите свой вариант ответа…",
+    "customReplyCost": "{} ◇",
+    "insufficientDiamonds": "Недостаточно алмазов",
+    "unlockChapter": "Разблокировать главу",
+    "unlockChapterCost": "Открыть за {} ◇",
+    "unlocking": "Разблокировка…"
+  },
+  "dialog": {
+    "messageHint": "Сообщение…",
+    "send": "Отправить",
+    "sessionEnded": {
+      "timeLimitTitle": "Время вышло",
+      "timeLimitBody": "Этот разговор достиг лимита по времени.",
+      "messageLimitTitle": "Лимит сообщений исчерпан",
+      "messageLimitBody": "Вы достигли лимита сообщений для этого разговора.",
+      "storyEventTitle": "Разговор прервался",
+      "storyEventBody": "{} должен(на) идти — сюжет зовёт.",
+      "userLeftTitle": "Разговор завершён",
+      "userLeftBody": "Вы вышли из разговора.",
+      "backToStory": "Вернуться к истории"
+    },
+    "remainingMessages": "Осталось сообщений: {}",
+    "remainingSeconds": "Осталось: {}с"
+  },
+  "shop": {
+    "yourBalance": "Ваш баланс",
+    "diamondBundles": "Наборы алмазов",
+    "bonus": "+{}% бонус",
+    "buy": "Купить",
+    "getFreeDevMode": "Получить бесплатно (dev-режим)",
+    "devBadge": "(dev)",
+    "purchaseSuccess": "Начислено {} алмазов",
+    "purchaseFailed": "Не удалось совершить покупку",
+    "badge": {
+      "mostPopular": "Популярный выбор",
+      "bestValue": "Выгоднее всего"
+    }
+  },
+  "profile": {
+    "readerSince": "С нами с {} года",
+    "dayStreak": "Дней подряд",
+    "hoursRead": "Часов чтения",
+    "finished": "Завершено",
+    "diamonds": "Алмазы",
+    "myLibrary": "Моя библиотека",
+    "achievements": "Достижения",
+    "favoriteGenres": "Любимые жанры",
+    "editGenres": "Изменить",
+    "emptyLibrary": "В библиотеке пока пусто — начните читать историю, и она появится здесь.",
+    "emptyAchievements": "Достижения скоро появятся."
+  },
+  "settings": {
+    "title": "Настройки",
+    "appearance": "Оформление",
+    "theme": "Тема",
+    "themeDark": "Тёмная",
+    "themeLight": "Светлая",
+    "language": "Язык",
+    "notifications": "Уведомления",
+    "newChapterAlerts": "Оповещения о новых главах",
+    "newChapterAlertsBody": "Узнавайте об обновлениях историй, которые вы читаете",
+    "promotionalOffers": "Промо-предложения",
+    "promotionalOffersBody": "Скидки на алмазы и подписки",
+    "account": "Аккаунт",
+    "email": "Email",
+    "changePassword": "Сменить пароль",
+    "manageSubscription": "Управление подпиской",
+    "manageSubscriptionBody": "Подписки пока недоступны.",
+    "about": "О приложении",
+    "version": "Версия",
+    "termsPrivacy": "Условия и конфиденциальность",
+    "changePasswordTitle": "Смена пароля",
+    "currentPassword": "Текущий пароль",
+    "newPassword": "Новый пароль",
+    "changePasswordUnavailable": "Смена пароля пока недоступна — для этого нужен эндпоинт на бэкенде, которого ещё нет."
+  },
+  "wallet": {
+    "insufficientDiamondsTitle": "Недостаточно алмазов",
+    "insufficientDiamondsBody": "Для этого действия нужно больше алмазов."
+  },
+  "errors": {
+    "invalidCredentials": "Неверный email или пароль",
+    "emailTaken": "Этот email уже зарегистрирован",
+    "invalidEmail": "Похоже, это некорректный email",
+    "weakPassword": "Пароль должен быть не короче 8 символов",
+    "sessionExpired": "Сессия истекла — пожалуйста, войдите снова",
+    "insufficientDiamonds": "Недостаточно алмазов для этого действия",
+    "sessionLimitReached": "Этот разговор достиг своего лимита",
+    "networkError": "Не удаётся связаться с сервером — проверьте соединение",
+    "unknownError": "Что-то пошло не так. Попробуйте ещё раз"
+  }
+}

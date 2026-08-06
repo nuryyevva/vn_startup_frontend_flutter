@@ -1,0 +1,44 @@
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints. Run `flutter analyze` to check.
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+    - "lib/l10n/**"
+  errors:
+    invalid_annotation_target: ignore
+
+linter:
+  rules:
+    # Named constructor parameters intentionally use public names (e.g.
+    # `required AuthApi api`) distinct from the private field they assign
+    # to (`_api`) — an initializing formal (`this._api`) would force the
+    # named parameter itself to be private too, breaking call sites in
+    # other files. See AuthRepositoryImpl for the canonical example.
+    prefer_initializing_formals: false
+    always_declare_return_types: true
+    avoid_dynamic_calls: true
+    avoid_print: true
+    avoid_returning_null_for_void: true
+    avoid_unused_constructor_parameters: true
+    cancel_subscriptions: true
+    close_sinks: true
+    directives_ordering: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_final_locals: true
+    prefer_relative_imports: true
+    prefer_single_quotes: true
+    require_trailing_commas: true
+    sort_child_properties_last: true
+    unawaited_futures: true
+    unnecessary_await_in_return: true
+    use_key_in_widget_constructors: true

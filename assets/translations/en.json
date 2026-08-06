@@ -1,0 +1,180 @@
+{
+  "common": {
+    "retry": "Retry",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "continue": "Continue",
+    "skip": "Skip for now",
+    "loading": "Loading…",
+    "comingSoon": "Coming soon",
+    "notAvailableYet": "Not available yet",
+    "signOut": "Sign Out",
+    "signOutConfirmTitle": "Sign out?",
+    "signOutConfirmBody": "You'll need to sign in again to access your library and wallet.",
+    "reconnecting": "Reconnecting…"
+  },
+  "nav": {
+    "stories": "Stories",
+    "shop": "Shop",
+    "profile": "Profile"
+  },
+  "genres": {
+    "all": "All",
+    "romance": "Romance",
+    "fantasy": "Fantasy",
+    "sciFi": "Sci-Fi",
+    "mystery": "Mystery",
+    "drama": "Drama",
+    "sliceOfLife": "Slice of Life",
+    "horror": "Horror",
+    "adventure": "Adventure"
+  },
+  "auth": {
+    "tagline": "Visual novels worth staying up for",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "emailHint": "you@example.com",
+    "continueAsGuest": "Continue as Guest",
+    "guestLimitTitle": "Sign in required",
+    "guestLimitBody": "Create a free account to unlock your library, wallet, and character conversations.",
+    "validation": {
+      "emailRequired": "Enter your email",
+      "emailInvalid": "Enter a valid email address",
+      "passwordRequired": "Enter your password",
+      "passwordTooShort": "Password must be at least 8 characters"
+    }
+  },
+  "onboarding": {
+    "stepOf": "Step {} of {}",
+    "nameTitle": "What should we call you?",
+    "nameHint": "Display name",
+    "genderTitle": "How do you identify?",
+    "genderOptional": "Optional — you can change this anytime",
+    "genderFemale": "Female",
+    "genderMale": "Male",
+    "genderOther": "Other",
+    "genderPreferNotToSay": "Prefer not to say",
+    "genresTitle": "Pick a few favorite genres",
+    "genresSubtitle": "We'll use this to tailor your catalog. Optional — you can change this later.",
+    "finish": "Get started"
+  },
+  "stories": {
+    "continueReading": "Continue Reading",
+    "complete": "{}% complete",
+    "ongoing": "Ongoing",
+    "completed": "Completed",
+    "chapterCount": "{} ch",
+    "emptyCatalogTitle": "No stories yet",
+    "emptyCatalogBody": "Check back soon for new stories in this genre."
+  },
+  "storyDetail": {
+    "reads": "{} reads",
+    "chapters": "{} chapters",
+    "startReading": "Start Reading",
+    "continueReading": "Continue Reading",
+    "chapterLabel": "Chapter {}",
+    "chapterUnlockCost": "{} ◇ to unlock",
+    "chapterRead": "Read",
+    "chapterUnread": "Unread"
+  },
+  "scenePlayer": {
+    "talkTo": "Talk to {}",
+    "logTitle": "Log",
+    "autoPlay": "Auto",
+    "skip": "Skip",
+    "customReplyHint": "Write your own reply…",
+    "customReplyCost": "{} ◇",
+    "insufficientDiamonds": "Not enough diamonds",
+    "unlockChapter": "Unlock chapter",
+    "unlockChapterCost": "Unlock for {} ◇",
+    "unlocking": "Unlocking…"
+  },
+  "dialog": {
+    "messageHint": "Message…",
+    "send": "Send",
+    "sessionEnded": {
+      "timeLimitTitle": "Time's up",
+      "timeLimitBody": "This conversation has reached its time limit.",
+      "messageLimitTitle": "Conversation limit reached",
+      "messageLimitBody": "You've reached the message limit for this conversation.",
+      "storyEventTitle": "Interrupted",
+      "storyEventBody": "{} had to go — the story is calling.",
+      "userLeftTitle": "Conversation ended",
+      "userLeftBody": "You left the conversation.",
+      "backToStory": "Back to story"
+    },
+    "remainingMessages": "{} messages left",
+    "remainingSeconds": "{}s left"
+  },
+  "shop": {
+    "yourBalance": "Your balance",
+    "diamondBundles": "Diamond Bundles",
+    "bonus": "+{}% bonus",
+    "buy": "Buy",
+    "getFreeDevMode": "Get for free (dev mode)",
+    "devBadge": "(dev)",
+    "purchaseSuccess": "{} diamonds added",
+    "purchaseFailed": "Purchase failed",
+    "badge": {
+      "mostPopular": "Most Popular",
+      "bestValue": "Best Value"
+    }
+  },
+  "profile": {
+    "readerSince": "Reader since {}",
+    "dayStreak": "Day Streak",
+    "hoursRead": "Hours Read",
+    "finished": "Finished",
+    "diamonds": "Diamonds",
+    "myLibrary": "My Library",
+    "achievements": "Achievements",
+    "favoriteGenres": "Favorite Genres",
+    "editGenres": "Edit",
+    "emptyLibrary": "Nothing in your library yet — start a story to see it here.",
+    "emptyAchievements": "Achievements are coming soon."
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "language": "Language",
+    "notifications": "Notifications",
+    "newChapterAlerts": "New chapter alerts",
+    "newChapterAlertsBody": "Know when a story you follow updates",
+    "promotionalOffers": "Promotional offers",
+    "promotionalOffersBody": "Diamond sales and pass discounts",
+    "account": "Account",
+    "email": "Email",
+    "changePassword": "Change password",
+    "manageSubscription": "Manage subscription",
+    "manageSubscriptionBody": "Subscriptions aren't available yet.",
+    "about": "About",
+    "version": "Version",
+    "termsPrivacy": "Terms & Privacy",
+    "changePasswordTitle": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "changePasswordUnavailable": "Changing your password isn't available yet — this needs a backend endpoint that doesn't exist yet."
+  },
+  "wallet": {
+    "insufficientDiamondsTitle": "Not enough diamonds",
+    "insufficientDiamondsBody": "You need more diamonds to do that."
+  },
+  "errors": {
+    "invalidCredentials": "Incorrect email or password",
+    "emailTaken": "That email is already registered",
+    "invalidEmail": "That doesn't look like a valid email",
+    "weakPassword": "Password must be at least 8 characters",
+    "sessionExpired": "Your session has expired — please sign in again",
+    "insufficientDiamonds": "You don't have enough diamonds for that",
+    "sessionLimitReached": "This conversation has reached its limit",
+    "networkError": "Can't reach the server — check your connection",
+    "unknownError": "Something went wrong. Please try again"
+  }
+}
