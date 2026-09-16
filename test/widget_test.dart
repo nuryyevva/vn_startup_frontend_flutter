@@ -39,7 +39,7 @@ void main() {
             appConfigProvider.overrideWithValue(config),
             sharedPreferencesProvider.overrideWithValue(prefs),
           ],
-          child: const NocturneApp(),
+          child: const LoveCityApp(),
         ),
       ),
     );

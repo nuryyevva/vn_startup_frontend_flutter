@@ -115,7 +115,7 @@
     "diamondBundles": "Наборы алмазов",
     "bonus": "+{}% бонус",
     "buy": "Купить",
-    "getFreeDevMode": "Получить бесплатно (dev-режим)",
+    "getFreeDevMode": "Получить",
     "devBadge": "(dev)",
     "purchaseSuccess": "Начислено {} алмазов",
     "purchaseFailed": "Не удалось совершить покупку",

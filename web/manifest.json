@@ -1,11 +1,11 @@
 {
-    "name": "nocturne",
-    "short_name": "nocturne",
+    "name": "Город любви",
+    "short_name": "Город любви",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Nocturne visual novel platform frontend",
+    "description": "Город любви visual novel platform frontend",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

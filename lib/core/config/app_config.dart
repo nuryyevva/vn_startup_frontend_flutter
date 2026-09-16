@@ -53,7 +53,7 @@ class AppConfig {
   final List<GenreConfig> genres;
 
   factory AppConfig.fromEnvironment() {
-    const appName = String.fromEnvironment('APP_NAME', defaultValue: 'Nocturne');
+    const appName = String.fromEnvironment('APP_NAME', defaultValue: 'Город любви');
     const envRaw = String.fromEnvironment('APP_ENV', defaultValue: 'development');
     const apiBaseUrl = String.fromEnvironment('API_BASE_URL', defaultValue: 'http://localhost:8080');
     const wsBaseUrl = String.fromEnvironment('WS_BASE_URL', defaultValue: 'ws://localhost:8080');

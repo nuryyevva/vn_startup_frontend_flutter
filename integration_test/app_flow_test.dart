@@ -170,7 +170,7 @@ void main() {
             // open one of its own.
             webSocketClientProvider.overrideWithValue(null),
           ],
-          child: const NocturneApp(),
+          child: const LoveCityApp(),
         ),
       ),
     );

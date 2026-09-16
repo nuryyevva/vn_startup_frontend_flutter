@@ -25,7 +25,7 @@ Future<void> main() async {
           appConfigProvider.overrideWithValue(config),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
         ],
-        child: const NocturneApp(),
+        child: const LoveCityApp(),
       ),
     ),
   );

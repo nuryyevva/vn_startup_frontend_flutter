@@ -45,16 +45,16 @@ android {
         create("dev") {
             dimension = "environment"
             applicationIdSuffix = ".dev"
-            resValue(type = "string", name = "app_name", value = "Nocturne Dev")
+            resValue(type = "string", name = "app_name", value = "Город любви Dev")
         }
         create("staging") {
             dimension = "environment"
             applicationIdSuffix = ".staging"
-            resValue(type = "string", name = "app_name", value = "Nocturne Staging")
+            resValue(type = "string", name = "app_name", value = "Город любви Staging")
         }
         create("prod") {
             dimension = "environment"
-            resValue(type = "string", name = "app_name", value = "Nocturne")
+            resValue(type = "string", name = "app_name", value = "Город любви")
         }
     }
 }

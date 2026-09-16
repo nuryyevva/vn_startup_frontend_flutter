@@ -57,27 +57,17 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
             ),
             const SizedBox(height: 24),
             Text('shop.diamondBundles'.tr(), style: textTheme.titleLarge),
-            const SizedBox(height: 12),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              // Tall enough for the worst case: a badge label *and* a bonus
-              // chip stacked above the price button (see bundle_1200/2600
-              // in kDiamondBundles) — 0.85 clipped that combination.
-              childAspectRatio: 0.62,
-              children: [
-                for (final bundle in config.diamondBundles)
-                  DiamondBundleCard(
-                    bundle: bundle,
-                    isDevMode: isDevMode,
-                    isPurchasing: _purchasingBundleId == bundle.id,
-                    onBuy: isDevMode ? () => _buy(bundle.id, bundle.diamonds) : null,
-                  ),
-              ],
-            ),
+            const SizedBox(height: 16),
+            for (final bundle in config.diamondBundles)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: DiamondBundleCard(
+                  bundle: bundle,
+                  isDevMode: isDevMode,
+                  isPurchasing: _purchasingBundleId == bundle.id,
+                  onBuy: isDevMode ? () => _buy(bundle.id, bundle.diamonds) : null,
+                ),
+              ),
           ],
         ),
       ),

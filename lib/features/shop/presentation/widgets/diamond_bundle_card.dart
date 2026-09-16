@@ -5,11 +5,16 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/config/diamond_bundle_config.dart';
 import '../../../../core/theme/app_colors.dart';
 
-/// One bundle tile in the shop grid. [isDevMode] switches the button
+/// One bundle row in the shop list. [isDevMode] switches the button
 /// between the real (currently non-functional — no payment provider
 /// exists yet, see README "known limitations") price and the explicit
 /// "(dev mode)" free-grant label, so a dev/staging build never implies a
 /// real charge is happening.
+///
+/// Horizontal layout: gem count on the left, buy button on the right. The
+/// highlight badge (when present) floats above the card's top-right corner
+/// as a little tab, via [Stack]/[Positioned] rather than sitting inline —
+/// same badge styling as before, just repositioned for the wider card.
 class DiamondBundleCard extends StatelessWidget {
   const DiamondBundleCard({super.key, required this.bundle, required this.isDevMode, required this.isPurchasing, required this.onBuy});
 
@@ -22,52 +27,59 @@ class DiamondBundleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
+    final hasBadge = bundle.badgeLabelKey != null;
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: colors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (bundle.badgeLabelKey != null)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(color: colors.accent, borderRadius: BorderRadius.circular(6)),
-                child: Text(
-                  bundle.badgeLabelKey!.tr(),
-                  style: textTheme.labelSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
-                ),
-              ),
-            ),
-          const SizedBox(height: 8),
-          Icon(LucideIcons.gem, size: 28, color: colors.accent),
-          const SizedBox(height: 8),
-          Text('${bundle.diamonds}', style: textTheme.headlineLarge?.copyWith(fontSize: 22)),
-          if (bundle.bonusPercent > 0)
-            Container(
-              margin: const EdgeInsets.only(top: 4),
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(color: colors.accentMuted, borderRadius: BorderRadius.circular(6)),
-              child: Text(
-                'shop.bonus'.tr(args: ['${bundle.bonusPercent}']),
-                style: textTheme.labelSmall?.copyWith(color: colors.accent, fontWeight: FontWeight.w700),
-              ),
-            ),
-          const SizedBox(height: 12),
-          ElevatedButton(
-            onPressed: isPurchasing ? null : onBuy,
-            child: isPurchasing
-                ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                : Text(isDevMode ? 'shop.getFreeDevMode'.tr() : '\$${bundle.priceUsd.toStringAsFixed(2)}'),
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: hasBadge ? 10 : 0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: BoxDecoration(
+            color: colors.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: colors.border),
           ),
-        ],
-      ),
+          child: Row(
+            children: [
+              Icon(LucideIcons.gem, size: 28, color: colors.accent),
+              const SizedBox(width: 12),
+              Text('${bundle.diamonds}', style: textTheme.headlineLarge?.copyWith(fontSize: 22)),
+              if (bundle.bonusPercent > 0) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(color: colors.accentMuted, borderRadius: BorderRadius.circular(6)),
+                  child: Text(
+                    'shop.bonus'.tr(args: ['${bundle.bonusPercent}']),
+                    style: textTheme.labelSmall?.copyWith(color: colors.accent, fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ],
+              const Spacer(),
+              ElevatedButton(
+                onPressed: isPurchasing ? null : onBuy,
+                child: isPurchasing
+                    ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                    : Text(isDevMode ? 'shop.getFreeDevMode'.tr() : '\$${bundle.priceUsd.toStringAsFixed(2)}'),
+              ),
+            ],
+          ),
+        ),
+        if (hasBadge)
+          Positioned(
+            top: 0,
+            right: 16,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(color: colors.accent, borderRadius: BorderRadius.circular(6)),
+              child: Text(
+                bundle.badgeLabelKey!.tr(),
+                style: textTheme.labelSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

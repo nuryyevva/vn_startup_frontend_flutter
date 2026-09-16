@@ -7,8 +7,8 @@ import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'features/settings/presentation/providers/theme_mode_provider.dart';
 
-class NocturneApp extends ConsumerWidget {
-  const NocturneApp({super.key});
+class LoveCityApp extends ConsumerWidget {
+  const LoveCityApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
