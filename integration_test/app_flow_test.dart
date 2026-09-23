@@ -101,7 +101,15 @@ void main() {
     ).thenAnswer((_) async => const AuthUser(id: 'u1', email: 'reader@example.com', role: 'user'));
 
     final storyRepository = _MockStoryRepository();
-    when(() => storyRepository.getStories()).thenAnswer((_) async => [_story]);
+    when(
+      () => storyRepository.getStories(
+        genre: any(named: 'genre'),
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+      ),
+    ).thenAnswer((_) async => StoryPage(items: [_story], total: 1, page: 1, pageSize: 10));
+    when(() => storyRepository.getStory('s1')).thenAnswer((_) async => _story);
+    when(() => storyRepository.getBookmarks()).thenAnswer((_) async => []);
     when(() => storyRepository.getMyProgress()).thenAnswer((_) async => []);
     when(() => storyRepository.getStoryScenes('s1')).thenAnswer(
       (_) async => const [SceneSummary(id: 'sc1', orderIndex: 0, unlockCostDiamonds: null, isUnlocked: true)],

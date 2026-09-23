@@ -13,13 +13,11 @@ final storyRepositoryProvider = Provider<StoryRepository>((ref) {
   return StoryRepositoryImpl(api: ref.watch(storyApiProvider));
 });
 
-/// The full published catalog, fetched once. The backend has no
-/// server-side genre filter or pagination on `GET /stories` (see README
-/// "known limitations"), so filtering/paging both happen client-side over
-/// this cached list — see [filteredStoriesProvider] and
-/// [storiesVisibleCountProvider].
-final allStoriesProvider = FutureProvider<List<Story>>((ref) {
-  return ref.watch(storyRepositoryProvider).getStories();
+/// A single story's metadata, used by the story-detail screen — `GET
+/// /stories` is now paginated (see [StoriesListNotifier]), so it's no
+/// longer a reliable place to look up one story by id.
+final storyByIdProvider = FutureProvider.family<Story, String>((ref, storyId) {
+  return ref.watch(storyRepositoryProvider).getStory(storyId);
 });
 
 /// Every story the signed-in user has already started, most recently
@@ -44,29 +42,75 @@ final storyScenesProvider = FutureProvider.family<List<SceneSummary>, String>((r
 /// `null` means the "All" chip — no filter applied.
 final selectedGenreProvider = StateProvider<String?>((ref) => null);
 
-final filteredStoriesProvider = Provider<AsyncValue<List<Story>>>((ref) {
-  final storiesAsync = ref.watch(allStoriesProvider);
-  final genre = ref.watch(selectedGenreProvider);
-  return storiesAsync.whenData((stories) {
-    if (genre == null) return stories;
-    return stories.where((story) => story.genre == genre).toList(growable: false);
-  });
-});
+/// One page's worth of the published catalog, accumulated as the user
+/// scrolls. The backend paginates and filters by genre server-side (`GET
+/// /stories?genre=&page=`), so this notifier's job is just to track which
+/// page it's on and append results — no client-side filtering/slicing.
+class StoriesPageState {
+  const StoriesPageState({this.items = const [], this.total = 0, this.loadedPage = 0, this.isLoadingMore = false});
 
-/// How many of [filteredStoriesProvider]'s results are currently visible —
-/// the client-side stand-in for real pagination (see [allStoriesProvider]'s
-/// doc comment). Grows by `AppConfig.storiesPageSize` on [loadMore]; the
-/// stories screen resets it to one page whenever the genre filter changes.
-class StoriesVisibleCountNotifier extends StateNotifier<int> {
-  StoriesVisibleCountNotifier(this._pageSize) : super(_pageSize);
+  final List<Story> items;
+  final int total;
 
-  final int _pageSize;
+  /// The last page number successfully appended; 0 means nothing loaded yet.
+  final int loadedPage;
+  final bool isLoadingMore;
 
-  void loadMore() => state += _pageSize;
+  bool get hasMore => items.length < total;
 
-  void reset() => state = _pageSize;
+  StoriesPageState copyWith({List<Story>? items, int? total, int? loadedPage, bool? isLoadingMore}) {
+    return StoriesPageState(
+      items: items ?? this.items,
+      total: total ?? this.total,
+      loadedPage: loadedPage ?? this.loadedPage,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+    );
+  }
 }
 
-final storiesVisibleCountProvider = StateNotifierProvider<StoriesVisibleCountNotifier, int>((ref) {
-  return StoriesVisibleCountNotifier(ref.watch(appConfigProvider).storiesPageSize);
+class StoriesListNotifier extends StateNotifier<AsyncValue<StoriesPageState>> {
+  StoriesListNotifier(this._repository, this._pageSize) : super(const AsyncValue.loading()) {
+    _load(reset: true);
+  }
+
+  final StoryRepository _repository;
+  final int _pageSize;
+  String? _genre;
+
+  Future<void> setGenre(String? genre) {
+    if (_genre == genre) return Future.value();
+    _genre = genre;
+    return refresh();
+  }
+
+  Future<void> refresh() {
+    state = const AsyncValue.loading();
+    return _load(reset: true);
+  }
+
+  Future<void> loadMore() {
+    final current = state.valueOrNull;
+    if (current == null || current.isLoadingMore || !current.hasMore) return Future.value();
+    state = AsyncValue.data(current.copyWith(isLoadingMore: true));
+    return _load(reset: false);
+  }
+
+  Future<void> _load({required bool reset}) async {
+    final nextPage = reset ? 1 : (state.valueOrNull?.loadedPage ?? 0) + 1;
+    try {
+      final page = await _repository.getStories(genre: _genre, page: nextPage, pageSize: _pageSize);
+      final previousItems = reset ? const <Story>[] : (state.valueOrNull?.items ?? const <Story>[]);
+      state = AsyncValue.data(
+        StoriesPageState(items: [...previousItems, ...page.items], total: page.total, loadedPage: page.page),
+      );
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(error, stackTrace);
+    }
+  }
+}
+
+final storiesListProvider = StateNotifierProvider<StoriesListNotifier, AsyncValue<StoriesPageState>>((ref) {
+  final notifier = StoriesListNotifier(ref.watch(storyRepositoryProvider), ref.watch(appConfigProvider).storiesPageSize);
+  ref.listen(selectedGenreProvider, (_, genre) => notifier.setGenre(genre));
+  return notifier;
 });

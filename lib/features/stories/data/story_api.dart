@@ -9,9 +9,21 @@ class StoryApi {
 
   final Dio _dio;
 
-  Future<List<Story>> getStories() async {
-    final response = await _dio.get<List<dynamic>>('/stories');
-    return response.data!.map((e) => Story.fromJson(e as Map<String, dynamic>)).toList();
+  /// One page of the published catalog. `genre` narrows by genre id;
+  /// `page` is 1-based. The backend defaults/clamps `pageSize` server-side
+  /// if omitted or out of range, so callers don't need to duplicate that
+  /// policy client-side.
+  Future<StoryPage> getStories({String? genre, int page = 1, int? pageSize}) async {
+    final response = await _dio.get<Map<String, dynamic>>(
+      '/stories',
+      queryParameters: {'genre': ?genre, 'page': page, 'page_size': ?pageSize},
+    );
+    return StoryPage.fromJson(response.data!);
+  }
+
+  Future<Story> getStory(String storyId) async {
+    final response = await _dio.get<Map<String, dynamic>>('/stories/$storyId');
+    return Story.fromJson(response.data!);
   }
 
   /// All stories the caller has already started, most recently updated
@@ -53,5 +65,18 @@ class StoryApi {
 
   Future<void> unlockScene(String sceneId) async {
     await _dio.post<Map<String, dynamic>>('/scenes/$sceneId/unlock');
+  }
+
+  Future<List<Story>> getBookmarks() async {
+    final response = await _dio.get<List<dynamic>>('/bookmarks');
+    return response.data!.map((e) => Story.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  Future<void> addBookmark(String storyId) async {
+    await _dio.post<void>('/stories/$storyId/bookmark');
+  }
+
+  Future<void> removeBookmark(String storyId) async {
+    await _dio.delete<void>('/stories/$storyId/bookmark');
   }
 }

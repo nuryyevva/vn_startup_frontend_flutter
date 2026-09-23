@@ -41,5 +41,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> logout() => _tokenStorage.clear();
 
   @override
+  Future<void> changePassword(String currentPassword, String newPassword) {
+    return _api.changePassword(ChangePasswordRequest(currentPassword: currentPassword, newPassword: newPassword));
+  }
+
+  @override
   Future<bool> hasStoredSession() async => await _tokenStorage.readRefreshToken() != null;
 }

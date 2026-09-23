@@ -18,6 +18,8 @@ class UserProfile with _$UserProfile {
     @JsonKey(name: 'favorite_genres') @Default([]) List<String> favoriteGenres,
     @Default('dark') String theme,
     @Default('ru') String language,
+    @JsonKey(name: 'notify_new_chapters') @Default(true) bool notifyNewChapters,
+    @JsonKey(name: 'notify_promotional_offers') @Default(false) bool notifyPromotionalOffers,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
   }) = _UserProfile;
 
@@ -35,6 +37,8 @@ class UpdateProfileRequest with _$UpdateProfileRequest {
     @JsonKey(name: 'favorite_genres') List<String>? favoriteGenres,
     String? theme,
     String? language,
+    @JsonKey(name: 'notify_new_chapters') bool? notifyNewChapters,
+    @JsonKey(name: 'notify_promotional_offers') bool? notifyPromotionalOffers,
   }) = _UpdateProfileRequest;
 
   factory UpdateProfileRequest.fromJson(Map<String, dynamic> json) => _$UpdateProfileRequestFromJson(json);

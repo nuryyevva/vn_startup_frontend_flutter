@@ -12,12 +12,15 @@ import '../../../../core/widgets/app_icon_button.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/genre_chip.dart';
 import '../../../../core/widgets/image_placeholder.dart';
+import '../../../achievements/presentation/providers/achievements_provider.dart';
 import '../../../auth/presentation/providers/auth_state_provider.dart';
+import '../../../stats/presentation/providers/reading_stats_provider.dart';
 import '../../../stories/presentation/providers/stories_providers.dart';
 import '../../../stories/presentation/widgets/story_card.dart';
 import '../../../wallet/presentation/providers/wallet_balance_provider.dart';
 import '../../domain/models/user_profile.dart';
 import '../providers/user_profile_provider.dart';
+import '../widgets/achievement_tile.dart';
 import '../widgets/favorite_genres_sheet.dart';
 import '../widgets/stat_tile.dart';
 
@@ -29,6 +32,8 @@ class ProfileScreen extends ConsumerWidget {
     final profileAsync = ref.watch(userProfileNotifierProvider);
     final progressAsync = ref.watch(myProgressProvider);
     final balanceAsync = ref.watch(walletBalanceProvider);
+    final statsAsync = ref.watch(readingStatsProvider);
+    final achievementsAsync = ref.watch(achievementsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,7 +47,8 @@ class ProfileScreen extends ConsumerWidget {
         onRefresh: () async {
           ref.invalidate(userProfileNotifierProvider);
           ref.invalidate(myProgressProvider);
-          await ref.read(walletBalanceProvider.notifier).refresh();
+          ref.invalidate(achievementsProvider);
+          await Future.wait([ref.read(walletBalanceProvider.notifier).refresh(), ref.read(readingStatsProvider.notifier).refresh()]);
         },
         child: ListView(
           padding: const EdgeInsets.all(16),
@@ -56,6 +62,8 @@ class ProfileScreen extends ConsumerWidget {
             _StatsGrid(
               finished: progressAsync.valueOrNull?.where((p) => p.isFinished).length,
               diamonds: balanceAsync.valueOrNull,
+              dayStreak: statsAsync.valueOrNull?.dayStreak,
+              hoursRead: statsAsync.valueOrNull?.hoursRead,
             ),
             const SizedBox(height: 24),
             _SectionTitle('profile.myLibrary'.tr()),
@@ -92,7 +100,16 @@ class ProfileScreen extends ConsumerWidget {
             const SizedBox(height: 24),
             _SectionTitle('profile.achievements'.tr()),
             const SizedBox(height: 12),
-            _EmptyState('profile.emptyAchievements'.tr()),
+            achievementsAsync.when(
+              data: (achievements) => achievements.isEmpty
+                  ? _EmptyState('profile.emptyAchievements'.tr())
+                  : Column(children: [for (final a in achievements) AchievementTile(achievement: a)]),
+              loading: () => const Padding(
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              error: (error, stackTrace) => _EmptyState('errors.networkError'.tr()),
+            ),
             const SizedBox(height: 24),
             _FavoriteGenresSection(profile: profileAsync.valueOrNull),
             const SizedBox(height: 32),
@@ -161,10 +178,12 @@ class _ProfileHeaderSkeleton extends StatelessWidget {
 }
 
 class _StatsGrid extends StatelessWidget {
-  const _StatsGrid({required this.finished, required this.diamonds});
+  const _StatsGrid({required this.finished, required this.diamonds, required this.dayStreak, required this.hoursRead});
 
   final int? finished;
   final int? diamonds;
+  final int? dayStreak;
+  final double? hoursRead;
 
   @override
   Widget build(BuildContext context) {
@@ -176,8 +195,8 @@ class _StatsGrid extends StatelessWidget {
       mainAxisSpacing: 12,
       childAspectRatio: 1.6,
       children: [
-        StatTile(icon: LucideIcons.flame, value: null, label: 'profile.dayStreak'.tr(), comingSoon: true),
-        StatTile(icon: LucideIcons.clock, value: null, label: 'profile.hoursRead'.tr(), comingSoon: true),
+        StatTile(icon: LucideIcons.flame, value: dayStreak?.toString(), label: 'profile.dayStreak'.tr()),
+        StatTile(icon: LucideIcons.clock, value: hoursRead?.toStringAsFixed(1), label: 'profile.hoursRead'.tr()),
         StatTile(
           icon: LucideIcons.bookOpenCheck,
           value: finished?.toString(),

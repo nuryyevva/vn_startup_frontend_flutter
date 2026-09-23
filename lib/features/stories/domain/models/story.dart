@@ -19,6 +19,21 @@ class Story with _$Story {
   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
 }
 
+/// Mirrors `StoryListResponse` from `GET /stories`, which returns one page
+/// of the catalog rather than the whole thing — see `total`/`page`/`pageSize`
+/// to drive infinite scroll.
+@freezed
+class StoryPage with _$StoryPage {
+  const factory StoryPage({
+    required List<Story> items,
+    required int total,
+    required int page,
+    @JsonKey(name: 'page_size') required int pageSize,
+  }) = _StoryPage;
+
+  factory StoryPage.fromJson(Map<String, dynamic> json) => _$StoryPageFromJson(json);
+}
+
 @freezed
 class Choice with _$Choice {
   const factory Choice({

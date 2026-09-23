@@ -20,6 +20,9 @@ _$UserProfileImpl _$$UserProfileImplFromJson(Map<String, dynamic> json) =>
           const [],
       theme: json['theme'] as String? ?? 'dark',
       language: json['language'] as String? ?? 'ru',
+      notifyNewChapters: json['notify_new_chapters'] as bool? ?? true,
+      notifyPromotionalOffers:
+          json['notify_promotional_offers'] as bool? ?? false,
       updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 
@@ -34,6 +37,8 @@ Map<String, dynamic> _$$UserProfileImplToJson(_$UserProfileImpl instance) =>
       'favorite_genres': instance.favoriteGenres,
       'theme': instance.theme,
       'language': instance.language,
+      'notify_new_chapters': instance.notifyNewChapters,
+      'notify_promotional_offers': instance.notifyPromotionalOffers,
       'updated_at': instance.updatedAt.toIso8601String(),
     };
 
@@ -47,6 +52,8 @@ _$UpdateProfileRequestImpl _$$UpdateProfileRequestImplFromJson(
           .toList(),
       theme: json['theme'] as String?,
       language: json['language'] as String?,
+      notifyNewChapters: json['notify_new_chapters'] as bool?,
+      notifyPromotionalOffers: json['notify_promotional_offers'] as bool?,
     );
 
 Map<String, dynamic> _$$UpdateProfileRequestImplToJson(
@@ -57,4 +64,6 @@ Map<String, dynamic> _$$UpdateProfileRequestImplToJson(
       'favorite_genres': instance.favoriteGenres,
       'theme': instance.theme,
       'language': instance.language,
+      'notify_new_chapters': instance.notifyNewChapters,
+      'notify_promotional_offers': instance.notifyPromotionalOffers,
     };

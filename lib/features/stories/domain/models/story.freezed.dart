@@ -281,6 +281,218 @@ abstract class _Story implements Story {
       throw _privateConstructorUsedError;
 }
 
+StoryPage _$StoryPageFromJson(Map<String, dynamic> json) {
+  return _StoryPage.fromJson(json);
+}
+
+/// @nodoc
+mixin _$StoryPage {
+  List<Story> get items => throw _privateConstructorUsedError;
+  int get total => throw _privateConstructorUsedError;
+  int get page => throw _privateConstructorUsedError;
+  @JsonKey(name: 'page_size')
+  int get pageSize => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $StoryPageCopyWith<StoryPage> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $StoryPageCopyWith<$Res> {
+  factory $StoryPageCopyWith(StoryPage value, $Res Function(StoryPage) then) =
+      _$StoryPageCopyWithImpl<$Res, StoryPage>;
+  @useResult
+  $Res call(
+      {List<Story> items,
+      int total,
+      int page,
+      @JsonKey(name: 'page_size') int pageSize});
+}
+
+/// @nodoc
+class _$StoryPageCopyWithImpl<$Res, $Val extends StoryPage>
+    implements $StoryPageCopyWith<$Res> {
+  _$StoryPageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? items = null,
+    Object? total = null,
+    Object? page = null,
+    Object? pageSize = null,
+  }) {
+    return _then(_value.copyWith(
+      items: null == items
+          ? _value.items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<Story>,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as int,
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      pageSize: null == pageSize
+          ? _value.pageSize
+          : pageSize // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$StoryPageImplCopyWith<$Res>
+    implements $StoryPageCopyWith<$Res> {
+  factory _$$StoryPageImplCopyWith(
+          _$StoryPageImpl value, $Res Function(_$StoryPageImpl) then) =
+      __$$StoryPageImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {List<Story> items,
+      int total,
+      int page,
+      @JsonKey(name: 'page_size') int pageSize});
+}
+
+/// @nodoc
+class __$$StoryPageImplCopyWithImpl<$Res>
+    extends _$StoryPageCopyWithImpl<$Res, _$StoryPageImpl>
+    implements _$$StoryPageImplCopyWith<$Res> {
+  __$$StoryPageImplCopyWithImpl(
+      _$StoryPageImpl _value, $Res Function(_$StoryPageImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? items = null,
+    Object? total = null,
+    Object? page = null,
+    Object? pageSize = null,
+  }) {
+    return _then(_$StoryPageImpl(
+      items: null == items
+          ? _value._items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<Story>,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as int,
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      pageSize: null == pageSize
+          ? _value.pageSize
+          : pageSize // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$StoryPageImpl implements _StoryPage {
+  const _$StoryPageImpl(
+      {required final List<Story> items,
+      required this.total,
+      required this.page,
+      @JsonKey(name: 'page_size') required this.pageSize})
+      : _items = items;
+
+  factory _$StoryPageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$StoryPageImplFromJson(json);
+
+  final List<Story> _items;
+  @override
+  List<Story> get items {
+    if (_items is EqualUnmodifiableListView) return _items;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_items);
+  }
+
+  @override
+  final int total;
+  @override
+  final int page;
+  @override
+  @JsonKey(name: 'page_size')
+  final int pageSize;
+
+  @override
+  String toString() {
+    return 'StoryPage(items: $items, total: $total, page: $page, pageSize: $pageSize)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$StoryPageImpl &&
+            const DeepCollectionEquality().equals(other._items, _items) &&
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.page, page) || other.page == page) &&
+            (identical(other.pageSize, pageSize) ||
+                other.pageSize == pageSize));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_items), total, page, pageSize);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$StoryPageImplCopyWith<_$StoryPageImpl> get copyWith =>
+      __$$StoryPageImplCopyWithImpl<_$StoryPageImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$StoryPageImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _StoryPage implements StoryPage {
+  const factory _StoryPage(
+          {required final List<Story> items,
+          required final int total,
+          required final int page,
+          @JsonKey(name: 'page_size') required final int pageSize}) =
+      _$StoryPageImpl;
+
+  factory _StoryPage.fromJson(Map<String, dynamic> json) =
+      _$StoryPageImpl.fromJson;
+
+  @override
+  List<Story> get items;
+  @override
+  int get total;
+  @override
+  int get page;
+  @override
+  @JsonKey(name: 'page_size')
+  int get pageSize;
+  @override
+  @JsonKey(ignore: true)
+  _$$StoryPageImplCopyWith<_$StoryPageImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 Choice _$ChoiceFromJson(Map<String, dynamic> json) {
   return _Choice.fromJson(json);
 }

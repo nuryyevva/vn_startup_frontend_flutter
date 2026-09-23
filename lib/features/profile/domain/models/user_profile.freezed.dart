@@ -33,6 +33,10 @@ mixin _$UserProfile {
   List<String> get favoriteGenres => throw _privateConstructorUsedError;
   String get theme => throw _privateConstructorUsedError;
   String get language => throw _privateConstructorUsedError;
+  @JsonKey(name: 'notify_new_chapters')
+  bool get notifyNewChapters => throw _privateConstructorUsedError;
+  @JsonKey(name: 'notify_promotional_offers')
+  bool get notifyPromotionalOffers => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
@@ -58,6 +62,8 @@ abstract class $UserProfileCopyWith<$Res> {
       @JsonKey(name: 'favorite_genres') List<String> favoriteGenres,
       String theme,
       String language,
+      @JsonKey(name: 'notify_new_chapters') bool notifyNewChapters,
+      @JsonKey(name: 'notify_promotional_offers') bool notifyPromotionalOffers,
       @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
@@ -83,6 +89,8 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
     Object? favoriteGenres = null,
     Object? theme = null,
     Object? language = null,
+    Object? notifyNewChapters = null,
+    Object? notifyPromotionalOffers = null,
     Object? updatedAt = null,
   }) {
     return _then(_value.copyWith(
@@ -122,6 +130,14 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
               as String,
+      notifyNewChapters: null == notifyNewChapters
+          ? _value.notifyNewChapters
+          : notifyNewChapters // ignore: cast_nullable_to_non_nullable
+              as bool,
+      notifyPromotionalOffers: null == notifyPromotionalOffers
+          ? _value.notifyPromotionalOffers
+          : notifyPromotionalOffers // ignore: cast_nullable_to_non_nullable
+              as bool,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -148,6 +164,8 @@ abstract class _$$UserProfileImplCopyWith<$Res>
       @JsonKey(name: 'favorite_genres') List<String> favoriteGenres,
       String theme,
       String language,
+      @JsonKey(name: 'notify_new_chapters') bool notifyNewChapters,
+      @JsonKey(name: 'notify_promotional_offers') bool notifyPromotionalOffers,
       @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
@@ -171,6 +189,8 @@ class __$$UserProfileImplCopyWithImpl<$Res>
     Object? favoriteGenres = null,
     Object? theme = null,
     Object? language = null,
+    Object? notifyNewChapters = null,
+    Object? notifyPromotionalOffers = null,
     Object? updatedAt = null,
   }) {
     return _then(_$UserProfileImpl(
@@ -210,6 +230,14 @@ class __$$UserProfileImplCopyWithImpl<$Res>
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
               as String,
+      notifyNewChapters: null == notifyNewChapters
+          ? _value.notifyNewChapters
+          : notifyNewChapters // ignore: cast_nullable_to_non_nullable
+              as bool,
+      notifyPromotionalOffers: null == notifyPromotionalOffers
+          ? _value.notifyPromotionalOffers
+          : notifyPromotionalOffers // ignore: cast_nullable_to_non_nullable
+              as bool,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -232,6 +260,9 @@ class _$UserProfileImpl implements _UserProfile {
       final List<String> favoriteGenres = const [],
       this.theme = 'dark',
       this.language = 'ru',
+      @JsonKey(name: 'notify_new_chapters') this.notifyNewChapters = true,
+      @JsonKey(name: 'notify_promotional_offers')
+      this.notifyPromotionalOffers = false,
       @JsonKey(name: 'updated_at') required this.updatedAt})
       : _favoriteGenres = favoriteGenres;
 
@@ -269,12 +300,18 @@ class _$UserProfileImpl implements _UserProfile {
   @JsonKey()
   final String language;
   @override
+  @JsonKey(name: 'notify_new_chapters')
+  final bool notifyNewChapters;
+  @override
+  @JsonKey(name: 'notify_promotional_offers')
+  final bool notifyPromotionalOffers;
+  @override
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
   @override
   String toString() {
-    return 'UserProfile(userId: $userId, email: $email, role: $role, createdAt: $createdAt, displayName: $displayName, gender: $gender, favoriteGenres: $favoriteGenres, theme: $theme, language: $language, updatedAt: $updatedAt)';
+    return 'UserProfile(userId: $userId, email: $email, role: $role, createdAt: $createdAt, displayName: $displayName, gender: $gender, favoriteGenres: $favoriteGenres, theme: $theme, language: $language, notifyNewChapters: $notifyNewChapters, notifyPromotionalOffers: $notifyPromotionalOffers, updatedAt: $updatedAt)';
   }
 
   @override
@@ -295,6 +332,11 @@ class _$UserProfileImpl implements _UserProfile {
             (identical(other.theme, theme) || other.theme == theme) &&
             (identical(other.language, language) ||
                 other.language == language) &&
+            (identical(other.notifyNewChapters, notifyNewChapters) ||
+                other.notifyNewChapters == notifyNewChapters) &&
+            (identical(
+                    other.notifyPromotionalOffers, notifyPromotionalOffers) ||
+                other.notifyPromotionalOffers == notifyPromotionalOffers) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt));
   }
@@ -312,6 +354,8 @@ class _$UserProfileImpl implements _UserProfile {
       const DeepCollectionEquality().hash(_favoriteGenres),
       theme,
       language,
+      notifyNewChapters,
+      notifyPromotionalOffers,
       updatedAt);
 
   @JsonKey(ignore: true)
@@ -339,6 +383,9 @@ abstract class _UserProfile implements UserProfile {
           @JsonKey(name: 'favorite_genres') final List<String> favoriteGenres,
           final String theme,
           final String language,
+          @JsonKey(name: 'notify_new_chapters') final bool notifyNewChapters,
+          @JsonKey(name: 'notify_promotional_offers')
+          final bool notifyPromotionalOffers,
           @JsonKey(name: 'updated_at') required final DateTime updatedAt}) =
       _$UserProfileImpl;
 
@@ -368,6 +415,12 @@ abstract class _UserProfile implements UserProfile {
   @override
   String get language;
   @override
+  @JsonKey(name: 'notify_new_chapters')
+  bool get notifyNewChapters;
+  @override
+  @JsonKey(name: 'notify_promotional_offers')
+  bool get notifyPromotionalOffers;
+  @override
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt;
   @override
@@ -389,6 +442,10 @@ mixin _$UpdateProfileRequest {
   List<String>? get favoriteGenres => throw _privateConstructorUsedError;
   String? get theme => throw _privateConstructorUsedError;
   String? get language => throw _privateConstructorUsedError;
+  @JsonKey(name: 'notify_new_chapters')
+  bool? get notifyNewChapters => throw _privateConstructorUsedError;
+  @JsonKey(name: 'notify_promotional_offers')
+  bool? get notifyPromotionalOffers => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -407,7 +464,10 @@ abstract class $UpdateProfileRequestCopyWith<$Res> {
       String? gender,
       @JsonKey(name: 'favorite_genres') List<String>? favoriteGenres,
       String? theme,
-      String? language});
+      String? language,
+      @JsonKey(name: 'notify_new_chapters') bool? notifyNewChapters,
+      @JsonKey(name: 'notify_promotional_offers')
+      bool? notifyPromotionalOffers});
 }
 
 /// @nodoc
@@ -429,6 +489,8 @@ class _$UpdateProfileRequestCopyWithImpl<$Res,
     Object? favoriteGenres = freezed,
     Object? theme = freezed,
     Object? language = freezed,
+    Object? notifyNewChapters = freezed,
+    Object? notifyPromotionalOffers = freezed,
   }) {
     return _then(_value.copyWith(
       displayName: freezed == displayName
@@ -451,6 +513,14 @@ class _$UpdateProfileRequestCopyWithImpl<$Res,
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
               as String?,
+      notifyNewChapters: freezed == notifyNewChapters
+          ? _value.notifyNewChapters
+          : notifyNewChapters // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      notifyPromotionalOffers: freezed == notifyPromotionalOffers
+          ? _value.notifyPromotionalOffers
+          : notifyPromotionalOffers // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -468,7 +538,10 @@ abstract class _$$UpdateProfileRequestImplCopyWith<$Res>
       String? gender,
       @JsonKey(name: 'favorite_genres') List<String>? favoriteGenres,
       String? theme,
-      String? language});
+      String? language,
+      @JsonKey(name: 'notify_new_chapters') bool? notifyNewChapters,
+      @JsonKey(name: 'notify_promotional_offers')
+      bool? notifyPromotionalOffers});
 }
 
 /// @nodoc
@@ -487,6 +560,8 @@ class __$$UpdateProfileRequestImplCopyWithImpl<$Res>
     Object? favoriteGenres = freezed,
     Object? theme = freezed,
     Object? language = freezed,
+    Object? notifyNewChapters = freezed,
+    Object? notifyPromotionalOffers = freezed,
   }) {
     return _then(_$UpdateProfileRequestImpl(
       displayName: freezed == displayName
@@ -509,6 +584,14 @@ class __$$UpdateProfileRequestImplCopyWithImpl<$Res>
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
               as String?,
+      notifyNewChapters: freezed == notifyNewChapters
+          ? _value.notifyNewChapters
+          : notifyNewChapters // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      notifyPromotionalOffers: freezed == notifyPromotionalOffers
+          ? _value.notifyPromotionalOffers
+          : notifyPromotionalOffers // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -521,7 +604,9 @@ class _$UpdateProfileRequestImpl implements _UpdateProfileRequest {
       this.gender,
       @JsonKey(name: 'favorite_genres') final List<String>? favoriteGenres,
       this.theme,
-      this.language})
+      this.language,
+      @JsonKey(name: 'notify_new_chapters') this.notifyNewChapters,
+      @JsonKey(name: 'notify_promotional_offers') this.notifyPromotionalOffers})
       : _favoriteGenres = favoriteGenres;
 
   factory _$UpdateProfileRequestImpl.fromJson(Map<String, dynamic> json) =>
@@ -547,10 +632,16 @@ class _$UpdateProfileRequestImpl implements _UpdateProfileRequest {
   final String? theme;
   @override
   final String? language;
+  @override
+  @JsonKey(name: 'notify_new_chapters')
+  final bool? notifyNewChapters;
+  @override
+  @JsonKey(name: 'notify_promotional_offers')
+  final bool? notifyPromotionalOffers;
 
   @override
   String toString() {
-    return 'UpdateProfileRequest(displayName: $displayName, gender: $gender, favoriteGenres: $favoriteGenres, theme: $theme, language: $language)';
+    return 'UpdateProfileRequest(displayName: $displayName, gender: $gender, favoriteGenres: $favoriteGenres, theme: $theme, language: $language, notifyNewChapters: $notifyNewChapters, notifyPromotionalOffers: $notifyPromotionalOffers)';
   }
 
   @override
@@ -565,13 +656,25 @@ class _$UpdateProfileRequestImpl implements _UpdateProfileRequest {
                 .equals(other._favoriteGenres, _favoriteGenres) &&
             (identical(other.theme, theme) || other.theme == theme) &&
             (identical(other.language, language) ||
-                other.language == language));
+                other.language == language) &&
+            (identical(other.notifyNewChapters, notifyNewChapters) ||
+                other.notifyNewChapters == notifyNewChapters) &&
+            (identical(
+                    other.notifyPromotionalOffers, notifyPromotionalOffers) ||
+                other.notifyPromotionalOffers == notifyPromotionalOffers));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, displayName, gender,
-      const DeepCollectionEquality().hash(_favoriteGenres), theme, language);
+  int get hashCode => Object.hash(
+      runtimeType,
+      displayName,
+      gender,
+      const DeepCollectionEquality().hash(_favoriteGenres),
+      theme,
+      language,
+      notifyNewChapters,
+      notifyPromotionalOffers);
 
   @JsonKey(ignore: true)
   @override
@@ -595,7 +698,10 @@ abstract class _UpdateProfileRequest implements UpdateProfileRequest {
       final String? gender,
       @JsonKey(name: 'favorite_genres') final List<String>? favoriteGenres,
       final String? theme,
-      final String? language}) = _$UpdateProfileRequestImpl;
+      final String? language,
+      @JsonKey(name: 'notify_new_chapters') final bool? notifyNewChapters,
+      @JsonKey(name: 'notify_promotional_offers')
+      final bool? notifyPromotionalOffers}) = _$UpdateProfileRequestImpl;
 
   factory _UpdateProfileRequest.fromJson(Map<String, dynamic> json) =
       _$UpdateProfileRequestImpl.fromJson;
@@ -612,6 +718,12 @@ abstract class _UpdateProfileRequest implements UpdateProfileRequest {
   String? get theme;
   @override
   String? get language;
+  @override
+  @JsonKey(name: 'notify_new_chapters')
+  bool? get notifyNewChapters;
+  @override
+  @JsonKey(name: 'notify_promotional_offers')
+  bool? get notifyPromotionalOffers;
   @override
   @JsonKey(ignore: true)
   _$$UpdateProfileRequestImplCopyWith<_$UpdateProfileRequestImpl>

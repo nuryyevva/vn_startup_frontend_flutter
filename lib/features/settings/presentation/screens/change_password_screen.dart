@@ -1,22 +1,24 @@
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/network/error_mapper.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../auth/presentation/providers/auth_state_provider.dart';
 
-/// The form UI is real; submitting is disabled with an explicit explanation
-/// rather than silently doing nothing — the backend has no
-/// change-password endpoint yet (`internal/auth` only exposes
-/// register/login/refresh). See project README "known limitations".
-class ChangePasswordScreen extends StatefulWidget {
+class ChangePasswordScreen extends ConsumerStatefulWidget {
   const ChangePasswordScreen({super.key});
 
   @override
-  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
+  ConsumerState<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
   final _currentPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
+  bool _isSaving = false;
+  String? _errorMessage;
 
   @override
   void dispose() {
@@ -28,6 +30,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final canSubmit =
+        !_isSaving && _currentPasswordController.text.isNotEmpty && _newPasswordController.text.isNotEmpty;
     return Scaffold(
       appBar: AppBar(title: Text('settings.changePasswordTitle'.tr())),
       body: Padding(
@@ -38,31 +42,60 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             TextField(
               controller: _currentPasswordController,
               obscureText: true,
+              onChanged: (_) => setState(() => _errorMessage = null),
               decoration: InputDecoration(labelText: 'settings.currentPassword'.tr()),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _newPasswordController,
               obscureText: true,
+              onChanged: (_) => setState(() => _errorMessage = null),
               decoration: InputDecoration(labelText: 'settings.newPassword'.tr()),
             ),
-            const SizedBox(height: 16),
-            Text(
-              'settings.changePasswordUnavailable'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.warning),
-            ),
+            if (_errorMessage != null) ...[
+              const SizedBox(height: 16),
+              Text(_errorMessage!, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.warning)),
+            ],
             const SizedBox(height: 24),
-            const ElevatedButton(onPressed: null, child: _SaveLabel()),
+            ElevatedButton(
+              onPressed: canSubmit ? _submit : null,
+              child: _isSaving
+                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                  : Text('common.save'.tr()),
+            ),
           ],
         ),
       ),
     );
   }
-}
 
-class _SaveLabel extends StatelessWidget {
-  const _SaveLabel();
+  Future<void> _submit() async {
+    setState(() {
+      _isSaving = true;
+      _errorMessage = null;
+    });
 
-  @override
-  Widget build(BuildContext context) => Text('common.save'.tr());
+    try {
+      await ref
+          .read(authRepositoryProvider)
+          .changePassword(_currentPasswordController.text, _newPasswordController.text);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('settings.changePasswordSuccess'.tr())));
+      Navigator.of(context).pop();
+    } on DioException catch (error) {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+          _errorMessage = mapDioException(error).localizedMessage();
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+          _errorMessage = 'errors.unknownError'.tr();
+        });
+      }
+    }
+  }
 }

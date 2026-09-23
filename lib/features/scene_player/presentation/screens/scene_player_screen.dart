@@ -8,6 +8,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/motion.dart';
 import '../../../dialog/presentation/screens/free_dialog_screen.dart';
+import '../../../stats/presentation/providers/reading_stats_provider.dart';
 import '../../../stories/domain/models/story.dart';
 import '../../../wallet/presentation/providers/wallet_balance_provider.dart';
 import '../../domain/character_sprite.dart';
@@ -83,6 +84,27 @@ class _ScenePlaybackBody extends ConsumerStatefulWidget {
 class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> {
   bool _showFreeDialog = false;
   String _freeDialogCharacterName = '';
+
+  /// Reports elapsed reading time to the backend every 30s while this scene
+  /// is on screen — the only source of "day streak"/"hours read" data (see
+  /// `ReadingStatsNotifier`); nothing is inferred client-side.
+  static const _heartbeatInterval = Duration(seconds: 30);
+  Timer? _heartbeatTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _heartbeatTimer = Timer.periodic(
+      _heartbeatInterval,
+      (_) => ref.read(readingStatsProvider.notifier).sendHeartbeat(_heartbeatInterval.inSeconds),
+    );
+  }
+
+  @override
+  void dispose() {
+    _heartbeatTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

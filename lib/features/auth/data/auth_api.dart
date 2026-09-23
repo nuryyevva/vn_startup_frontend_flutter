@@ -35,4 +35,8 @@ class AuthApi {
     );
     return AuthTokens.fromJson(response.data!);
   }
+
+  Future<void> changePassword(ChangePasswordRequest body) {
+    return _dio.post<void>('/auth/change-password', data: body.toJson());
+  }
 }

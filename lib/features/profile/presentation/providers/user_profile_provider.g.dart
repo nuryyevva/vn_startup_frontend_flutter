@@ -7,7 +7,7 @@ part of 'user_profile_provider.dart';
 // **************************************************************************
 
 String _$userProfileNotifierHash() =>
-    r'5c5d32c6dbd4f41aacfae84f2aac0238249ca544';
+    r'9ab5fc7827b4c3c43f42956c0089ffe6ce40374b';
 
 /// The current user's profile — fetched once on first read, invalidated
 /// (re-fetched) after every successful [update] so every screen showing

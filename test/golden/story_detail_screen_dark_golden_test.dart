@@ -48,7 +48,8 @@ const _scenes = [
 
 List<Override> _overrides() {
   final storyRepository = _MockStoryRepository();
-  when(() => storyRepository.getStories()).thenAnswer((_) async => [_story]);
+  when(() => storyRepository.getStory('s1')).thenAnswer((_) async => _story);
+  when(() => storyRepository.getBookmarks()).thenAnswer((_) async => []);
   when(() => storyRepository.getStoryScenes('s1')).thenAnswer((_) async => _scenes);
   when(() => storyRepository.getStoryProgress('s1')).thenAnswer(
     (_) async => PlayerProgress(

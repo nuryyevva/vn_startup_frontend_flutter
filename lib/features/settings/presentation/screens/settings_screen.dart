@@ -13,7 +13,6 @@ import '../../../../core/widgets/segmented_control.dart';
 import '../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../profile/domain/models/user_profile.dart';
 import '../../../profile/presentation/providers/user_profile_provider.dart';
-import '../providers/notification_settings_provider.dart';
 import '../providers/theme_mode_provider.dart';
 import '../widgets/settings_row.dart';
 
@@ -24,7 +23,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profileAsync = ref.watch(userProfileNotifierProvider);
     final themeMode = ref.watch(themeModeProvider);
-    final notifications = ref.watch(notificationSettingsProvider);
+    final profile = profileAsync.valueOrNull;
     final config = ref.watch(appConfigProvider);
 
     return Scaffold(
@@ -59,15 +58,17 @@ class SettingsScreen extends ConsumerWidget {
           SettingsSwitchRow(
             label: 'settings.newChapterAlerts'.tr(),
             subtitle: 'settings.newChapterAlertsBody'.tr(),
-            value: notifications.newChapterAlerts,
-            onChanged: (value) => ref.read(notificationSettingsProvider.notifier).setNewChapterAlerts(value),
+            value: profile?.notifyNewChapters ?? true,
+            onChanged: profile == null ? null : (value) => _syncProfile(ref, UpdateProfileRequest(notifyNewChapters: value)),
           ),
           const Divider(height: 24),
           SettingsSwitchRow(
             label: 'settings.promotionalOffers'.tr(),
             subtitle: 'settings.promotionalOffersBody'.tr(),
-            value: notifications.promotionalOffers,
-            onChanged: (value) => ref.read(notificationSettingsProvider.notifier).setPromotionalOffers(value),
+            value: profile?.notifyPromotionalOffers ?? false,
+            onChanged: profile == null
+                ? null
+                : (value) => _syncProfile(ref, UpdateProfileRequest(notifyPromotionalOffers: value)),
           ),
           const SizedBox(height: 28),
           _SectionHeader('settings.account'.tr()),

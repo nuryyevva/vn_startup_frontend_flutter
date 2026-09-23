@@ -27,6 +27,24 @@ Map<String, dynamic> _$$StoryImplToJson(_$StoryImpl instance) =>
       'created_at': instance.createdAt.toIso8601String(),
     };
 
+_$StoryPageImpl _$$StoryPageImplFromJson(Map<String, dynamic> json) =>
+    _$StoryPageImpl(
+      items: (json['items'] as List<dynamic>)
+          .map((e) => Story.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      total: json['total'] as int,
+      page: json['page'] as int,
+      pageSize: json['page_size'] as int,
+    );
+
+Map<String, dynamic> _$$StoryPageImplToJson(_$StoryPageImpl instance) =>
+    <String, dynamic>{
+      'items': instance.items,
+      'total': instance.total,
+      'page': instance.page,
+      'page_size': instance.pageSize,
+    };
+
 _$ChoiceImpl _$$ChoiceImplFromJson(Map<String, dynamic> json) => _$ChoiceImpl(
       id: json['id'] as String,
       text: json['text'] as String,

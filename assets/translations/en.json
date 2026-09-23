@@ -160,7 +160,7 @@
     "changePasswordTitle": "Change password",
     "currentPassword": "Current password",
     "newPassword": "New password",
-    "changePasswordUnavailable": "Changing your password isn't available yet — this needs a backend endpoint that doesn't exist yet."
+    "changePasswordSuccess": "Password changed successfully"
   },
   "wallet": {
     "insufficientDiamondsTitle": "Not enough diamonds",

@@ -3,10 +3,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
-/// One tile of the profile screen's 2x2 stats grid. [value] is `null` for
-/// stats the backend doesn't track yet (day streak, hours read — see
-/// project spec §11.4) and renders as an em dash instead of a fabricated
-/// number.
+/// One tile of the profile screen's 2x2 stats grid. [value] is `null` while
+/// its source provider hasn't resolved yet (or has no data), and renders as
+/// an em dash rather than a fabricated number.
 class StatTile extends StatelessWidget {
   const StatTile({super.key, required this.icon, required this.value, required this.label, this.comingSoon = false});
 

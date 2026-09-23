@@ -29,7 +29,12 @@ class UserProfileNotifier extends _$UserProfileNotifier {
   /// collide with.
   Future<void> updateProfile(UpdateProfileRequest request) async {
     final repository = ref.read(userRepositoryProvider);
-    state = const AsyncValue.loading();
+    // copyWithPrevious keeps `valueOrNull` returning the last-known profile
+    // while this PATCH is in flight, instead of going briefly null — screens
+    // that read individual fields straight off the profile (e.g. the
+    // notification toggles in SettingsScreen) would otherwise flash back to
+    // a fallback default for the round-trip's duration.
+    state = const AsyncValue<UserProfile>.loading().copyWithPrevious(state);
     state = await AsyncValue.guard(() => repository.updateMe(request));
   }
 }

@@ -8,7 +8,11 @@ class StoryRepositoryImpl implements StoryRepository {
   final StoryApi _api;
 
   @override
-  Future<List<Story>> getStories() => _api.getStories();
+  Future<StoryPage> getStories({String? genre, int page = 1, int? pageSize}) =>
+      _api.getStories(genre: genre, page: page, pageSize: pageSize);
+
+  @override
+  Future<Story> getStory(String storyId) => _api.getStory(storyId);
 
   @override
   Future<List<ProgressSummary>> getMyProgress() => _api.getMyProgress();
@@ -27,4 +31,13 @@ class StoryRepositoryImpl implements StoryRepository {
 
   @override
   Future<void> unlockScene(String sceneId) => _api.unlockScene(sceneId);
+
+  @override
+  Future<List<Story>> getBookmarks() => _api.getBookmarks();
+
+  @override
+  Future<void> addBookmark(String storyId) => _api.addBookmark(storyId);
+
+  @override
+  Future<void> removeBookmark(String storyId) => _api.removeBookmark(storyId);
 }

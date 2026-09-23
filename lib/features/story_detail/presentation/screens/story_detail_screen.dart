@@ -11,7 +11,7 @@ import '../../../../core/widgets/app_icon_button.dart';
 import '../../../../core/widgets/image_placeholder.dart';
 import '../../../scene_player/domain/scene_player_args.dart';
 import '../../../stories/domain/models/story.dart';
-import '../../../stories/presentation/providers/local_bookmarks_provider.dart';
+import '../../../stories/presentation/providers/bookmarks_provider.dart';
 import '../../../stories/presentation/providers/stories_providers.dart';
 
 class StoryDetailScreen extends ConsumerWidget {
@@ -21,13 +21,13 @@ class StoryDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final storiesAsync = ref.watch(allStoriesProvider);
+    final storyAsync = ref.watch(storyByIdProvider(storyId));
     final scenesAsync = ref.watch(storyScenesProvider(storyId));
     final progressAsync = ref.watch(storyProgressProvider(storyId));
-    final bookmarks = ref.watch(localBookmarksProvider);
+    final bookmarks = ref.watch(bookmarksProvider);
     final isBookmarked = bookmarks.contains(storyId);
 
-    final story = storiesAsync.valueOrNull?.firstWhereOrNull((s) => s.id == storyId);
+    final story = storyAsync.valueOrNull;
 
     return Scaffold(
       body: CustomScrollView(
@@ -38,7 +38,7 @@ class StoryDetailScreen extends ConsumerWidget {
             actions: [
               AppIconButton(
                 icon: isBookmarked ? LucideIcons.bookmarkCheck : LucideIcons.bookmark,
-                onTap: () => ref.read(localBookmarksProvider.notifier).toggle(storyId),
+                onTap: () => ref.read(bookmarksProvider.notifier).toggle(storyId),
               ),
               const SizedBox(width: 8),
             ],

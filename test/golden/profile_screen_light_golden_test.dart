@@ -3,10 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nocturne/core/config/app_config.dart';
+import 'package:nocturne/features/achievements/data/achievements_repository.dart';
+import 'package:nocturne/features/achievements/domain/models/achievement.dart';
+import 'package:nocturne/features/achievements/presentation/providers/achievements_provider.dart';
 import 'package:nocturne/features/profile/data/user_repository.dart';
 import 'package:nocturne/features/profile/domain/models/user_profile.dart';
 import 'package:nocturne/features/profile/presentation/providers/user_profile_provider.dart';
 import 'package:nocturne/features/profile/presentation/screens/profile_screen.dart';
+import 'package:nocturne/features/stats/data/stats_repository.dart';
+import 'package:nocturne/features/stats/domain/models/user_stats.dart';
+import 'package:nocturne/features/stats/presentation/providers/reading_stats_provider.dart';
 import 'package:nocturne/features/stories/data/story_repository.dart';
 import 'package:nocturne/features/stories/domain/models/story.dart';
 import 'package:nocturne/features/stories/presentation/providers/stories_providers.dart';
@@ -20,6 +26,10 @@ class _MockUserRepository extends Mock implements UserRepository {}
 class _MockStoryRepository extends Mock implements StoryRepository {}
 
 class _MockWalletRepository extends Mock implements WalletRepository {}
+
+class _MockStatsRepository extends Mock implements StatsRepository {}
+
+class _MockAchievementsRepository extends Mock implements AchievementsRepository {}
 
 const _testConfig = AppConfig(
   appName: 'Nocturne',
@@ -92,14 +102,31 @@ List<Override> _overrides() {
     ],
   );
 
+  when(() => storyRepository.getBookmarks()).thenAnswer((_) async => []);
+
   final walletRepository = _MockWalletRepository();
   when(() => walletRepository.getBalance()).thenAnswer((_) async => 1240);
+
+  final statsRepository = _MockStatsRepository();
+  when(
+    () => statsRepository.getStats(),
+  ).thenAnswer((_) async => const UserStats(dayStreak: 5, longestStreak: 12, totalReadingSeconds: 7200, hoursRead: 2));
+
+  final achievementsRepository = _MockAchievementsRepository();
+  when(() => achievementsRepository.getAchievements()).thenAnswer(
+    (_) async => [
+      Achievement(id: 'first_story_finished', title: 'Первая история', description: 'Заверши свою первую историю', unlocked: true, unlockedAt: DateTime(2024, 5, 1)),
+      const Achievement(id: 'bookworm', title: 'Книжный червь', description: 'Заверши 10 историй', unlocked: false),
+    ],
+  );
 
   return [
     appConfigProvider.overrideWithValue(_testConfig),
     userRepositoryProvider.overrideWithValue(userRepository),
     storyRepositoryProvider.overrideWithValue(storyRepository),
     walletRepositoryProvider.overrideWithValue(walletRepository),
+    statsRepositoryProvider.overrideWithValue(statsRepository),
+    achievementsRepositoryProvider.overrideWithValue(achievementsRepository),
   ];
 }
 

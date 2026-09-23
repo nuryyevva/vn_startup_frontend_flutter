@@ -160,7 +160,7 @@
     "changePasswordTitle": "Смена пароля",
     "currentPassword": "Текущий пароль",
     "newPassword": "Новый пароль",
-    "changePasswordUnavailable": "Смена пароля пока недоступна — для этого нужен эндпоинт на бэкенде, которого ещё нет."
+    "changePasswordSuccess": "Пароль успешно изменён"
   },
   "wallet": {
     "insufficientDiamondsTitle": "Недостаточно алмазов",

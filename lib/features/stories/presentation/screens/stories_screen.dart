@@ -12,7 +12,7 @@ import '../../../../core/widgets/diamond_badge.dart';
 import '../../../../core/widgets/genre_chip.dart';
 import '../../../../core/widgets/shimmer_placeholder.dart';
 import '../../../wallet/presentation/providers/wallet_balance_provider.dart';
-import '../providers/local_bookmarks_provider.dart';
+import '../providers/bookmarks_provider.dart';
 import '../providers/stories_providers.dart';
 import '../widgets/continue_reading_card.dart';
 import '../widgets/story_card.dart';
@@ -42,11 +42,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
 
   void _onScroll() {
     if (_scrollController.position.pixels < _scrollController.position.maxScrollExtent - 400) return;
-    final total = ref.read(filteredStoriesProvider).valueOrNull?.length ?? 0;
-    final visible = ref.read(storiesVisibleCountProvider);
-    if (visible < total) {
-      ref.read(storiesVisibleCountProvider.notifier).loadMore();
-    }
+    ref.read(storiesListProvider.notifier).loadMore();
   }
 
   @override
@@ -55,9 +51,8 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
     final balanceAsync = ref.watch(walletBalanceProvider);
     final genres = ref.watch(appConfigProvider).genres;
     final selectedGenre = ref.watch(selectedGenreProvider);
-    final storiesAsync = ref.watch(filteredStoriesProvider);
-    final visibleCount = ref.watch(storiesVisibleCountProvider);
-    final bookmarks = ref.watch(localBookmarksProvider);
+    final storiesAsync = ref.watch(storiesListProvider);
+    final bookmarks = ref.watch(bookmarksProvider);
     final myProgressAsync = ref.watch(myProgressProvider);
 
     final continueReading = (myProgressAsync.valueOrNull ?? const [])
@@ -68,7 +63,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {
-            ref.invalidate(allStoriesProvider);
+            await ref.read(storiesListProvider.notifier).refresh();
             ref.invalidate(myProgressProvider);
             await ref.read(walletBalanceProvider.notifier).refresh();
           },
@@ -150,13 +145,13 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
                 sliver: storiesAsync.when(
-                  data: (stories) {
+                  data: (pageState) {
+                    final stories = pageState.items;
                     if (stories.isEmpty) {
                       return SliverToBoxAdapter(
                         child: _EmptyCatalog(),
                       );
                     }
-                    final visible = stories.take(visibleCount).toList();
                     return SliverGrid(
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -166,17 +161,17 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
                       ),
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          final story = visible[index];
+                          final story = stories[index];
                           final progress = myProgressAsync.valueOrNull?.where((p) => p.story.id == story.id).firstOrNull;
                           return StoryCard(
                             story: story,
                             progress: progress,
                             isBookmarked: bookmarks.contains(story.id),
-                            onBookmarkTap: () => ref.read(localBookmarksProvider.notifier).toggle(story.id),
+                            onBookmarkTap: () => ref.read(bookmarksProvider.notifier).toggle(story.id),
                             onTap: () => context.push('/story/${story.id}'),
                           ).animate(delay: Motion.staggerStep * (index % 6)).fadeIn(duration: Motion.staggerItemDuration);
                         },
-                        childCount: visible.length,
+                        childCount: stories.length,
                       ),
                     );
                   },
@@ -195,7 +190,8 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
                       childCount: 6,
                     ),
                   ),
-                  error: (error, stackTrace) => SliverToBoxAdapter(child: _ErrorState(onRetry: () => ref.invalidate(allStoriesProvider))),
+                  error: (error, stackTrace) =>
+                      SliverToBoxAdapter(child: _ErrorState(onRetry: () => ref.read(storiesListProvider.notifier).refresh())),
                 ),
               ),
             ],
@@ -207,7 +203,6 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
 
   void _selectGenre(String? genreId) {
     ref.read(selectedGenreProvider.notifier).state = genreId;
-    ref.read(storiesVisibleCountProvider.notifier).reset();
     _scrollController.animateTo(0, duration: Motion.screenDuration, curve: Motion.screenCurve);
   }
 }
