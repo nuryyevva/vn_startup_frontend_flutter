@@ -63,6 +63,8 @@ class Scene with _$Scene {
     @JsonKey(name: 'dialog_limit_type') String? dialogLimitType,
     @JsonKey(name: 'dialog_limit_value') int? dialogLimitValue,
     @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
+    @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
+    @JsonKey(name: 'background_music_url') String? backgroundMusicUrl,
     @Default([]) List<Choice> choices,
   }) = _Scene;
 

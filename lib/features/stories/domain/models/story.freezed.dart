@@ -747,6 +747,10 @@ mixin _$Scene {
   int? get dialogLimitValue => throw _privateConstructorUsedError;
   @JsonKey(name: 'unlock_cost_diamonds')
   int? get unlockCostDiamonds => throw _privateConstructorUsedError;
+  @JsonKey(name: 'character_sprite_url')
+  String? get characterSpriteUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'background_music_url')
+  String? get backgroundMusicUrl => throw _privateConstructorUsedError;
   List<Choice> get choices => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -770,6 +774,8 @@ abstract class $SceneCopyWith<$Res> {
       @JsonKey(name: 'dialog_limit_type') String? dialogLimitType,
       @JsonKey(name: 'dialog_limit_value') int? dialogLimitValue,
       @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
+      @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
+      @JsonKey(name: 'background_music_url') String? backgroundMusicUrl,
       List<Choice> choices});
 }
 
@@ -796,6 +802,8 @@ class _$SceneCopyWithImpl<$Res, $Val extends Scene>
     Object? dialogLimitType = freezed,
     Object? dialogLimitValue = freezed,
     Object? unlockCostDiamonds = freezed,
+    Object? characterSpriteUrl = freezed,
+    Object? backgroundMusicUrl = freezed,
     Object? choices = null,
   }) {
     return _then(_value.copyWith(
@@ -839,6 +847,14 @@ class _$SceneCopyWithImpl<$Res, $Val extends Scene>
           ? _value.unlockCostDiamonds
           : unlockCostDiamonds // ignore: cast_nullable_to_non_nullable
               as int?,
+      characterSpriteUrl: freezed == characterSpriteUrl
+          ? _value.characterSpriteUrl
+          : characterSpriteUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      backgroundMusicUrl: freezed == backgroundMusicUrl
+          ? _value.backgroundMusicUrl
+          : backgroundMusicUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       choices: null == choices
           ? _value.choices
           : choices // ignore: cast_nullable_to_non_nullable
@@ -865,6 +881,8 @@ abstract class _$$SceneImplCopyWith<$Res> implements $SceneCopyWith<$Res> {
       @JsonKey(name: 'dialog_limit_type') String? dialogLimitType,
       @JsonKey(name: 'dialog_limit_value') int? dialogLimitValue,
       @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
+      @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
+      @JsonKey(name: 'background_music_url') String? backgroundMusicUrl,
       List<Choice> choices});
 }
 
@@ -889,6 +907,8 @@ class __$$SceneImplCopyWithImpl<$Res>
     Object? dialogLimitType = freezed,
     Object? dialogLimitValue = freezed,
     Object? unlockCostDiamonds = freezed,
+    Object? characterSpriteUrl = freezed,
+    Object? backgroundMusicUrl = freezed,
     Object? choices = null,
   }) {
     return _then(_$SceneImpl(
@@ -932,6 +952,14 @@ class __$$SceneImplCopyWithImpl<$Res>
           ? _value.unlockCostDiamonds
           : unlockCostDiamonds // ignore: cast_nullable_to_non_nullable
               as int?,
+      characterSpriteUrl: freezed == characterSpriteUrl
+          ? _value.characterSpriteUrl
+          : characterSpriteUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      backgroundMusicUrl: freezed == backgroundMusicUrl
+          ? _value.backgroundMusicUrl
+          : backgroundMusicUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       choices: null == choices
           ? _value._choices
           : choices // ignore: cast_nullable_to_non_nullable
@@ -955,6 +983,8 @@ class _$SceneImpl implements _Scene {
       @JsonKey(name: 'dialog_limit_type') this.dialogLimitType,
       @JsonKey(name: 'dialog_limit_value') this.dialogLimitValue,
       @JsonKey(name: 'unlock_cost_diamonds') this.unlockCostDiamonds,
+      @JsonKey(name: 'character_sprite_url') this.characterSpriteUrl,
+      @JsonKey(name: 'background_music_url') this.backgroundMusicUrl,
       final List<Choice> choices = const []})
       : _dialogueScript = dialogueScript,
         _choices = choices;
@@ -997,6 +1027,12 @@ class _$SceneImpl implements _Scene {
   @override
   @JsonKey(name: 'unlock_cost_diamonds')
   final int? unlockCostDiamonds;
+  @override
+  @JsonKey(name: 'character_sprite_url')
+  final String? characterSpriteUrl;
+  @override
+  @JsonKey(name: 'background_music_url')
+  final String? backgroundMusicUrl;
   final List<Choice> _choices;
   @override
   @JsonKey()
@@ -1008,7 +1044,7 @@ class _$SceneImpl implements _Scene {
 
   @override
   String toString() {
-    return 'Scene(id: $id, storyId: $storyId, orderIndex: $orderIndex, backgroundUrl: $backgroundUrl, characterId: $characterId, dialogueScript: $dialogueScript, freeDialogEnabled: $freeDialogEnabled, dialogLimitType: $dialogLimitType, dialogLimitValue: $dialogLimitValue, unlockCostDiamonds: $unlockCostDiamonds, choices: $choices)';
+    return 'Scene(id: $id, storyId: $storyId, orderIndex: $orderIndex, backgroundUrl: $backgroundUrl, characterId: $characterId, dialogueScript: $dialogueScript, freeDialogEnabled: $freeDialogEnabled, dialogLimitType: $dialogLimitType, dialogLimitValue: $dialogLimitValue, unlockCostDiamonds: $unlockCostDiamonds, characterSpriteUrl: $characterSpriteUrl, backgroundMusicUrl: $backgroundMusicUrl, choices: $choices)';
   }
 
   @override
@@ -1034,6 +1070,10 @@ class _$SceneImpl implements _Scene {
                 other.dialogLimitValue == dialogLimitValue) &&
             (identical(other.unlockCostDiamonds, unlockCostDiamonds) ||
                 other.unlockCostDiamonds == unlockCostDiamonds) &&
+            (identical(other.characterSpriteUrl, characterSpriteUrl) ||
+                other.characterSpriteUrl == characterSpriteUrl) &&
+            (identical(other.backgroundMusicUrl, backgroundMusicUrl) ||
+                other.backgroundMusicUrl == backgroundMusicUrl) &&
             const DeepCollectionEquality().equals(other._choices, _choices));
   }
 
@@ -1051,6 +1091,8 @@ class _$SceneImpl implements _Scene {
       dialogLimitType,
       dialogLimitValue,
       unlockCostDiamonds,
+      characterSpriteUrl,
+      backgroundMusicUrl,
       const DeepCollectionEquality().hash(_choices));
 
   @JsonKey(ignore: true)
@@ -1081,6 +1123,8 @@ abstract class _Scene implements Scene {
       @JsonKey(name: 'dialog_limit_type') final String? dialogLimitType,
       @JsonKey(name: 'dialog_limit_value') final int? dialogLimitValue,
       @JsonKey(name: 'unlock_cost_diamonds') final int? unlockCostDiamonds,
+      @JsonKey(name: 'character_sprite_url') final String? characterSpriteUrl,
+      @JsonKey(name: 'background_music_url') final String? backgroundMusicUrl,
       final List<Choice> choices}) = _$SceneImpl;
 
   factory _Scene.fromJson(Map<String, dynamic> json) = _$SceneImpl.fromJson;
@@ -1114,6 +1158,12 @@ abstract class _Scene implements Scene {
   @override
   @JsonKey(name: 'unlock_cost_diamonds')
   int? get unlockCostDiamonds;
+  @override
+  @JsonKey(name: 'character_sprite_url')
+  String? get characterSpriteUrl;
+  @override
+  @JsonKey(name: 'background_music_url')
+  String? get backgroundMusicUrl;
   @override
   List<Choice> get choices;
   @override

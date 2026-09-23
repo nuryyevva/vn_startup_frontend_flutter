@@ -16,7 +16,11 @@ class StoryApi {
   Future<StoryPage> getStories({String? genre, int page = 1, int? pageSize}) async {
     final response = await _dio.get<Map<String, dynamic>>(
       '/stories',
-      queryParameters: {'genre': ?genre, 'page': page, 'page_size': ?pageSize},
+      queryParameters: {
+        if (genre != null) 'genre': genre,
+        'page': page,
+        if (pageSize != null) 'page_size': pageSize,
+      },
     );
     return StoryPage.fromJson(response.data!);
   }

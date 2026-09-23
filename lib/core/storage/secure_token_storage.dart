@@ -12,11 +12,17 @@ class SecureTokenStorage {
   static const _accessTokenKey = 'nocturne.access_token';
   static const _refreshTokenKey = 'nocturne.refresh_token';
 
+  /// Writes both tokens sequentially, not via `Future.wait` — on web,
+  /// `flutter_secure_storage`'s first-ever write has to generate and persist
+  /// its encryption key, and two concurrent first writes race on that: one
+  /// value ends up encrypted with a key immediately superseded by the
+  /// other write, so reading it back throws (a Web Crypto `OperationError`)
+  /// until the next save "fixes" it by writing both under the now-settled
+  /// key. Sequential writes make the key deterministic before the second
+  /// write ever starts.
   Future<void> saveTokens({required String accessToken, required String refreshToken}) async {
-    await Future.wait([
-      _storage.write(key: _accessTokenKey, value: accessToken),
-      _storage.write(key: _refreshTokenKey, value: refreshToken),
-    ]);
+    await _storage.write(key: _accessTokenKey, value: accessToken);
+    await _storage.write(key: _refreshTokenKey, value: refreshToken);
   }
 
   Future<String?> readAccessToken() => _storage.read(key: _accessTokenKey);
@@ -24,7 +30,8 @@ class SecureTokenStorage {
   Future<String?> readRefreshToken() => _storage.read(key: _refreshTokenKey);
 
   Future<void> clear() async {
-    await Future.wait([_storage.delete(key: _accessTokenKey), _storage.delete(key: _refreshTokenKey)]);
+    await _storage.delete(key: _accessTokenKey);
+    await _storage.delete(key: _refreshTokenKey);
   }
 }
 

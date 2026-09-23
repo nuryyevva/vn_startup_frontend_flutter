@@ -3,11 +3,11 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Renders a character in the scene player. The only implementation today
 /// is [ImageCharacterSprite] (a static image, or a placeholder silhouette
-/// when there's no art URL — the backend currently has no `characters`
-/// table at all, so this is always the placeholder branch today; see
-/// README "known limitations"); a future Rive-based implementation can be
-/// swapped in without touching `scene_player_screen.dart`, since callers
-/// only ever depend on this interface.
+/// when the scene has no `character_sprite_url` — the backend has no real
+/// `characters` table, so this is a URL denormalized onto `scenes` for now,
+/// see `cmd/seed`); a future Rive-based implementation can be swapped in
+/// without touching `scene_player_screen.dart`, since callers only ever
+/// depend on this interface.
 abstract class CharacterSprite {
   Widget build(BuildContext context);
 }
@@ -15,8 +15,9 @@ abstract class CharacterSprite {
 class ImageCharacterSprite implements CharacterSprite {
   const ImageCharacterSprite({this.imageUrl});
 
-  /// Always null today — kept so this class works unmodified once the
-  /// backend exposes a real character-art URL.
+  /// Null falls back to a placeholder silhouette (see [build]) — most
+  /// scenes with a character do set this today, but it's still optional at
+  /// the data layer.
   final String? imageUrl;
 
   @override

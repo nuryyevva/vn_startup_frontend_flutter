@@ -73,6 +73,8 @@ _$SceneImpl _$$SceneImplFromJson(Map<String, dynamic> json) => _$SceneImpl(
       dialogLimitType: json['dialog_limit_type'] as String?,
       dialogLimitValue: json['dialog_limit_value'] as int?,
       unlockCostDiamonds: json['unlock_cost_diamonds'] as int?,
+      characterSpriteUrl: json['character_sprite_url'] as String?,
+      backgroundMusicUrl: json['background_music_url'] as String?,
       choices: (json['choices'] as List<dynamic>?)
               ?.map((e) => Choice.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -91,6 +93,8 @@ Map<String, dynamic> _$$SceneImplToJson(_$SceneImpl instance) =>
       'dialog_limit_type': instance.dialogLimitType,
       'dialog_limit_value': instance.dialogLimitValue,
       'unlock_cost_diamonds': instance.unlockCostDiamonds,
+      'character_sprite_url': instance.characterSpriteUrl,
+      'background_music_url': instance.backgroundMusicUrl,
       'choices': instance.choices,
     };
 

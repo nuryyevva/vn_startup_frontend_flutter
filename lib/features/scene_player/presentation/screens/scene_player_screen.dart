@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -91,6 +92,15 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> {
   static const _heartbeatInterval = Duration(seconds: 30);
   Timer? _heartbeatTimer;
 
+  /// Looping scene ambience and one-shot sound effects. Two separate
+  /// players so a sound effect (e.g. a door knock) can play over the music
+  /// without cutting it off. Sample content wires these up via
+  /// `scene.backgroundMusicUrl` and a per-line `sfx_url` in
+  /// `dialogueScript` — see `cmd/seed` on the backend for where those come
+  /// from today.
+  final _musicPlayer = AudioPlayer();
+  final _sfxPlayer = AudioPlayer();
+
   @override
   void initState() {
     super.initState();
@@ -98,12 +108,52 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> {
       _heartbeatInterval,
       (_) => ref.read(readingStatsProvider.notifier).sendHeartbeat(_heartbeatInterval.inSeconds),
     );
+    unawaited(_startMusic(widget.state.scene?.backgroundMusicUrl));
+    _maybePlaySfxForLine(widget.state);
+  }
+
+  @override
+  void didUpdateWidget(covariant _ScenePlaybackBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.state.dialogueIndex != oldWidget.state.dialogueIndex) {
+      _maybePlaySfxForLine(widget.state);
+    }
   }
 
   @override
   void dispose() {
     _heartbeatTimer?.cancel();
+    unawaited(_musicPlayer.dispose());
+    unawaited(_sfxPlayer.dispose());
     super.dispose();
+  }
+
+  Future<void> _startMusic(String? url) async {
+    if (url == null) return;
+    // lowLatency decodes the whole file up front via the Web Audio API
+    // instead of streaming it through an HTML `<audio>` element — needed
+    // because hotlinked sample tracks (see cmd/seed) don't reliably work
+    // with the default mediaPlayer mode on web: some fail range requests
+    // the `<audio>` element sends for its default streaming mode, and
+    // Wikimedia serves `.ogg` files as `application/ogg` rather than
+    // `audio/ogg`, which the element's format-sniffing can reject outright.
+    // decodeAudioData doesn't care about either.
+    await _musicPlayer.setPlayerMode(PlayerMode.lowLatency);
+    await _musicPlayer.setReleaseMode(ReleaseMode.loop);
+    await _musicPlayer.play(UrlSource(url));
+  }
+
+  void _maybePlaySfxForLine(ScenePlayerState state) {
+    final sfxUrl = state.currentLine?['sfx_url'] as String?;
+    if (sfxUrl != null) {
+      unawaited(_playSfx(sfxUrl));
+    }
+  }
+
+  Future<void> _playSfx(String url) async {
+    // See _startMusic's doc comment for why lowLatency mode is needed here.
+    await _sfxPlayer.setPlayerMode(PlayerMode.lowLatency);
+    await _sfxPlayer.play(UrlSource(url));
   }
 
   @override
@@ -112,7 +162,7 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> {
     final notifier = widget.notifier;
     final scene = state.scene!;
     final balance = ref.watch(walletBalanceProvider).valueOrNull;
-    const characterSprite = ImageCharacterSprite();
+    final characterSprite = ImageCharacterSprite(imageUrl: scene.characterSpriteUrl);
 
     return Stack(
       fit: StackFit.expand,

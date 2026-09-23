@@ -24,6 +24,13 @@ linter:
     # named parameter itself to be private too, breaking call sites in
     # other files. See AuthRepositoryImpl for the canonical example.
     prefer_initializing_formals: false
+    # The null-aware map/set element syntax (`?key: value`) this lint
+    # suggests parses fine under `flutter analyze`'s own SDK-bundled
+    # analyzer, but build_runner's pinned `analyzer`/`source_gen` (see the
+    # Riverpod version note in README) is old enough that it can't parse
+    # the syntax at all and aborts the entire codegen run — not just for
+    # the offending file. Use the older `if (x != null) 'key': x` form.
+    use_null_aware_elements: false
     always_declare_return_types: true
     avoid_dynamic_calls: true
     avoid_print: true
