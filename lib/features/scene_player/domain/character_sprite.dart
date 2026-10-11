@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../../core/media/media_source.dart';
+
 /// Renders a character in the scene player. The only implementation today
 /// is [ImageCharacterSprite] (a static image, or a placeholder silhouette
 /// when the scene has no `character_sprite_url` — the backend has no real
@@ -35,6 +37,6 @@ class ImageCharacterSprite implements CharacterSprite {
         ),
       );
     }
-    return Image.network(imageUrl!, fit: BoxFit.contain);
+    return Image(image: mediaImageProvider(imageUrl!), fit: BoxFit.contain);
   }
 }

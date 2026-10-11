@@ -52,6 +52,13 @@ android {
             applicationIdSuffix = ".staging"
             resValue(type = "string", name = "app_name", value = "Город любви Staging")
         }
+        // Runs with no server: content and fonts ship inside the APK (see
+        // pubspec.yaml's `flavors: [offline]` assets and features/offline).
+        create("offline") {
+            dimension = "environment"
+            applicationIdSuffix = ".offline"
+            resValue(type = "string", name = "app_name", value = "Город любви")
+        }
         create("prod") {
             dimension = "environment"
             resValue(type = "string", name = "app_name", value = "Город любви")

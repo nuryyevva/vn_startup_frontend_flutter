@@ -2,6 +2,17 @@
 config/.env.*.json
 !config/.env.*.example.json
 
+# Offline build inputs, generated rather than authored: the content bundle
+# (backend: `make export-content`) and the bundled fonts
+# (`tool/fetch_offline_fonts.py`).
+# Only the folders themselves are tracked (.gitkeep) — pubspec.yaml lists
+# them as assets, and a listed directory has to exist in every checkout.
+/assets/content/**
+!/assets/content/**/
+!/assets/content/**/.gitkeep
+/assets/google_fonts/*
+!/assets/google_fonts/.gitkeep
+
 # Miscellaneous
 *.class
 *.lock

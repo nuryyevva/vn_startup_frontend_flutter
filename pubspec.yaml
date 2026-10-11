@@ -87,6 +87,26 @@ flutter:
   assets:
     - assets/translations/
 
+    # Offline build only (`--flavor offline`): the stories and their media,
+    # written by the backend's `make export-content`, and the fonts the app
+    # and the story skins use, so nothing is fetched at runtime. Directories
+    # aren't recursive, hence one entry per folder — add a story's folders
+    # here when a new one is exported.
+    - path: assets/content/
+      flavors: [offline]
+    - path: assets/content/media/remote/
+      flavors: [offline]
+    - path: assets/content/media/stories/fog-over-blackwood/
+      flavors: [offline]
+    - path: assets/content/media/stories/fog-over-blackwood/backgrounds/
+      flavors: [offline]
+    - path: assets/content/media/stories/fog-over-blackwood/sprites/
+      flavors: [offline]
+    - path: assets/content/media/stories/fog-over-blackwood/audio/
+      flavors: [offline]
+    - path: assets/google_fonts/
+      flavors: [offline]
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

@@ -27,6 +27,7 @@ class AppConfig {
     required this.defaultThemeMode,
     required this.enableDevWalletGrant,
     required this.termsPrivacyUrl,
+    this.offline = false,
     this.diamondBundles = kDiamondBundles,
     this.genres = kGenres,
   });
@@ -49,6 +50,12 @@ class AppConfig {
   /// project spec / README "known limitations").
   final bool enableDevWalletGrant;
   final String termsPrivacyUrl;
+
+  /// Run without a server: stories from the app bundle, the player's state
+  /// on the device (see `features/offline`). `apiBaseUrl`/`wsBaseUrl` are
+  /// never used in this mode. Needs the `offline` flavor, which is what
+  /// bundles the content.
+  final bool offline;
   final List<DiamondBundleConfig> diamondBundles;
   final List<GenreConfig> genres;
 
@@ -64,6 +71,7 @@ class AppConfig {
     const supportedLocalesRaw = String.fromEnvironment('SUPPORTED_LOCALES', defaultValue: 'ru,en');
     const defaultThemeModeRaw = String.fromEnvironment('DEFAULT_THEME_MODE', defaultValue: 'dark');
     const enableDevWalletGrant = bool.fromEnvironment('ENABLE_DEV_WALLET_GRANT');
+    const offline = bool.fromEnvironment('OFFLINE_MODE');
     const termsPrivacyUrl = String.fromEnvironment(
       'TERMS_PRIVACY_URL',
       defaultValue: 'https://example.com/legal/terms',
@@ -82,6 +90,7 @@ class AppConfig {
       defaultThemeMode: _parseThemeMode(defaultThemeModeRaw),
       enableDevWalletGrant: enableDevWalletGrant,
       termsPrivacyUrl: termsPrivacyUrl,
+      offline: offline,
     );
   }
 

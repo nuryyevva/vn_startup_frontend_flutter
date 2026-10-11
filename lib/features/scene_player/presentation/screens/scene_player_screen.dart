@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../../../core/media/media_source.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/motion.dart';
 import '../../../dialog/presentation/screens/free_dialog_screen.dart';
@@ -164,7 +165,7 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
       for (final line in widget.state.lines) ...[line.backgroundUrl, line.spriteUrl].nonNulls,
     }..removeWhere((url) => url.isEmpty);
     for (final url in urls) {
-      unawaited(precacheImage(NetworkImage(url), context, onError: (_, _) {}));
+      unawaited(precacheImage(mediaImageProvider(url), context, onError: (_, _) {}));
     }
   }
 
@@ -203,7 +204,7 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
       await _musicPlayer.setPlayerMode(_playerMode);
       await _musicPlayer.setReleaseMode(ReleaseMode.loop);
       await _musicPlayer.setVolume(0.6);
-      await _musicPlayer.play(UrlSource(url));
+      await _musicPlayer.play(mediaAudioSource(url));
     } on Exception {
       // A track that fails to load must not take the scene down with it;
       // forget it so the next scene gets a fresh attempt.
@@ -236,7 +237,7 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
     // web needs it regardless).
     try {
       await _sfxPlayer.setPlayerMode(PlayerMode.lowLatency);
-      await _sfxPlayer.play(UrlSource(url));
+      await _sfxPlayer.play(mediaAudioSource(url));
     } on Exception {
       // A missing sound effect is not worth interrupting the scene for.
     }
@@ -378,7 +379,7 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
       first?.spriteUrl,
     }.nonNulls.where((u) => u.isNotEmpty);
     await Future.wait([
-      for (final url in urls) precacheImage(NetworkImage(url), context, onError: (_, _) {}),
+      for (final url in urls) precacheImage(mediaImageProvider(url), context, onError: (_, _) {}),
     ]).timeout(_artTimeout, onTimeout: () => const []);
   }
 

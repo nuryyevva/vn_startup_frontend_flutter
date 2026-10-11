@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
 import 'core/config/app_config.dart';
+import 'features/offline/offline_mode.dart';
 import 'features/settings/presentation/providers/theme_mode_provider.dart';
 
 Future<void> main() async {
@@ -24,6 +25,7 @@ Future<void> main() async {
         overrides: [
           appConfigProvider.overrideWithValue(config),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+          if (config.offline) ...await offlineModeOverrides(sharedPreferences),
         ],
         child: const LoveCityApp(),
       ),

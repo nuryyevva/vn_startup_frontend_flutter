@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../media/media_source.dart';
 import '../theme/app_colors.dart';
 
 /// Neutral rectangle with a centered image icon — the stand-in for any
@@ -24,11 +25,12 @@ class ImagePlaceholder extends StatelessWidget {
   }
 }
 
-/// Renders [url] via `Image.network` once it's non-empty, falling back to
+/// Renders the image at [url] once it's non-empty, falling back to
 /// [ImagePlaceholder] while there's no URL, while it's loading, or if it
 /// fails to load. This is the one place `cover_url`/`avatar_url`/
-/// `background_url` should be rendered from — screens never call
-/// `Image.network` directly.
+/// `background_url` should be rendered from — screens never build an
+/// image from a URL themselves (see `mediaImageProvider` for why a URL
+/// isn't always a network one).
 class RemoteImage extends StatelessWidget {
   const RemoteImage({
     super.key,
@@ -48,8 +50,8 @@ class RemoteImage extends StatelessWidget {
     final url = this.url;
     final child = (url == null || url.isEmpty)
         ? ImagePlaceholder(icon: placeholderIcon)
-        : Image.network(
-            url,
+        : Image(
+            image: mediaImageProvider(url),
             fit: fit,
             loadingBuilder: (context, child, progress) =>
                 progress == null ? child : ImagePlaceholder(icon: placeholderIcon),
