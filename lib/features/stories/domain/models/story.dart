@@ -14,6 +14,10 @@ class Story with _$Story {
     required String genre,
     required String status,
     @JsonKey(name: 'created_at') required DateTime createdAt,
+
+    /// Design tokens for the scene player's look in this story, or null
+    /// for the app's default — see `ScenePlayerSkin`.
+    @JsonKey(name: 'player_theme') Map<String, dynamic>? playerTheme,
   }) = _Story;
 
   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
@@ -65,6 +69,9 @@ class Scene with _$Scene {
     @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
     @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
     @JsonKey(name: 'background_music_url') String? backgroundMusicUrl,
+    /// See [SceneSummary.chapterTitle] / [SceneSummary.title].
+    @JsonKey(name: 'chapter_title') String? chapterTitle,
+    String? title,
     @Default([]) List<Choice> choices,
   }) = _Scene;
 
@@ -80,6 +87,15 @@ class SceneSummary with _$SceneSummary {
     @JsonKey(name: 'order_index') required int orderIndex,
     @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
     @JsonKey(name: 'is_unlocked') required bool isUnlocked,
+
+    /// Non-null only on the scene that starts a chapter. Branching stories
+    /// are made of many short scenes linked by choices, so they mark their
+    /// chapters instead of listing every scene as one.
+    @JsonKey(name: 'chapter_title') String? chapterTitle,
+
+    /// Non-null only on scenes that start a named section of a chapter —
+    /// listed when the chapter is expanded.
+    String? title,
   }) = _SceneSummary;
 
   factory SceneSummary.fromJson(Map<String, dynamic> json) => _$SceneSummaryFromJson(json);

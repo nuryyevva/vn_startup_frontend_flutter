@@ -30,6 +30,11 @@ mixin _$Story {
   @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
 
+  /// Design tokens for the scene player's look in this story, or null
+  /// for the app's default — see `ScenePlayerSkin`.
+  @JsonKey(name: 'player_theme')
+  Map<String, dynamic>? get playerTheme => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $StoryCopyWith<Story> get copyWith => throw _privateConstructorUsedError;
@@ -47,7 +52,8 @@ abstract class $StoryCopyWith<$Res> {
       @JsonKey(name: 'cover_url') String? coverUrl,
       String genre,
       String status,
-      @JsonKey(name: 'created_at') DateTime createdAt});
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'player_theme') Map<String, dynamic>? playerTheme});
 }
 
 /// @nodoc
@@ -70,6 +76,7 @@ class _$StoryCopyWithImpl<$Res, $Val extends Story>
     Object? genre = null,
     Object? status = null,
     Object? createdAt = null,
+    Object? playerTheme = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -100,6 +107,10 @@ class _$StoryCopyWithImpl<$Res, $Val extends Story>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      playerTheme: freezed == playerTheme
+          ? _value.playerTheme
+          : playerTheme // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
     ) as $Val);
   }
 }
@@ -118,7 +129,8 @@ abstract class _$$StoryImplCopyWith<$Res> implements $StoryCopyWith<$Res> {
       @JsonKey(name: 'cover_url') String? coverUrl,
       String genre,
       String status,
-      @JsonKey(name: 'created_at') DateTime createdAt});
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'player_theme') Map<String, dynamic>? playerTheme});
 }
 
 /// @nodoc
@@ -139,6 +151,7 @@ class __$$StoryImplCopyWithImpl<$Res>
     Object? genre = null,
     Object? status = null,
     Object? createdAt = null,
+    Object? playerTheme = freezed,
   }) {
     return _then(_$StoryImpl(
       id: null == id
@@ -169,6 +182,10 @@ class __$$StoryImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      playerTheme: freezed == playerTheme
+          ? _value._playerTheme
+          : playerTheme // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
     ));
   }
 }
@@ -183,7 +200,9 @@ class _$StoryImpl implements _Story {
       @JsonKey(name: 'cover_url') this.coverUrl,
       required this.genre,
       required this.status,
-      @JsonKey(name: 'created_at') required this.createdAt});
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'player_theme') final Map<String, dynamic>? playerTheme})
+      : _playerTheme = playerTheme;
 
   factory _$StoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$StoryImplFromJson(json);
@@ -205,9 +224,25 @@ class _$StoryImpl implements _Story {
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
 
+  /// Design tokens for the scene player's look in this story, or null
+  /// for the app's default — see `ScenePlayerSkin`.
+  final Map<String, dynamic>? _playerTheme;
+
+  /// Design tokens for the scene player's look in this story, or null
+  /// for the app's default — see `ScenePlayerSkin`.
+  @override
+  @JsonKey(name: 'player_theme')
+  Map<String, dynamic>? get playerTheme {
+    final value = _playerTheme;
+    if (value == null) return null;
+    if (_playerTheme is EqualUnmodifiableMapView) return _playerTheme;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
   @override
   String toString() {
-    return 'Story(id: $id, title: $title, description: $description, coverUrl: $coverUrl, genre: $genre, status: $status, createdAt: $createdAt)';
+    return 'Story(id: $id, title: $title, description: $description, coverUrl: $coverUrl, genre: $genre, status: $status, createdAt: $createdAt, playerTheme: $playerTheme)';
   }
 
   @override
@@ -224,13 +259,23 @@ class _$StoryImpl implements _Story {
             (identical(other.genre, genre) || other.genre == genre) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            const DeepCollectionEquality()
+                .equals(other._playerTheme, _playerTheme));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, title, description, coverUrl, genre, status, createdAt);
+      runtimeType,
+      id,
+      title,
+      description,
+      coverUrl,
+      genre,
+      status,
+      createdAt,
+      const DeepCollectionEquality().hash(_playerTheme));
 
   @JsonKey(ignore: true)
   @override
@@ -248,14 +293,15 @@ class _$StoryImpl implements _Story {
 
 abstract class _Story implements Story {
   const factory _Story(
-          {required final String id,
-          required final String title,
-          final String? description,
-          @JsonKey(name: 'cover_url') final String? coverUrl,
-          required final String genre,
-          required final String status,
-          @JsonKey(name: 'created_at') required final DateTime createdAt}) =
-      _$StoryImpl;
+      {required final String id,
+      required final String title,
+      final String? description,
+      @JsonKey(name: 'cover_url') final String? coverUrl,
+      required final String genre,
+      required final String status,
+      @JsonKey(name: 'created_at') required final DateTime createdAt,
+      @JsonKey(name: 'player_theme')
+      final Map<String, dynamic>? playerTheme}) = _$StoryImpl;
 
   factory _Story.fromJson(Map<String, dynamic> json) = _$StoryImpl.fromJson;
 
@@ -275,6 +321,12 @@ abstract class _Story implements Story {
   @override
   @JsonKey(name: 'created_at')
   DateTime get createdAt;
+  @override
+
+  /// Design tokens for the scene player's look in this story, or null
+  /// for the app's default — see `ScenePlayerSkin`.
+  @JsonKey(name: 'player_theme')
+  Map<String, dynamic>? get playerTheme;
   @override
   @JsonKey(ignore: true)
   _$$StoryImplCopyWith<_$StoryImpl> get copyWith =>
@@ -751,6 +803,11 @@ mixin _$Scene {
   String? get characterSpriteUrl => throw _privateConstructorUsedError;
   @JsonKey(name: 'background_music_url')
   String? get backgroundMusicUrl => throw _privateConstructorUsedError;
+
+  /// See [SceneSummary.chapterTitle] / [SceneSummary.title].
+  @JsonKey(name: 'chapter_title')
+  String? get chapterTitle => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   List<Choice> get choices => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -776,6 +833,8 @@ abstract class $SceneCopyWith<$Res> {
       @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
       @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
       @JsonKey(name: 'background_music_url') String? backgroundMusicUrl,
+      @JsonKey(name: 'chapter_title') String? chapterTitle,
+      String? title,
       List<Choice> choices});
 }
 
@@ -804,6 +863,8 @@ class _$SceneCopyWithImpl<$Res, $Val extends Scene>
     Object? unlockCostDiamonds = freezed,
     Object? characterSpriteUrl = freezed,
     Object? backgroundMusicUrl = freezed,
+    Object? chapterTitle = freezed,
+    Object? title = freezed,
     Object? choices = null,
   }) {
     return _then(_value.copyWith(
@@ -855,6 +916,14 @@ class _$SceneCopyWithImpl<$Res, $Val extends Scene>
           ? _value.backgroundMusicUrl
           : backgroundMusicUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      chapterTitle: freezed == chapterTitle
+          ? _value.chapterTitle
+          : chapterTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
       choices: null == choices
           ? _value.choices
           : choices // ignore: cast_nullable_to_non_nullable
@@ -883,6 +952,8 @@ abstract class _$$SceneImplCopyWith<$Res> implements $SceneCopyWith<$Res> {
       @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
       @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
       @JsonKey(name: 'background_music_url') String? backgroundMusicUrl,
+      @JsonKey(name: 'chapter_title') String? chapterTitle,
+      String? title,
       List<Choice> choices});
 }
 
@@ -909,6 +980,8 @@ class __$$SceneImplCopyWithImpl<$Res>
     Object? unlockCostDiamonds = freezed,
     Object? characterSpriteUrl = freezed,
     Object? backgroundMusicUrl = freezed,
+    Object? chapterTitle = freezed,
+    Object? title = freezed,
     Object? choices = null,
   }) {
     return _then(_$SceneImpl(
@@ -960,6 +1033,14 @@ class __$$SceneImplCopyWithImpl<$Res>
           ? _value.backgroundMusicUrl
           : backgroundMusicUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      chapterTitle: freezed == chapterTitle
+          ? _value.chapterTitle
+          : chapterTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
       choices: null == choices
           ? _value._choices
           : choices // ignore: cast_nullable_to_non_nullable
@@ -985,6 +1066,8 @@ class _$SceneImpl implements _Scene {
       @JsonKey(name: 'unlock_cost_diamonds') this.unlockCostDiamonds,
       @JsonKey(name: 'character_sprite_url') this.characterSpriteUrl,
       @JsonKey(name: 'background_music_url') this.backgroundMusicUrl,
+      @JsonKey(name: 'chapter_title') this.chapterTitle,
+      this.title,
       final List<Choice> choices = const []})
       : _dialogueScript = dialogueScript,
         _choices = choices;
@@ -1033,6 +1116,13 @@ class _$SceneImpl implements _Scene {
   @override
   @JsonKey(name: 'background_music_url')
   final String? backgroundMusicUrl;
+
+  /// See [SceneSummary.chapterTitle] / [SceneSummary.title].
+  @override
+  @JsonKey(name: 'chapter_title')
+  final String? chapterTitle;
+  @override
+  final String? title;
   final List<Choice> _choices;
   @override
   @JsonKey()
@@ -1044,7 +1134,7 @@ class _$SceneImpl implements _Scene {
 
   @override
   String toString() {
-    return 'Scene(id: $id, storyId: $storyId, orderIndex: $orderIndex, backgroundUrl: $backgroundUrl, characterId: $characterId, dialogueScript: $dialogueScript, freeDialogEnabled: $freeDialogEnabled, dialogLimitType: $dialogLimitType, dialogLimitValue: $dialogLimitValue, unlockCostDiamonds: $unlockCostDiamonds, characterSpriteUrl: $characterSpriteUrl, backgroundMusicUrl: $backgroundMusicUrl, choices: $choices)';
+    return 'Scene(id: $id, storyId: $storyId, orderIndex: $orderIndex, backgroundUrl: $backgroundUrl, characterId: $characterId, dialogueScript: $dialogueScript, freeDialogEnabled: $freeDialogEnabled, dialogLimitType: $dialogLimitType, dialogLimitValue: $dialogLimitValue, unlockCostDiamonds: $unlockCostDiamonds, characterSpriteUrl: $characterSpriteUrl, backgroundMusicUrl: $backgroundMusicUrl, chapterTitle: $chapterTitle, title: $title, choices: $choices)';
   }
 
   @override
@@ -1074,6 +1164,9 @@ class _$SceneImpl implements _Scene {
                 other.characterSpriteUrl == characterSpriteUrl) &&
             (identical(other.backgroundMusicUrl, backgroundMusicUrl) ||
                 other.backgroundMusicUrl == backgroundMusicUrl) &&
+            (identical(other.chapterTitle, chapterTitle) ||
+                other.chapterTitle == chapterTitle) &&
+            (identical(other.title, title) || other.title == title) &&
             const DeepCollectionEquality().equals(other._choices, _choices));
   }
 
@@ -1093,6 +1186,8 @@ class _$SceneImpl implements _Scene {
       unlockCostDiamonds,
       characterSpriteUrl,
       backgroundMusicUrl,
+      chapterTitle,
+      title,
       const DeepCollectionEquality().hash(_choices));
 
   @JsonKey(ignore: true)
@@ -1125,6 +1220,8 @@ abstract class _Scene implements Scene {
       @JsonKey(name: 'unlock_cost_diamonds') final int? unlockCostDiamonds,
       @JsonKey(name: 'character_sprite_url') final String? characterSpriteUrl,
       @JsonKey(name: 'background_music_url') final String? backgroundMusicUrl,
+      @JsonKey(name: 'chapter_title') final String? chapterTitle,
+      final String? title,
       final List<Choice> choices}) = _$SceneImpl;
 
   factory _Scene.fromJson(Map<String, dynamic> json) = _$SceneImpl.fromJson;
@@ -1165,6 +1262,13 @@ abstract class _Scene implements Scene {
   @JsonKey(name: 'background_music_url')
   String? get backgroundMusicUrl;
   @override
+
+  /// See [SceneSummary.chapterTitle] / [SceneSummary.title].
+  @JsonKey(name: 'chapter_title')
+  String? get chapterTitle;
+  @override
+  String? get title;
+  @override
   List<Choice> get choices;
   @override
   @JsonKey(ignore: true)
@@ -1186,6 +1290,16 @@ mixin _$SceneSummary {
   @JsonKey(name: 'is_unlocked')
   bool get isUnlocked => throw _privateConstructorUsedError;
 
+  /// Non-null only on the scene that starts a chapter. Branching stories
+  /// are made of many short scenes linked by choices, so they mark their
+  /// chapters instead of listing every scene as one.
+  @JsonKey(name: 'chapter_title')
+  String? get chapterTitle => throw _privateConstructorUsedError;
+
+  /// Non-null only on scenes that start a named section of a chapter —
+  /// listed when the chapter is expanded.
+  String? get title => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $SceneSummaryCopyWith<SceneSummary> get copyWith =>
@@ -1202,7 +1316,9 @@ abstract class $SceneSummaryCopyWith<$Res> {
       {String id,
       @JsonKey(name: 'order_index') int orderIndex,
       @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
-      @JsonKey(name: 'is_unlocked') bool isUnlocked});
+      @JsonKey(name: 'is_unlocked') bool isUnlocked,
+      @JsonKey(name: 'chapter_title') String? chapterTitle,
+      String? title});
 }
 
 /// @nodoc
@@ -1222,6 +1338,8 @@ class _$SceneSummaryCopyWithImpl<$Res, $Val extends SceneSummary>
     Object? orderIndex = null,
     Object? unlockCostDiamonds = freezed,
     Object? isUnlocked = null,
+    Object? chapterTitle = freezed,
+    Object? title = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -1240,6 +1358,14 @@ class _$SceneSummaryCopyWithImpl<$Res, $Val extends SceneSummary>
           ? _value.isUnlocked
           : isUnlocked // ignore: cast_nullable_to_non_nullable
               as bool,
+      chapterTitle: freezed == chapterTitle
+          ? _value.chapterTitle
+          : chapterTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -1256,7 +1382,9 @@ abstract class _$$SceneSummaryImplCopyWith<$Res>
       {String id,
       @JsonKey(name: 'order_index') int orderIndex,
       @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
-      @JsonKey(name: 'is_unlocked') bool isUnlocked});
+      @JsonKey(name: 'is_unlocked') bool isUnlocked,
+      @JsonKey(name: 'chapter_title') String? chapterTitle,
+      String? title});
 }
 
 /// @nodoc
@@ -1274,6 +1402,8 @@ class __$$SceneSummaryImplCopyWithImpl<$Res>
     Object? orderIndex = null,
     Object? unlockCostDiamonds = freezed,
     Object? isUnlocked = null,
+    Object? chapterTitle = freezed,
+    Object? title = freezed,
   }) {
     return _then(_$SceneSummaryImpl(
       id: null == id
@@ -1292,6 +1422,14 @@ class __$$SceneSummaryImplCopyWithImpl<$Res>
           ? _value.isUnlocked
           : isUnlocked // ignore: cast_nullable_to_non_nullable
               as bool,
+      chapterTitle: freezed == chapterTitle
+          ? _value.chapterTitle
+          : chapterTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -1303,7 +1441,9 @@ class _$SceneSummaryImpl implements _SceneSummary {
       {required this.id,
       @JsonKey(name: 'order_index') required this.orderIndex,
       @JsonKey(name: 'unlock_cost_diamonds') this.unlockCostDiamonds,
-      @JsonKey(name: 'is_unlocked') required this.isUnlocked});
+      @JsonKey(name: 'is_unlocked') required this.isUnlocked,
+      @JsonKey(name: 'chapter_title') this.chapterTitle,
+      this.title});
 
   factory _$SceneSummaryImpl.fromJson(Map<String, dynamic> json) =>
       _$$SceneSummaryImplFromJson(json);
@@ -1320,9 +1460,21 @@ class _$SceneSummaryImpl implements _SceneSummary {
   @JsonKey(name: 'is_unlocked')
   final bool isUnlocked;
 
+  /// Non-null only on the scene that starts a chapter. Branching stories
+  /// are made of many short scenes linked by choices, so they mark their
+  /// chapters instead of listing every scene as one.
+  @override
+  @JsonKey(name: 'chapter_title')
+  final String? chapterTitle;
+
+  /// Non-null only on scenes that start a named section of a chapter —
+  /// listed when the chapter is expanded.
+  @override
+  final String? title;
+
   @override
   String toString() {
-    return 'SceneSummary(id: $id, orderIndex: $orderIndex, unlockCostDiamonds: $unlockCostDiamonds, isUnlocked: $isUnlocked)';
+    return 'SceneSummary(id: $id, orderIndex: $orderIndex, unlockCostDiamonds: $unlockCostDiamonds, isUnlocked: $isUnlocked, chapterTitle: $chapterTitle, title: $title)';
   }
 
   @override
@@ -1336,13 +1488,16 @@ class _$SceneSummaryImpl implements _SceneSummary {
             (identical(other.unlockCostDiamonds, unlockCostDiamonds) ||
                 other.unlockCostDiamonds == unlockCostDiamonds) &&
             (identical(other.isUnlocked, isUnlocked) ||
-                other.isUnlocked == isUnlocked));
+                other.isUnlocked == isUnlocked) &&
+            (identical(other.chapterTitle, chapterTitle) ||
+                other.chapterTitle == chapterTitle) &&
+            (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, orderIndex, unlockCostDiamonds, isUnlocked);
+  int get hashCode => Object.hash(runtimeType, id, orderIndex,
+      unlockCostDiamonds, isUnlocked, chapterTitle, title);
 
   @JsonKey(ignore: true)
   @override
@@ -1360,11 +1515,12 @@ class _$SceneSummaryImpl implements _SceneSummary {
 
 abstract class _SceneSummary implements SceneSummary {
   const factory _SceneSummary(
-          {required final String id,
-          @JsonKey(name: 'order_index') required final int orderIndex,
-          @JsonKey(name: 'unlock_cost_diamonds') final int? unlockCostDiamonds,
-          @JsonKey(name: 'is_unlocked') required final bool isUnlocked}) =
-      _$SceneSummaryImpl;
+      {required final String id,
+      @JsonKey(name: 'order_index') required final int orderIndex,
+      @JsonKey(name: 'unlock_cost_diamonds') final int? unlockCostDiamonds,
+      @JsonKey(name: 'is_unlocked') required final bool isUnlocked,
+      @JsonKey(name: 'chapter_title') final String? chapterTitle,
+      final String? title}) = _$SceneSummaryImpl;
 
   factory _SceneSummary.fromJson(Map<String, dynamic> json) =
       _$SceneSummaryImpl.fromJson;
@@ -1380,6 +1536,18 @@ abstract class _SceneSummary implements SceneSummary {
   @override
   @JsonKey(name: 'is_unlocked')
   bool get isUnlocked;
+  @override
+
+  /// Non-null only on the scene that starts a chapter. Branching stories
+  /// are made of many short scenes linked by choices, so they mark their
+  /// chapters instead of listing every scene as one.
+  @JsonKey(name: 'chapter_title')
+  String? get chapterTitle;
+  @override
+
+  /// Non-null only on scenes that start a named section of a chapter —
+  /// listed when the chapter is expanded.
+  String? get title;
   @override
   @JsonKey(ignore: true)
   _$$SceneSummaryImplCopyWith<_$SceneSummaryImpl> get copyWith =>

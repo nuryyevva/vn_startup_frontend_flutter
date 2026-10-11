@@ -1,10 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../domain/dialogue_line.dart';
+import 'dialogue_box.dart';
+
 /// All dialogue lines from the scene's script up to and including the
 /// current one — purely derived from data already fetched, no separate
 /// request needed.
-void showSceneLogSheet(BuildContext context, {required List<Map<String, dynamic>> lines}) {
+void showSceneLogSheet(BuildContext context, {required List<DialogueLine> lines}) {
   showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -27,14 +30,20 @@ void showSceneLogSheet(BuildContext context, {required List<Map<String, dynamic>
                     separatorBuilder: (context, index) => const Divider(height: 20),
                     itemBuilder: (context, index) {
                       final line = lines[index];
-                      final speaker = line['speaker'] as String? ?? '';
-                      final text = line['text'] as String? ?? '';
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (speaker.isNotEmpty && speaker != 'narrator')
-                            Text(speaker, style: Theme.of(context).textTheme.titleMedium),
-                          Text(text, style: Theme.of(context).textTheme.bodyMedium),
+                          if (line.speakerName.isNotEmpty)
+                            Text(line.speakerName, style: Theme.of(context).textTheme.titleMedium),
+                          DialogueText(
+                            text: line.text,
+                            style: line.isThought
+                                ? DialogueStyle.thought
+                                : line.isNarration
+                                ? DialogueStyle.narration
+                                : DialogueStyle.speech,
+                            baseStyle: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         ],
                       );
                     },

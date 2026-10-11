@@ -10,9 +10,9 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_icon_button.dart';
 import '../../../../core/widgets/image_placeholder.dart';
 import '../../../scene_player/domain/scene_player_args.dart';
-import '../../../stories/domain/models/story.dart';
 import '../../../stories/presentation/providers/bookmarks_provider.dart';
 import '../../../stories/presentation/providers/stories_providers.dart';
+import '../widgets/chapter_list.dart';
 
 class StoryDetailScreen extends ConsumerWidget {
   const StoryDetailScreen({super.key, required this.storyId});
@@ -69,7 +69,7 @@ class StoryDetailScreen extends ConsumerWidget {
                   const SizedBox(height: 12),
                   scenesAsync.when(
                     data: (scenes) => Text(
-                      'storyDetail.chapters'.tr(args: ['${scenes.length}']),
+                      'storyDetail.chapters'.tr(args: ['${StoryChapter.group(scenes).length}']),
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                     loading: () => const SizedBox(),
@@ -81,7 +81,7 @@ class StoryDetailScreen extends ConsumerWidget {
                   ],
                   const SizedBox(height: 24),
                   scenesAsync.when(
-                    data: (scenes) => _ChapterList(
+                    data: (scenes) => ChapterList(
                       scenes: scenes,
                       currentSceneId: progressAsync.valueOrNull?.currentSceneId,
                       onTapScene: (scene) => context.push(
@@ -136,76 +136,6 @@ class _Tag extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(border: Border.all(color: colors.border), borderRadius: BorderRadius.circular(999)),
       child: Text(label, style: Theme.of(context).textTheme.labelMedium),
-    );
-  }
-}
-
-class _ChapterList extends StatelessWidget {
-  const _ChapterList({required this.scenes, required this.currentSceneId, required this.onTapScene});
-
-  final List<SceneSummary> scenes;
-  final String? currentSceneId;
-  final ValueChanged<SceneSummary> onTapScene;
-
-  @override
-  Widget build(BuildContext context) {
-    final currentOrderIndex = currentSceneId == null
-        ? null
-        : scenes.firstWhereOrNull((s) => s.id == currentSceneId)?.orderIndex;
-
-    return Column(
-      children: [
-        for (final scene in scenes)
-          _ChapterRow(
-            scene: scene,
-            isRead: currentOrderIndex != null && scene.orderIndex < currentOrderIndex,
-            onTap: () => onTapScene(scene),
-          ),
-      ],
-    );
-  }
-}
-
-class _ChapterRow extends StatelessWidget {
-  const _ChapterRow({required this.scene, required this.isRead, required this.onTap});
-
-  final SceneSummary scene;
-  final bool isRead;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final textTheme = Theme.of(context).textTheme;
-    final isLocked = !scene.isUnlocked;
-
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text('storyDetail.chapterLabel'.tr(args: ['${scene.orderIndex + 1}']), style: textTheme.bodyLarge),
-            ),
-            if (isLocked)
-              Row(
-                children: [
-                  Icon(LucideIcons.lock, size: 16, color: colors.textMuted),
-                  const SizedBox(width: 4),
-                  Text(
-                    'storyDetail.chapterUnlockCost'.tr(args: ['${scene.unlockCostDiamonds}']),
-                    style: textTheme.labelMedium,
-                  ),
-                ],
-              )
-            else if (isRead)
-              Icon(LucideIcons.circleCheck, size: 20, color: colors.accent)
-            else
-              Icon(LucideIcons.circle, size: 20, color: colors.textMuted),
-          ],
-        ),
-      ),
     );
   }
 }

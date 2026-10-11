@@ -14,6 +14,7 @@ _$StoryImpl _$$StoryImplFromJson(Map<String, dynamic> json) => _$StoryImpl(
       genre: json['genre'] as String,
       status: json['status'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
+      playerTheme: json['player_theme'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$$StoryImplToJson(_$StoryImpl instance) =>
@@ -25,6 +26,7 @@ Map<String, dynamic> _$$StoryImplToJson(_$StoryImpl instance) =>
       'genre': instance.genre,
       'status': instance.status,
       'created_at': instance.createdAt.toIso8601String(),
+      'player_theme': instance.playerTheme,
     };
 
 _$StoryPageImpl _$$StoryPageImplFromJson(Map<String, dynamic> json) =>
@@ -75,6 +77,8 @@ _$SceneImpl _$$SceneImplFromJson(Map<String, dynamic> json) => _$SceneImpl(
       unlockCostDiamonds: json['unlock_cost_diamonds'] as int?,
       characterSpriteUrl: json['character_sprite_url'] as String?,
       backgroundMusicUrl: json['background_music_url'] as String?,
+      chapterTitle: json['chapter_title'] as String?,
+      title: json['title'] as String?,
       choices: (json['choices'] as List<dynamic>?)
               ?.map((e) => Choice.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -95,6 +99,8 @@ Map<String, dynamic> _$$SceneImplToJson(_$SceneImpl instance) =>
       'unlock_cost_diamonds': instance.unlockCostDiamonds,
       'character_sprite_url': instance.characterSpriteUrl,
       'background_music_url': instance.backgroundMusicUrl,
+      'chapter_title': instance.chapterTitle,
+      'title': instance.title,
       'choices': instance.choices,
     };
 
@@ -104,6 +110,8 @@ _$SceneSummaryImpl _$$SceneSummaryImplFromJson(Map<String, dynamic> json) =>
       orderIndex: json['order_index'] as int,
       unlockCostDiamonds: json['unlock_cost_diamonds'] as int?,
       isUnlocked: json['is_unlocked'] as bool,
+      chapterTitle: json['chapter_title'] as String?,
+      title: json['title'] as String?,
     );
 
 Map<String, dynamic> _$$SceneSummaryImplToJson(_$SceneSummaryImpl instance) =>
@@ -112,6 +120,8 @@ Map<String, dynamic> _$$SceneSummaryImplToJson(_$SceneSummaryImpl instance) =>
       'order_index': instance.orderIndex,
       'unlock_cost_diamonds': instance.unlockCostDiamonds,
       'is_unlocked': instance.isUnlocked,
+      'chapter_title': instance.chapterTitle,
+      'title': instance.title,
     };
 
 _$PlayerProgressImpl _$$PlayerProgressImplFromJson(Map<String, dynamic> json) =>

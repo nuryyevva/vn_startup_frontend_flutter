@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../../../core/network/media_url.dart';
 import '../domain/models/story.dart';
 
 /// Hand-written Dio wrapper for `/stories/*`, `/scenes/*`, and `/progress`
@@ -8,6 +9,10 @@ class StoryApi {
   StoryApi(this._dio);
 
   final Dio _dio;
+
+  /// Media URLs may come back root-relative (art served by the API itself);
+  /// resolve them here, once, so nothing downstream has to care.
+  T _withMedia<T>(T json) => resolveMediaUrlsInJson(json, _dio.options.baseUrl) as T;
 
   /// One page of the published catalog. `genre` narrows by genre id;
   /// `page` is 1-based. The backend defaults/clamps `pageSize` server-side
@@ -22,19 +27,19 @@ class StoryApi {
         if (pageSize != null) 'page_size': pageSize,
       },
     );
-    return StoryPage.fromJson(response.data!);
+    return StoryPage.fromJson(_withMedia(response.data!));
   }
 
   Future<Story> getStory(String storyId) async {
     final response = await _dio.get<Map<String, dynamic>>('/stories/$storyId');
-    return Story.fromJson(response.data!);
+    return Story.fromJson(_withMedia(response.data!));
   }
 
   /// All stories the caller has already started, most recently updated
   /// first. Never creates progress rows (unlike [getStoryProgress]).
   Future<List<ProgressSummary>> getMyProgress() async {
     final response = await _dio.get<List<dynamic>>('/progress');
-    return response.data!.map((e) => ProgressSummary.fromJson(e as Map<String, dynamic>)).toList();
+    return _withMedia(response.data!).map((e) => ProgressSummary.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   /// Creates a fresh progress row (pointed at the story's first scene) if
@@ -56,7 +61,7 @@ class StoryApi {
   /// [unlockScene] first.
   Future<Scene> getScene(String sceneId) async {
     final response = await _dio.get<Map<String, dynamic>>('/scenes/$sceneId');
-    return Scene.fromJson(response.data!);
+    return Scene.fromJson(_withMedia(response.data!));
   }
 
   Future<PlayerProgress> submitChoice(String sceneId, String choiceId) async {
@@ -73,7 +78,7 @@ class StoryApi {
 
   Future<List<Story>> getBookmarks() async {
     final response = await _dio.get<List<dynamic>>('/bookmarks');
-    return response.data!.map((e) => Story.fromJson(e as Map<String, dynamic>)).toList();
+    return _withMedia(response.data!).map((e) => Story.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<void> addBookmark(String storyId) async {

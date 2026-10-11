@@ -79,7 +79,10 @@
     "chapterLabel": "Глава {}",
     "chapterUnlockCost": "{} ◇ чтобы открыть",
     "chapterRead": "Прочитано",
-    "chapterUnread": "Не прочитано"
+    "chapterUnread": "Не прочитано",
+    "showScenes": "Показать сцены",
+    "hideScenes": "Скрыть сцены",
+    "youAreHere": "Вы здесь"
   },
   "scenePlayer": {
     "talkTo": "Поговорить с {}",
@@ -91,7 +94,10 @@
     "insufficientDiamonds": "Недостаточно алмазов",
     "unlockChapter": "Разблокировать главу",
     "unlockChapterCost": "Открыть за {} ◇",
-    "unlocking": "Разблокировка…"
+    "unlocking": "Разблокировка…",
+    "endTitle": "Продолжение следует",
+    "endBody": "Вы дошли до конца опубликованной части истории.",
+    "backToStory": "К истории"
   },
   "dialog": {
     "messageHint": "Сообщение…",

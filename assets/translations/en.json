@@ -79,7 +79,10 @@
     "chapterLabel": "Chapter {}",
     "chapterUnlockCost": "{} ◇ to unlock",
     "chapterRead": "Read",
-    "chapterUnread": "Unread"
+    "chapterUnread": "Unread",
+    "showScenes": "Show scenes",
+    "hideScenes": "Hide scenes",
+    "youAreHere": "You are here"
   },
   "scenePlayer": {
     "talkTo": "Talk to {}",
@@ -91,7 +94,10 @@
     "insufficientDiamonds": "Not enough diamonds",
     "unlockChapter": "Unlock chapter",
     "unlockChapterCost": "Unlock for {} ◇",
-    "unlocking": "Unlocking…"
+    "unlocking": "Unlocking…",
+    "endTitle": "To be continued",
+    "endBody": "You've reached the end of what's published so far.",
+    "backToStory": "Back to story"
   },
   "dialog": {
     "messageHint": "Message…",

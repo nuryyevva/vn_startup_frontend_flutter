@@ -31,10 +31,10 @@ class ContinueReadingCard extends StatelessWidget {
           children: [
             AspectRatio(
               aspectRatio: 3 / 4,
-              child: Hero(
-                tag: 'story-cover-${progress.story.id}',
-                child: RemoteImage(url: progress.story.coverUrl, borderRadius: BorderRadius.circular(16)),
-              ),
+              // No Hero here: the same story also sits in the catalog grid
+              // below with the 'story-cover-<id>' tag, and two heroes with
+              // one tag on a screen throw as soon as a route is pushed.
+              child: RemoteImage(url: progress.story.coverUrl, borderRadius: BorderRadius.circular(16)),
             ),
             const SizedBox(height: 8),
             Text(
