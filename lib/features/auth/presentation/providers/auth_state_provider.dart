@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -59,6 +60,11 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     state = const AuthState(status: AuthStatus.guest);
   }
 
+  Future<void> registerGuest() async {
+    final random = Random.secure();
+    String token(int bytes) => List.generate(bytes, (_) => random.nextInt(256).toRadixString(16).padLeft(2, '0')).join();
+    await register('guest-${token(8)}@guest.echo-companions.ru', token(16));
+  }
   Future<void> signOut() async {
     await _repository.logout();
     state = const AuthState(status: AuthStatus.unauthenticated);
