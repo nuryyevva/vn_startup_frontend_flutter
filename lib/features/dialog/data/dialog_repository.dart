@@ -15,6 +15,7 @@ abstract class DialogRepository {
     required void Function(String chunk) onChunk,
     required void Function(String fullText) onComplete,
     required void Function(SessionEndReason reason) onSessionEnded,
+    void Function(String? emotion, String? spriteUrl)? onStyle,
   });
 
   void unsubscribe();

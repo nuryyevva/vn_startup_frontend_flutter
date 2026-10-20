@@ -1,6 +1,6 @@
-// End-to-end golden path: login -> open a story -> talk to the character in
-// free dialog -> send a message -> receive a streamed reply -> close the
-// dialog -> make a free choice -> land on the next scene.
+// End-to-end golden path: login -> open a story -> pick the free-talk option among the choices -> send a
+// message -> receive a streamed reply -> go back to the scripted choices -> make a free choice -> land on the
+// next scene.
 //
 // Per the architecture doc, this mocks at the repository boundary (auth,
 // story, wallet, dialog) rather than spinning up a real backend or a real
@@ -148,6 +148,7 @@ void main() {
         onChunk: any(named: 'onChunk'),
         onComplete: any(named: 'onComplete'),
         onSessionEnded: any(named: 'onSessionEnded'),
+        onStyle: any(named: 'onStyle'),
       ),
     ).thenAnswer((invocation) {
       onChunk = invocation.namedArguments[#onChunk] as void Function(String);
@@ -203,37 +204,37 @@ void main() {
     await tester.tap(find.text('Start Reading'));
     await tester.pumpAndSettle();
 
-    // --- 4. Scene player: open free dialog with Kate ---
+    // --- 4. Scene player: read the line, then the free-talk option stands among the choices ---
     expect(find.text('The lantern still burns, even after all this time.'), findsOneWidget);
-    await tester.tap(find.widgetWithIcon(ElevatedButton, LucideIcons.messageCircle));
+    await tester.tap(find.text('The lantern still burns, even after all this time.'));
+    await tester.pumpAndSettle();
+    expect(find.text('Ask her to stay'), findsOneWidget);
+    await tester.tap(find.widgetWithIcon(OutlinedButton, LucideIcons.messageCircle));
     await tester.pumpAndSettle();
 
-    // --- 5. Send a message, receive a streamed reply ---
+    // --- 5. Send a message in the same dialogue box, receive a streamed reply ---
     await tester.enterText(find.byType(TextField), 'Hi Kate');
     await tester.tap(find.byIcon(LucideIcons.send));
     await tester.pump();
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 100));
     expect(find.text('Hi Kate'), findsOneWidget);
 
     onChunk?.call('I remember');
     onChunk?.call(' you too.');
     await tester.pump();
     onComplete?.call('I remember you too.');
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 100));
     expect(find.text('I remember you too.'), findsOneWidget);
 
-    // --- 6. Close the dialog overlay, back to the scene ---
-    await tester.tap(find.byIcon(LucideIcons.x));
+    // --- 6. Go back to the scripted choices: the talk stays resumable, nothing is closed ---
+    await tester.tap(find.text('Back to choices'));
     await tester.pumpAndSettle();
     expect(find.byType(TextField), findsNothing);
 
-    // --- 7. Advance the dialogue to reveal choices, pick the free one ---
-    await tester.tap(find.text('The lantern still burns, even after all this time.'));
-    await tester.pumpAndSettle();
+    // --- 7. Pick the scripted choice ---
     expect(find.text('Ask her to stay'), findsOneWidget);
     await tester.tap(find.text('Ask her to stay'));
     await tester.pumpAndSettle();
-
     // --- 8. Landed on the next scene ---
     expect(find.text('Then I will.'), findsOneWidget);
     verify(() => storyRepository.submitChoice('sc1', 'ch1')).called(1);

@@ -16,11 +16,18 @@ class ChoicesPanel extends StatelessWidget {
     required this.walletBalance,
     required this.onSelect,
     this.pendingChoiceId,
+    this.onTalk,
+    this.talkLabel,
   });
 
   final List<Choice> choices;
   final int? walletBalance;
   final ValueChanged<Choice> onSelect;
+
+  /// Free conversation offered as one more answer among the scripted ones (only in scenes where the author
+  /// enabled it): null hides the option. [talkLabel] is its text, e.g. "Talk to Noah".
+  final VoidCallback? onTalk;
+  final String? talkLabel;
 
   /// The choice just made, while the next scene loads: it keeps its look
   /// and shows a spinner, the others are disabled.
@@ -36,8 +43,25 @@ class ChoicesPanel extends StatelessWidget {
         children: [
           for (final choice in choices) ...[
             _buildChoice(skin, choice),
-            if (choice != choices.last) const SizedBox(height: 10),
+            if (choice != choices.last || onTalk != null) const SizedBox(height: 10),
           ],
+          if (onTalk != null) _buildTalkOption(skin),
+        ],
+      ),
+    );
+  }
+
+  /// Looks like the other answers, marked with a speech bubble and the accent colour so it reads as "say
+  /// something of your own" rather than one more scripted line.
+  Widget _buildTalkOption(ScenePlayerSkin skin) {
+    return SkinButton(
+      onPressed: pendingChoiceId == null ? onTalk : null,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(LucideIcons.messageCircle, size: 16, color: skin.accentColor),
+          const SizedBox(width: 8),
+          Flexible(child: Text(talkLabel ?? '', textAlign: TextAlign.center)),
         ],
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../domain/dialogue_line.dart';
-import 'dialogue_box.dart';
 
 /// All dialogue lines from the scene's script up to and including the
 /// current one — purely derived from data already fetched, no separate
@@ -35,15 +35,7 @@ void showSceneLogSheet(BuildContext context, {required List<DialogueLine> lines}
                         children: [
                           if (line.speakerName.isNotEmpty)
                             Text(line.speakerName, style: Theme.of(context).textTheme.titleMedium),
-                          DialogueText(
-                            text: line.text,
-                            style: line.isThought
-                                ? DialogueStyle.thought
-                                : line.isNarration
-                                ? DialogueStyle.narration
-                                : DialogueStyle.speech,
-                            baseStyle: Theme.of(context).textTheme.bodyMedium,
-                          ),
+                          _LogText(line: line),
                         ],
                       );
                     },
@@ -56,4 +48,31 @@ void showSceneLogSheet(BuildContext context, {required List<DialogueLine> lines}
       );
     },
   );
+}
+
+/// A log entry's text in the sheet's own colours: the sheet sits on the app's dark surface, so the story skin's
+/// text colour (dark on a parchment skin) would be unreadable here.
+class _LogText extends StatelessWidget {
+  const _LogText({required this.line});
+
+  final DialogueLine line;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final base = Theme.of(context).textTheme.bodyMedium;
+    if (line.isNarration) {
+      return Text(line.text, style: base?.copyWith(fontStyle: FontStyle.italic, color: colors.textSecondary));
+    }
+    if (line.isThought) {
+      return Container(
+        padding: const EdgeInsets.only(left: 12),
+        decoration: BoxDecoration(
+          border: Border(left: BorderSide(color: colors.accent.withValues(alpha: 0.7), width: 2)),
+        ),
+        child: Text(line.text, style: base?.copyWith(fontStyle: FontStyle.italic, color: colors.textPrimary)),
+      );
+    }
+    return Text(line.text, style: base?.copyWith(color: colors.textPrimary));
+  }
 }

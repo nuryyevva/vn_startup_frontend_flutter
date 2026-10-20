@@ -22,6 +22,8 @@ class DialogSessionState {
     this.endReason,
     this.remainingLimit,
     this.isSending = false,
+    this.awaitingReplySince,
+    this.spriteUrl,
   });
 
   final DialogSession session;
@@ -39,6 +41,14 @@ class DialogSessionState {
   final int? remainingLimit;
   final bool isSending;
 
+  /// Set from the moment the user's message is sent until the first chunk of the character's reply (or the whole
+  /// reply) arrives: the character is "thinking", and the UI shows how long it has been.
+  final DateTime? awaitingReplySince;
+
+  /// Sprite the AI picked for the emotion of the latest reply (null until a reply names one): the scene shows
+  /// it instead of the scene's own character sprite while the player is talking.
+  final String? spriteUrl;
+
   DialogSessionState copyWith({
     DialogSession? session,
     List<DialogMessage>? messages,
@@ -48,6 +58,9 @@ class DialogSessionState {
     SessionEndReason? endReason,
     int? remainingLimit,
     bool? isSending,
+    DateTime? awaitingReplySince,
+    bool clearAwaitingReply = false,
+    String? spriteUrl,
   }) {
     return DialogSessionState(
       session: session ?? this.session,
@@ -57,12 +70,14 @@ class DialogSessionState {
       endReason: endReason ?? this.endReason,
       remainingLimit: remainingLimit ?? this.remainingLimit,
       isSending: isSending ?? this.isSending,
+      awaitingReplySince: clearAwaitingReply ? null : (awaitingReplySince ?? this.awaitingReplySince),
+      spriteUrl: spriteUrl ?? this.spriteUrl,
     );
   }
 }
 
 /// State is null until [start] resolves — a dedicated "not started" case
-/// rather than a sentinel session, since `FreeDialogScreen` always calls
+/// rather than a sentinel session, since the scene player always calls
 /// [start] immediately on mount and has nothing meaningful to render
 /// before that.
 class DialogSessionNotifier extends StateNotifier<DialogSessionState?> {
@@ -90,6 +105,7 @@ class DialogSessionNotifier extends StateNotifier<DialogSessionState?> {
       onChunk: _onChunk,
       onComplete: _onComplete,
       onSessionEnded: _onSessionEnded,
+      onStyle: _onStyle,
     );
   }
 
@@ -98,7 +114,11 @@ class DialogSessionNotifier extends StateNotifier<DialogSessionState?> {
     if (current == null || current.isSessionEnded) return;
 
     final optimisticMessage = DialogMessage(id: 'local-${DateTime.now().microsecondsSinceEpoch}', sender: 'user', text: text);
-    state = current.copyWith(messages: [...current.messages, optimisticMessage], isSending: true);
+    state = current.copyWith(
+      messages: [...current.messages, optimisticMessage],
+      isSending: true,
+      awaitingReplySince: DateTime.now(),
+    );
 
     try {
       final sent = await _sendDialogMessage(current.session.id, text);
@@ -108,22 +128,39 @@ class DialogSessionNotifier extends StateNotifier<DialogSessionState?> {
     } catch (_) {
       final updated = state;
       if (updated == null) return;
-      state = updated.copyWith(isSending: false);
+      // The message was not accepted (e.g. not enough diamonds): take it back out of the chat so it doesn't look
+      // sent, and stop the "thinking" indicator that was started for it.
+      state = updated.copyWith(
+        messages: updated.messages.where((m) => m.id != optimisticMessage.id).toList(),
+        isSending: false,
+        clearAwaitingReply: true,
+      );
       rethrow;
     }
+  }
+
+  /// Arrives right before the finished reply: the sprite matching the reply's emotion, if the AI named one.
+  void _onStyle(String? emotion, String? spriteUrl) {
+    final current = state;
+    if (current == null || spriteUrl == null) return;
+    state = current.copyWith(spriteUrl: spriteUrl);
   }
 
   void _onChunk(String chunk) {
     final current = state;
     if (current == null) return;
-    state = current.copyWith(streamingBuffer: (current.streamingBuffer ?? '') + chunk);
+    state = current.copyWith(streamingBuffer: (current.streamingBuffer ?? '') + chunk, clearAwaitingReply: true);
   }
 
   void _onComplete(String fullText) {
     final current = state;
     if (current == null) return;
     final finalMessage = DialogMessage(id: 'character-${DateTime.now().microsecondsSinceEpoch}', sender: 'character', text: fullText);
-    state = current.copyWith(messages: [...current.messages, finalMessage], clearStreamingBuffer: true);
+    state = current.copyWith(
+      messages: [...current.messages, finalMessage],
+      clearStreamingBuffer: true,
+      clearAwaitingReply: true,
+    );
   }
 
   void _onSessionEnded(SessionEndReason reason) {
@@ -166,7 +203,7 @@ final dialogRepositoryProvider = Provider<DialogRepository?>((ref) {
   return DialogRepositoryImpl(api: ref.watch(dialogApiProvider), wsClient: wsClient);
 });
 
-/// `autoDispose` so every time `FreeDialogScreen` is opened it starts from
+/// `autoDispose` so every time the scene player starts a conversation it starts from
 /// a clean slate — the overlay is mounted/unmounted by `scene_player`, not
 /// routed to, so there's no route-based disposal to rely on instead.
 final dialogSessionProvider = StateNotifierProvider.autoDispose<DialogSessionNotifier, DialogSessionState?>((ref) {

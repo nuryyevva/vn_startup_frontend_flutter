@@ -6,12 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/media/media_source.dart';
+import '../../../../core/network/error_mapper.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/motion.dart';
-import '../../../dialog/presentation/screens/free_dialog_screen.dart';
+import '../../../dialog/presentation/providers/dialog_session_provider.dart';
+import '../../../dialog/presentation/widgets/session_ended_dialog.dart';
 import '../../../stats/presentation/providers/reading_stats_provider.dart';
 import '../../../stories/domain/models/story.dart';
 import '../../../wallet/presentation/providers/wallet_balance_provider.dart';
@@ -22,6 +23,7 @@ import '../providers/scene_player_provider.dart';
 import '../theme/scene_player_skin.dart';
 import '../widgets/choices_panel.dart';
 import '../widgets/dialogue_box.dart';
+import '../widgets/inline_chat_panel.dart';
 import '../widgets/scene_background_layer.dart';
 import '../widgets/scene_log_sheet.dart';
 import '../widgets/scene_top_bar.dart';
@@ -97,8 +99,15 @@ class _ScenePlaybackBody extends ConsumerStatefulWidget {
 }
 
 class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with WidgetsBindingObserver {
-  bool _showFreeDialog = false;
-  String _freeDialogCharacterName = '';
+  /// Free conversation with the scene's character (only in scenes the author enabled it for): the session is started
+  /// the first time the player picks the talk option and kept until the scene changes, so going back to the
+  /// scripted choices and returning to the chat doesn't lose the conversation.
+  bool _chatStarted = false;
+
+  /// The chat panel is shown instead of the scripted choices.
+  bool _chatOpen = false;
+  bool _chatEndedShown = false;
+  DialogSessionNotifier? _chatNotifier;
 
   /// Reports elapsed reading time to the backend every 30s while this scene
   /// is on screen — the only source of "day streak"/"hours read" data (see
@@ -176,6 +185,7 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
     if (sceneChanged) {
       unawaited(_setMusic(widget.state.scene?.backgroundMusicUrl));
       _precacheArt();
+      _endChat();
     }
     if (sceneChanged || widget.state.dialogueIndex != oldWidget.state.dialogueIndex) {
       _maybePlaySfxForLine(widget.state);
@@ -184,6 +194,11 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
 
   @override
   void dispose() {
+    try {
+      unawaited(_chatNotifier?.leave());
+    } catch (_) {
+      // The provider may already be gone; the backend closes an abandoned session by itself.
+    }
     WidgetsBinding.instance.removeObserver(this);
     _heartbeatTimer?.cancel();
     unawaited(_musicPlayer.dispose());
@@ -250,8 +265,14 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
     final scene = state.scene!;
     final balance = ref.watch(walletBalanceProvider).valueOrNull;
     final line = state.currentLine;
+    final dialogState = _chatStarted ? ref.watch(dialogSessionProvider) : null;
+    _maybeShowChatEnded(dialogState);
     final backgroundUrl = line?.backgroundUrl ?? scene.backgroundUrl;
-    final spriteUrl = line == null ? scene.characterSpriteUrl : line.spriteUrl;
+    // While talking, the character on screen is the scene's own character, in the sprite the AI picked for the
+    // emotion of its latest reply (the scene's script may have last shown somebody else).
+    final spriteUrl = _chatOpen
+        ? (dialogState?.spriteUrl ?? scene.characterSpriteUrl)
+        : (line == null ? scene.characterSpriteUrl : line.spriteUrl);
     // An explicit empty sprite_url hides the character; a scene with a
     // character but no art at all keeps the placeholder silhouette.
     final CharacterSprite? characterSprite = switch (spriteUrl) {
@@ -264,14 +285,7 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
       fit: StackFit.expand,
       children: [
         if (!_revealed) const Center(child: CircularProgressIndicator(color: Colors.white)),
-        _buildScene(context, state, notifier, scene, balance, backgroundUrl, spriteUrl, characterSprite),
-        if (_showFreeDialog && scene.characterId != null)
-          FreeDialogScreen(
-            characterId: scene.characterId!,
-            sceneId: scene.id,
-            characterName: _freeDialogCharacterName,
-            onClose: () => setState(() => _showFreeDialog = false),
-          ),
+        _buildScene(context, state, notifier, scene, balance, backgroundUrl, spriteUrl, characterSprite, dialogState),
       ],
     );
   }
@@ -285,6 +299,7 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
     String? backgroundUrl,
     String? spriteUrl,
     CharacterSprite? characterSprite,
+    DialogSessionState? dialogState,
   ) {
     return IgnorePointer(
       ignoring: !_revealed,
@@ -312,19 +327,24 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
                 child: AnimatedSwitcher(
                   duration: Motion.microDuration,
                   child: switch (state.phase) {
+                    ScenePlayerPhase.choices when _chatOpen && _canTalk(scene, dialogState) => InlineChatPanel(
+                      key: const ValueKey('chat'),
+                      characterName: _partnerName(scene, state.lines) ?? '',
+                      state: dialogState,
+                      onSend: _sendChatMessage,
+                      onBackToChoices: () => setState(() => _chatOpen = false),
+                    ),
                     ScenePlayerPhase.choices => ChoicesPanel(
                       key: const ValueKey('choices'),
                       choices: scene.choices,
                       walletBalance: balance,
                       pendingChoiceId: state.pendingChoiceId,
                       onSelect: (choice) => _selectChoice(choice),
+                      onTalk: _canTalk(scene, dialogState) ? () => _openChat(scene) : null,
+                      talkLabel: _talkLabel(_partnerName(scene, state.lines)),
                     ),
                     ScenePlayerPhase.ended => _StoryEndPanel(key: const ValueKey('ended'), onBack: () => context.pop()),
-                    _ => _DialogueSection(
-                      key: ValueKey('dialogue-${scene.id}-${state.dialogueIndex}'),
-                      state: state,
-                      onTalkToCharacter: scene.freeDialogEnabled ? _openFreeDialog : null,
-                    ),
+                    _ => _DialogueSection(key: ValueKey('dialogue-${scene.id}-${state.dialogueIndex}'), state: state),
                   },
                 ),
               ),
@@ -334,8 +354,7 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
                 right: 0,
                 child: SceneTopBar(
                   onBack: () => context.pop(),
-                  onShowLog: () =>
-                      showSceneLogSheet(context, lines: state.lines.take(state.dialogueIndex + 1).toList()),
+                  onShowLog: () => showSceneLogSheet(context, lines: _logLines(scene, state, dialogState)),
                 ),
               ),
             ],
@@ -383,19 +402,120 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
     ]).timeout(_artTimeout, onTimeout: () => const []);
   }
 
-  void _openFreeDialog() {
+  /// Name of the character a free dialog in [scene] would be held with: whoever speaks under the scene's own
+  /// character sprite. Null when no line of the scene shows them (a pure hub beat).
+  String? _partnerName(Scene scene, List<DialogueLine> lines) {
+    final partnerSprite = scene.characterSpriteUrl;
+    if (partnerSprite == null) return null;
+    for (final line in lines) {
+      if (line.spriteUrl == partnerSprite && line.speakerName.isNotEmpty) return line.speakerName;
+    }
+    return null;
+  }
+
+  /// What the scene's history shows: the script read so far, then the free conversation held in this scene (the
+  /// player's own lines and the character's replies), so nothing said out loud is missing from the log.
+  List<DialogueLine> _logLines(Scene scene, ScenePlayerState state, DialogSessionState? dialogState) {
+    final lines = state.lines.take(state.dialogueIndex + 1).toList();
+    final messages = dialogState?.messages ?? const [];
+    if (messages.isEmpty) return lines;
+    final partner = _partnerName(scene, state.lines) ?? 'dialog.thinkingFallbackName'.tr();
+    return [
+      ...lines,
+      for (final message in messages)
+        DialogueLine(speaker: message.sender == 'user' ? 'dialog.you'.tr() : partner, text: message.text),
+    ];
+  }
+
+  /// The talk option is offered only in the scenes the story's author marked for a free conversation (the
+  /// character stays in the scene for its whole length) and only while the conversation hasn't been ended by its
+  /// limit; in every other scene it never appears.
+  bool _canTalk(Scene scene, DialogSessionState? dialogState) =>
+      scene.freeDialogEnabled && scene.characterId != null && !(dialogState?.isSessionEnded ?? false);
+
+  String _talkLabel(String? name) =>
+      name == null || name.isEmpty ? 'scenePlayer.talkToGeneric'.tr() : 'scenePlayer.talkTo'.tr(args: [name]);
+
+  void _openChat(Scene scene) {
+    final first = !_chatStarted;
     setState(() {
-      _freeDialogCharacterName = widget.state.currentLine?.speakerName ?? '';
-      _showFreeDialog = true;
+      _chatStarted = true;
+      _chatOpen = true;
+    });
+    if (!first) return;
+    // After the frame: by then build() is watching the provider, so it can't be disposed before the session starts.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_chatStarted) return;
+      _chatNotifier = ref.read(dialogSessionProvider.notifier);
+      unawaited(_chatNotifier!.start(scene.characterId!, scene.id).catchError(_failChatStart));
+    });
+  }
+
+  void _failChatStart(Object error) {
+    if (!mounted) return;
+    setState(() {
+      _chatStarted = false;
+      _chatOpen = false;
+    });
+    _showError(error);
+  }
+
+  Future<void> _sendChatMessage(String text) async {
+    try {
+      await ref.read(dialogSessionProvider.notifier).sendMessage(text);
+    } catch (error) {
+      _showError(error);
+    }
+  }
+
+  /// The backend's reason, in words (e.g. not enough diamonds for another message), not a bare "something went
+  /// wrong"; anything unrecognised falls back to the generic text.
+  void _showError(Object error) {
+    if (!mounted) return;
+    final message = error is AppException ? error.localizedMessage() : 'errors.unknownError'.tr();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  /// Leaves the conversation when the scene changes: the session is closed on the backend and the choices come back.
+  void _endChat() {
+    if (_chatStarted) {
+      try {
+        unawaited(_chatNotifier?.leave());
+      } catch (_) {
+        // Already disposed: nothing left to close on this side.
+      }
+    }
+    _chatStarted = false;
+    _chatOpen = false;
+    _chatEndedShown = false;
+    _chatNotifier = null;
+  }
+
+  /// The conversation ran into its limit (messages or time): say so once, then the choices take over again.
+  void _maybeShowChatEnded(DialogSessionState? dialogState) {
+    if (dialogState == null || !dialogState.isSessionEnded || dialogState.endReason == null || _chatEndedShown) return;
+    _chatEndedShown = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (dialogContext) => SessionEndedDialog(
+          reason: dialogState.endReason!,
+          characterName: _partnerName(widget.state.scene!, widget.state.lines) ?? '',
+          onBackToStory: () {
+            Navigator.of(dialogContext).pop();
+            if (mounted) setState(() => _chatOpen = false);
+          },
+        ),
+      );
     });
   }
 }
-
 class _DialogueSection extends StatelessWidget {
-  const _DialogueSection({super.key, required this.state, required this.onTalkToCharacter});
+  const _DialogueSection({super.key, required this.state});
 
   final ScenePlayerState state;
-  final VoidCallback? onTalkToCharacter;
 
   @override
   Widget build(BuildContext context) {
@@ -403,18 +523,6 @@ class _DialogueSection extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (onTalkToCharacter != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton.icon(
-                onPressed: onTalkToCharacter,
-                icon: const Icon(LucideIcons.messageCircle, size: 16),
-                label: Text('scenePlayer.talkTo'.tr(args: [line?.speakerName ?? ''])),
-              ),
-            ),
-          ),
         DialogueBox(
           speaker: line?.speakerName ?? '',
           text: line?.text ?? '',

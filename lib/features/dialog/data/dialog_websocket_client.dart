@@ -20,6 +20,7 @@ class DialogWebSocketClient {
     required void Function(String chunk) onChunk,
     required void Function(String fullText) onComplete,
     required void Function(SessionEndReason reason) onSessionEnded,
+    void Function(String? emotion, String? spriteUrl)? onStyle,
   }) {
     _subscription?.cancel();
     _subscription = _client.messages.listen((message) {
@@ -30,7 +31,12 @@ class DialogWebSocketClient {
           if (chunk is String) onChunk(chunk);
         case 'ai_response_complete':
           final text = message['text'];
-          if (text is String) onComplete(text);
+          if (text is! String) return;
+          // The reply's emotion and the sprite matching it (both optional) arrive with the finished line.
+          final emotion = message['emotion'];
+          final spriteUrl = message['sprite_url'];
+          onStyle?.call(emotion is String ? emotion : null, spriteUrl is String && spriteUrl.isNotEmpty ? spriteUrl : null);
+          onComplete(text);
         case 'session_ended':
           final reason = sessionEndReasonFromWire(message['reason'] as String?);
           if (reason != null) onSessionEnded(reason);

@@ -26,8 +26,15 @@ class DialogRepositoryImpl implements DialogRepository {
     required void Function(String chunk) onChunk,
     required void Function(String fullText) onComplete,
     required void Function(SessionEndReason reason) onSessionEnded,
+    void Function(String? emotion, String? spriteUrl)? onStyle,
   }) {
-    _wsClient.subscribeToSession(sessionId, onChunk: onChunk, onComplete: onComplete, onSessionEnded: onSessionEnded);
+    _wsClient.subscribeToSession(
+      sessionId,
+      onChunk: onChunk,
+      onComplete: onComplete,
+      onSessionEnded: onSessionEnded,
+      onStyle: onStyle,
+    );
   }
 
   @override
