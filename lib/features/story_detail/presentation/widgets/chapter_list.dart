@@ -60,11 +60,20 @@ class StoryChapter {
 /// reveals them, with the reader's current section marked — the quickest
 /// way to see where they stopped.
 class ChapterList extends StatefulWidget {
-  const ChapterList({super.key, required this.scenes, required this.currentSceneId, required this.onTapScene});
+  const ChapterList({
+    super.key,
+    required this.scenes,
+    required this.currentSceneId,
+    required this.onTapScene,
+    this.onRestartFromChapter,
+  });
 
   final List<SceneSummary> scenes;
   final String? currentSceneId;
   final ValueChanged<SceneSummary> onTapScene;
+
+  /// Offered for chapters the reader has reached: replay from the chapter's first scene (see [StoryApi.restartStory]).
+  final ValueChanged<SceneSummary>? onRestartFromChapter;
 
   @override
   State<ChapterList> createState() => _ChapterListState();
@@ -101,6 +110,7 @@ class _ChapterListState extends State<ChapterList> {
                 (current != null && !finished && chapter.contains(current) && current > chapter.start.orderIndex),
             onToggle: (expanded) => setState(() => _toggled[chapter.start.id] = expanded),
             onTapScene: widget.onTapScene,
+            onRestart: widget.onRestartFromChapter,
           ),
       ],
     );
@@ -116,6 +126,7 @@ class _ChapterTile extends StatelessWidget {
     required this.isExpanded,
     required this.onToggle,
     required this.onTapScene,
+    this.onRestart,
   });
 
   final int number;
@@ -125,6 +136,7 @@ class _ChapterTile extends StatelessWidget {
   final bool isExpanded;
   final ValueChanged<bool> onToggle;
   final ValueChanged<SceneSummary> onTapScene;
+  final ValueChanged<SceneSummary>? onRestart;
 
   @override
   Widget build(BuildContext context) {
@@ -171,6 +183,15 @@ class _ChapterTile extends StatelessWidget {
                   Icon(LucideIcons.circleCheck, size: 20, color: colors.accent)
                 else
                   Icon(LucideIcons.circle, size: 20, color: colors.textMuted),
+                if (onRestart != null && !isLocked && current != null && current >= chapter.start.orderIndex) ...[
+                  const SizedBox(width: 4),
+                  IconButton(
+                    onPressed: () => onRestart!(scene),
+                    visualDensity: VisualDensity.compact,
+                    tooltip: 'storyDetail.restartFromChapter'.tr(),
+                    icon: Icon(LucideIcons.rotateCcw, size: 18, color: colors.textMuted),
+                  ),
+                ],
                 if (chapter.sections.isNotEmpty) ...[
                   const SizedBox(width: 4),
                   IconButton(

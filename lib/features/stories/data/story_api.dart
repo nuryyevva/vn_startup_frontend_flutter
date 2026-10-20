@@ -51,6 +51,17 @@ class StoryApi {
     return PlayerProgress.fromJson(response.data!);
   }
 
+  /// Starts the story over: progress goes back to the first scene with no choices made, and the AI characters
+  /// forget what they remembered about the player in this story. With [fromSceneId] (the first scene of a chapter)
+  /// only that chapter and what follows is reset: earlier choices and memories stay.
+  Future<PlayerProgress> restartStory(String storyId, {String? fromSceneId}) async {
+    final response = await _dio.post<Map<String, dynamic>>(
+      '/stories/$storyId/restart',
+      data: fromSceneId == null ? null : {'scene_id': fromSceneId},
+    );
+    return PlayerProgress.fromJson(response.data!);
+  }
+
   Future<List<SceneSummary>> getStoryScenes(String storyId) async {
     final response = await _dio.get<List<dynamic>>('/stories/$storyId/scenes');
     return response.data!.map((e) => SceneSummary.fromJson(e as Map<String, dynamic>)).toList();

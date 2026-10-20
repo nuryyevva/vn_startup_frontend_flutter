@@ -21,6 +21,10 @@ class StoryRepositoryImpl implements StoryRepository {
   Future<PlayerProgress> getStoryProgress(String storyId) => _api.getStoryProgress(storyId);
 
   @override
+  Future<PlayerProgress> restartStory(String storyId, {String? fromSceneId}) =>
+      _api.restartStory(storyId, fromSceneId: fromSceneId);
+
+  @override
   Future<List<SceneSummary>> getStoryScenes(String storyId) => _api.getStoryScenes(storyId);
 
   @override

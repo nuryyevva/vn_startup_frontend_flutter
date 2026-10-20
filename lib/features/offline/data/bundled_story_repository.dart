@@ -156,6 +156,23 @@ class BundledStoryRepository implements StoryRepository {
   }
 
   @override
+  Future<PlayerProgress> restartStory(String storyId, {String? fromSceneId}) async {
+    _story(storyId);
+    final target = fromSceneId == null ? _content.scenesOf(storyId).firstOrNull : _scene(fromSceneId);
+    if (target == null || target.storyId != storyId) throw const AppException.notFound();
+    // From a chapter: choices made on earlier scenes stay, the rest go.
+    final kept = fromSceneId == null
+        ? const <String>[]
+        : [
+            for (final id in _progressOf(storyId)?.choicesMade ?? const <String>[])
+              if ((_content.sceneOfChoice(id)?.orderIndex ?? target.orderIndex) < target.orderIndex) id,
+          ];
+    final restarted = PlayerProgress(storyId: storyId, currentSceneId: target.id, choicesMade: kept, updatedAt: _now());
+    await _saveProgress(restarted);
+    return restarted;
+  }
+
+  @override
   Future<List<ProgressSummary>> getMyProgress() async => progressSummaries;
 
   /// Every story the player has opened, most recently played first.
