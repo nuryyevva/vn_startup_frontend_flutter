@@ -273,10 +273,12 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
     final spriteUrl = _chatOpen
         ? (dialogState?.spriteUrl ?? scene.characterSpriteUrl)
         : (line == null ? scene.characterSpriteUrl : line.spriteUrl);
+    // The shot follows the script like the background does, also while talking.
+    final framing = line?.spriteFraming ?? scene.spriteFraming;
     // An explicit empty sprite_url hides the character; a scene with a
     // character but no art at all keeps the placeholder silhouette.
     final CharacterSprite? characterSprite = switch (spriteUrl) {
-      final String url when url.isNotEmpty => ImageCharacterSprite(imageUrl: url),
+      final String url when url.isNotEmpty => ImageCharacterSprite(imageUrl: url, framing: framing),
       null when scene.characterId != null => const ImageCharacterSprite(),
       _ => null,
     };

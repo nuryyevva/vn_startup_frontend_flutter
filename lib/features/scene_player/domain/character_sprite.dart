@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../core/media/media_source.dart';
+import '../../stories/domain/models/sprite_framing.dart';
+import '../presentation/widgets/framed_character_image.dart';
 
 /// Renders a character in the scene player. The only implementation today
 /// is [ImageCharacterSprite] (a static image, or a placeholder silhouette
@@ -15,12 +17,16 @@ abstract class CharacterSprite {
 }
 
 class ImageCharacterSprite implements CharacterSprite {
-  const ImageCharacterSprite({this.imageUrl});
+  const ImageCharacterSprite({this.imageUrl, this.framing = SpriteFraming.full});
 
   /// Null falls back to a placeholder silhouette (see [build]) — most
   /// scenes with a character do set this today, but it's still optional at
   /// the data layer.
   final String? imageUrl;
+
+  /// The shot the image is shown in; changing it on the same sprite animates
+  /// a camera move (see [FramedCharacterImage]). The placeholder ignores it.
+  final SpriteFraming framing;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +43,6 @@ class ImageCharacterSprite implements CharacterSprite {
         ),
       );
     }
-    return Image(image: mediaImageProvider(imageUrl!), fit: BoxFit.contain);
+    return FramedCharacterImage(image: mediaImageProvider(imageUrl!), framing: framing);
   }
 }

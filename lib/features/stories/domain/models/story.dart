@@ -1,5 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'sprite_framing.dart';
+
+export 'sprite_framing.dart';
+
 part 'story.freezed.dart';
 part 'story.g.dart';
 
@@ -68,6 +72,13 @@ class Scene with _$Scene {
     @JsonKey(name: 'dialog_limit_value') int? dialogLimitValue,
     @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
     @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
+
+    /// The shot the scene opens with; script lines may switch it. Missing
+    /// (older backends, older offline bundles) or unknown values fall back
+    /// to the full figure.
+    @JsonKey(name: 'sprite_framing', unknownEnumValue: SpriteFraming.full)
+    @Default(SpriteFraming.full)
+    SpriteFraming spriteFraming,
     @JsonKey(name: 'background_music_url') String? backgroundMusicUrl,
     /// See [SceneSummary.chapterTitle] / [SceneSummary.title].
     @JsonKey(name: 'chapter_title') String? chapterTitle,

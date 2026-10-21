@@ -12,6 +12,19 @@ enum SkinLayout {
   floating,
 }
 
+/// How the free-conversation option ("talk to …") draws attention to itself
+/// among the scripted choices.
+enum TalkEffect {
+  /// A highlight runs along the outline while the glow breathes.
+  shimmer,
+
+  /// Only the glow breathes.
+  glow,
+
+  /// Static: outline and glow, no motion.
+  none,
+}
+
 /// The look of the scene player's text surfaces — the dialogue box, the
 /// choice buttons and the ending panel — for one story.
 ///
@@ -40,6 +53,13 @@ enum SkinLayout {
 /// | `text_color`, `narration_color` | speech and thoughts / narration |
 /// | `accent_color` | speaker name and the thought marker |
 /// | `choice_color`, `choice_border_color`, `choice_text_color`, `choice_radius` | choice buttons |
+/// | `talk_color`, `talk_gradient_to` | fill of the free-conversation option; with both, a left-to-right gradient |
+/// | `talk_border_color`, `talk_text_color`, `talk_glow_color` | its outline, label and glow |
+/// | `talk_effect` | `shimmer`, `glow` or `none` (see [TalkEffect]) |
+///
+/// The talk option's tokens default to the story's accent colour and choice
+/// tokens, so a theme that sets none of them still gets a matching
+/// highlighted option.
 ///
 /// Unknown tokens and malformed values are ignored rather than failing:
 /// themes come from the backend, and an app build older than a theme must
@@ -67,6 +87,12 @@ class ScenePlayerSkin extends ThemeExtension<ScenePlayerSkin> {
     this.choiceBorderColor,
     this.choiceTextColor,
     this.choiceRadius,
+    this.talkColor,
+    this.talkGradientTo,
+    this.talkBorderColor,
+    this.talkTextColor,
+    this.talkGlowColor,
+    this.talkEffect = TalkEffect.shimmer,
   });
 
   /// The app's standard look, following its light/dark palette.
@@ -112,6 +138,25 @@ class ScenePlayerSkin extends ThemeExtension<ScenePlayerSkin> {
   final Color? choiceBorderColor;
   final Color? choiceTextColor;
   final double? choiceRadius;
+
+  /// Free-conversation option. Null tokens are derived from the accent and
+  /// choice tokens — use the `effectiveTalk*` getters.
+  final Color? talkColor;
+  final Color? talkGradientTo;
+  final Color? talkBorderColor;
+  final Color? talkTextColor;
+  final Color? talkGlowColor;
+  final TalkEffect talkEffect;
+
+  /// Fill: a light wash of the accent over the choice fill.
+  Color get effectiveTalkColor =>
+      talkColor ?? Color.alphaBlend(accentColor.withValues(alpha: 0.14), choiceColor ?? Colors.transparent);
+
+  Color get effectiveTalkBorderColor => talkBorderColor ?? accentColor;
+
+  Color get effectiveTalkTextColor => talkTextColor ?? choiceTextColor ?? textColor;
+
+  Color get effectiveTalkGlowColor => talkGlowColor ?? accentColor.withValues(alpha: 0.6);
 
   static ScenePlayerSkin of(BuildContext context) =>
       Theme.of(context).extension<ScenePlayerSkin>() ?? ScenePlayerSkin.fromAppColors(context.colors);
@@ -162,6 +207,17 @@ class ScenePlayerSkin extends ThemeExtension<ScenePlayerSkin> {
     choiceBorderColor: _color(t['choice_border_color']) ?? choiceBorderColor,
     choiceTextColor: _color(t['choice_text_color']) ?? choiceTextColor,
     choiceRadius: _number(t['choice_radius'], max: 999) ?? choiceRadius,
+    talkColor: _color(t['talk_color']) ?? talkColor,
+    talkGradientTo: _color(t['talk_gradient_to']) ?? talkGradientTo,
+    talkBorderColor: _color(t['talk_border_color']) ?? talkBorderColor,
+    talkTextColor: _color(t['talk_text_color']) ?? talkTextColor,
+    talkGlowColor: _color(t['talk_glow_color']) ?? talkGlowColor,
+    talkEffect: switch (t['talk_effect']) {
+      'shimmer' => TalkEffect.shimmer,
+      'glow' => TalkEffect.glow,
+      'none' => TalkEffect.none,
+      _ => talkEffect,
+    },
   );
 
   static Color? _color(Object? raw) {
@@ -215,6 +271,13 @@ const Map<String, Map<String, dynamic>> scenePlayerSkinPresets = {
     'choice_border_color': '#739FC3D9',
     'choice_text_color': '#E8EFF4',
     'choice_radius': 12,
+    // Cold moonlight running along the outline.
+    'talk_color': '#D91A3042',
+    'talk_gradient_to': '#D92A4A63',
+    'talk_border_color': '#C9DFEC',
+    'talk_text_color': '#F4F8FB',
+    'talk_glow_color': '#A69FC3D9',
+    'talk_effect': 'shimmer',
   },
 
   // A page from an illustrated fairy-tale book: parchment, ink-brown
@@ -234,6 +297,12 @@ const Map<String, Map<String, dynamic>> scenePlayerSkinPresets = {
     'choice_border_color': '#8A5A2B',
     'choice_text_color': '#3A2414',
     'choice_radius': 6,
+    // Paper doesn't shine: a red-ink frame and a warm, slow glow.
+    'talk_color': '#F7EBCF',
+    'talk_border_color': '#A8322A',
+    'talk_text_color': '#7A231D',
+    'talk_glow_color': '#80C0662B',
+    'talk_effect': 'glow',
   },
 
   // Dreamlike and theatrical: violet into teal, pill-shaped buttons.
@@ -253,5 +322,12 @@ const Map<String, Map<String, dynamic>> scenePlayerSkinPresets = {
     'choice_border_color': '#99C9A7F0',
     'choice_text_color': '#F6F0FF',
     'choice_radius': 999,
+    // Iridescent: the violet-to-teal of the panel, a lilac highlight.
+    'talk_color': '#D9452172',
+    'talk_gradient_to': '#D9135360',
+    'talk_border_color': '#E4D2FF',
+    'talk_text_color': '#FFFFFF',
+    'talk_glow_color': '#B3C9A7F0',
+    'talk_effect': 'shimmer',
   },
 };
