@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../stories/domain/models/story.dart';
 import '../theme/scene_player_skin.dart';
 import 'skin_panel.dart';
+import 'talk_choice_button.dart';
 
 /// Replaces the dialogue box once its script is exhausted (project spec
 /// §8.4 layer 4). Paid choices show their diamond cost and disable
@@ -43,25 +44,13 @@ class ChoicesPanel extends StatelessWidget {
         children: [
           for (final choice in choices) ...[
             _buildChoice(skin, choice),
-            if (choice != choices.last || onTalk != null) const SizedBox(height: 10),
+            if (choice != choices.last) const SizedBox(height: 10),
           ],
-          if (onTalk != null) _buildTalkOption(skin),
-        ],
-      ),
-    );
-  }
-
-  /// Looks like the other answers, marked with a speech bubble and the accent colour so it reads as "say
-  /// something of your own" rather than one more scripted line.
-  Widget _buildTalkOption(ScenePlayerSkin skin) {
-    return SkinButton(
-      onPressed: pendingChoiceId == null ? onTalk : null,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(LucideIcons.messageCircle, size: 16, color: skin.accentColor),
-          const SizedBox(width: 8),
-          Flexible(child: Text(talkLabel ?? '', textAlign: TextAlign.center)),
+          if (onTalk != null) ...[
+            // A little more air: it's a different kind of answer.
+            if (choices.isNotEmpty) const SizedBox(height: 14),
+            TalkChoiceButton(label: talkLabel ?? '', onPressed: pendingChoiceId == null ? onTalk : null),
+          ],
         ],
       ),
     );

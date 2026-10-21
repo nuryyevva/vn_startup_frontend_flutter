@@ -2,16 +2,24 @@ import '../../stories/domain/models/story.dart';
 
 /// One line of a scene's `dialogue_script`, resolved for playback: lines
 /// whose `when` conditions don't hold are already dropped, and the
-/// background/sprite in effect at this line are filled in.
+/// background/sprite/framing in effect at this line are filled in.
 ///
 /// Script line format (see `cmd/seed/story_graph.go` on the backend):
 /// `speaker` is a character name or the sentinel `narrator`/`thought`;
 /// `background_url` / `sprite_url` switch the background/character from
-/// that line on (`sprite_url: ""` hides the character); `sfx_url` plays a
+/// that line on (`sprite_url: ""` hides the character), and so does
+/// `sprite_framing` for the shot ([SpriteFraming]); `sfx_url` plays a
 /// one-shot sound; `when` is a list of conditions on the player's
 /// `choices_made` (see [_conditionHolds]).
 class DialogueLine {
-  const DialogueLine({required this.speaker, required this.text, this.sfxUrl, this.backgroundUrl, this.spriteUrl});
+  const DialogueLine({
+    required this.speaker,
+    required this.text,
+    this.sfxUrl,
+    this.backgroundUrl,
+    this.spriteUrl,
+    this.spriteFraming = SpriteFraming.full,
+  });
 
   static const narratorSpeaker = 'narrator';
   static const thoughtSpeaker = 'thought';
@@ -29,6 +37,10 @@ class DialogueLine {
   /// string means explicitly hidden.
   final String? spriteUrl;
 
+  /// Shot in effect at this line — the scene's own unless a line at or
+  /// before this one switched it.
+  final SpriteFraming spriteFraming;
+
   bool get isNarration => speaker == narratorSpeaker;
   bool get isThought => speaker == thoughtSpeaker;
 
@@ -40,6 +52,7 @@ class DialogueLine {
   static List<DialogueLine> resolveScript(Scene scene, List<String> choicesMade) {
     var background = scene.backgroundUrl;
     var sprite = scene.characterSpriteUrl;
+    var framing = scene.spriteFraming;
     final out = <DialogueLine>[];
     for (final raw in scene.dialogueScript) {
       if (raw is! Map<String, dynamic>) continue;
@@ -49,6 +62,7 @@ class DialogueLine {
       }
       if (raw['background_url'] case final String url when url.isNotEmpty) background = url;
       if (raw['sprite_url'] case final String url) sprite = url;
+      framing = SpriteFraming.tryParse(raw['sprite_framing']) ?? framing;
       out.add(
         DialogueLine(
           speaker: (raw['speaker'] as String?) ?? '',
@@ -56,6 +70,7 @@ class DialogueLine {
           sfxUrl: raw['sfx_url'] as String?,
           backgroundUrl: background,
           spriteUrl: sprite,
+          spriteFraming: framing,
         ),
       );
     }

@@ -51,6 +51,32 @@ void main() {
       expect(skin.panelColor, isNot(base.panelColor), reason: entry.key);
       expect(skin.textColor, isNot(base.textColor), reason: entry.key);
       expect(skin.choiceColor, isNotNull, reason: entry.key);
+      expect(skin.talkColor, isNotNull, reason: entry.key);
+      expect(skin.talkBorderColor, isNotNull, reason: entry.key);
+      expect(skin.talkGlowColor, isNotNull, reason: entry.key);
     }
+  });
+
+  test('the talk option follows the accent when the theme sets no talk tokens', () {
+    final skin = ScenePlayerSkin.resolve(colors, {'accent_color': '#E8C36A', 'choice_text_color': '#101010'});
+
+    expect(skin.talkEffect, TalkEffect.shimmer);
+    expect(skin.effectiveTalkBorderColor, const Color(0xFFE8C36A));
+    expect(skin.effectiveTalkGlowColor.toARGB32() & 0xFFFFFF, 0xE8C36A);
+    expect(skin.effectiveTalkGlowColor.a, lessThan(1));
+    expect(skin.effectiveTalkTextColor, const Color(0xFF101010));
+    expect(skin.effectiveTalkColor, isNot(Colors.transparent));
+  });
+
+  test('talk tokens override the preset; unknown effects keep the preset one', () {
+    final skin = ScenePlayerSkin.resolve(colors, {
+      'preset': 'storybook',
+      'talk_border_color': '#123456',
+      'talk_effect': 'fireworks',
+    });
+
+    expect(skin.effectiveTalkBorderColor, const Color(0xFF123456));
+    expect(skin.talkEffect, TalkEffect.glow, reason: 'the storybook preset glows, a newer effect name is ignored');
+    expect(ScenePlayerSkin.resolve(colors, {'talk_effect': 'none'}).talkEffect, TalkEffect.none);
   });
 }

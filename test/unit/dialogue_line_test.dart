@@ -87,6 +87,39 @@ void main() {
       );
       expect(lines.single.backgroundUrl, 'bg0');
     });
+
+    test('sprite framing starts from the scene and is sticky; unknown shots are ignored', () {
+      final scene = _scene([
+        {'speaker': 'narrator', 'text': 'a'},
+        {'speaker': 'narrator', 'text': 'b', 'sprite_framing': 'full'},
+        {'speaker': 'narrator', 'text': 'c'},
+        {'speaker': 'narrator', 'text': 'd', 'sprite_framing': 'waist'},
+        {'speaker': 'narrator', 'text': 'e', 'sprite_framing': 'knees'},
+      ]).copyWith(spriteFraming: SpriteFraming.knees);
+
+      final lines = DialogueLine.resolveScript(scene, const []);
+
+      expect(lines.map((l) => l.spriteFraming), [
+        SpriteFraming.knees,
+        SpriteFraming.full,
+        SpriteFraming.full,
+        SpriteFraming.full,
+        SpriteFraming.knees,
+      ]);
+    });
+
+    test('a scene without sprite_framing in its JSON opens on the full figure', () {
+      final scene = Scene.fromJson({
+        'id': 's',
+        'story_id': 'story',
+        'order_index': 0,
+        'dialogue_script': <dynamic>[],
+        'free_dialog_enabled': false,
+      });
+      expect(scene.spriteFraming, SpriteFraming.full);
+      expect(Scene.fromJson({...scene.toJson(), 'sprite_framing': 'knees'}).spriteFraming, SpriteFraming.knees);
+      expect(Scene.fromJson({...scene.toJson(), 'sprite_framing': 'waist'}).spriteFraming, SpriteFraming.full);
+    });
   });
 
   group('resolveMediaUrlsInJson', () {
