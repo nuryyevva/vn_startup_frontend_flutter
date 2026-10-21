@@ -33,8 +33,9 @@ class FramedCharacterImage extends StatelessWidget {
   static const kneesVisibleFraction = 0.75;
 
   /// Share of the canvas height a [SpriteFraming.waist] shot shows: the cut
-  /// lands just below the belt, about half of the standing figure.
-  static const waistVisibleFraction = 0.52;
+  /// lands at the hips, a bit over half of the standing figure. Tighter
+  /// (the first try was 0.52, at the belt) put the face too close.
+  static const waistVisibleFraction = 0.62;
 
   /// Where the top of the head is in a normalized canvas: 40px of 1536.
   static const spriteHeadInset = 40 / 1536;
