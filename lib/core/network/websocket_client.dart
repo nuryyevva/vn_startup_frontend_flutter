@@ -37,7 +37,9 @@ class WebSocketClient {
       return;
     }
 
-    final uri = Uri.parse(wsBaseUrl).replace(path: '/ws', queryParameters: {'token': token});
+    final base = Uri.parse(wsBaseUrl);
+    final prefix = base.path.endsWith('/') ? base.path.substring(0, base.path.length - 1) : base.path;
+    final uri = base.replace(path: '$prefix/ws', queryParameters: {'token': token});
     try {
       final channel = WebSocketChannel.connect(uri);
       await channel.ready;
