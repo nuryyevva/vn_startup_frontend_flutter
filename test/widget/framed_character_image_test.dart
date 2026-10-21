@@ -43,6 +43,19 @@ void main() {
       });
     }
 
+    for (final size in const [Size(393, 873), Size(540, 960), Size(1280, 720)]) {
+      test('waist shot on $size: head in the upper part, cut at half the figure, closer than the knee shot', () {
+        final rect = FramedCharacterImage.imageRect(size, 2);
+        final knees = FramedCharacterImage.imageRect(size, 1);
+
+        final headTop = rect.top + rect.height * FramedCharacterImage.spriteHeadInset;
+        final cut = rect.top + rect.height * FramedCharacterImage.waistVisibleFraction;
+        expect(headTop / size.height, closeTo(FramedCharacterImage.kneesHeadroom, 1e-9));
+        expect(cut, closeTo(size.height, 1e-9));
+        expect(rect.center.dx, closeTo(size.width / 2, 1e-9));
+        expect(rect.height, greaterThan(knees.height));
+      });
+    }
     test('in between, the rectangle moves continuously', () {
       const size = Size(540, 960);
       final a = FramedCharacterImage.imageRect(size, 0.49);

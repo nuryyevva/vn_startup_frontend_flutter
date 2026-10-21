@@ -9,7 +9,7 @@ import '../../../stories/domain/models/sprite_framing.dart';
 /// any image (including the hotlinked, non-normalized sprites of the sample
 /// stories) looks exactly as it always has.
 ///
-/// [SpriteFraming.knees] relies on the sprite convention of the story art
+/// [SpriteFraming.knees] and [SpriteFraming.waist] rely on the sprite convention of the story art
 /// (backend README, "Кадр персонажа"): a [spriteAspectRatio] canvas with the
 /// figure standing head to feet, its head [spriteHeadInset] below the top.
 /// The camera moves in until the figure spans from [kneesHeadroom] below the
@@ -32,6 +32,10 @@ class FramedCharacterImage extends StatelessWidget {
   /// three quarters down, just below the knees.
   static const kneesVisibleFraction = 0.75;
 
+  /// Share of the canvas height a [SpriteFraming.waist] shot shows: the cut
+  /// lands just below the belt, about half of the standing figure.
+  static const waistVisibleFraction = 0.52;
+
   /// Where the top of the head is in a normalized canvas: 40px of 1536.
   static const spriteHeadInset = 40 / 1536;
 
@@ -45,26 +49,39 @@ class FramedCharacterImage extends StatelessWidget {
   static const duration = Duration(milliseconds: 450);
   static const curve = Curves.easeInOutCubic;
 
+  /// Where the image goes in an area of [size] when the shot shows
+  /// [visibleFraction] of the canvas height, head to the cut.
+  static Rect _shot(Size size, double visibleFraction) {
+    // The visible part of the canvas, head to the cut, spans from the
+    // headroom line to the bottom edge.
+    final height = size.height * (1 - kneesHeadroom) / (visibleFraction - spriteHeadInset);
+    final width = height * spriteAspectRatio;
+    final top = size.height * kneesHeadroom - height * spriteHeadInset;
+    return Rect.fromLTWH((size.width - width) / 2, top, width, height);
+  }
+
   /// Where the image goes in an area of [size] at [closeness] (0 = full
-  /// shot, 1 = knee shot). Between the two the rectangle is interpolated, so
-  /// the move is continuous. Exposed for tests.
+  /// shot, 1 = knee shot, 2 = waist shot). Between the shots the rectangle is
+  /// interpolated, so the move is continuous. Exposed for tests.
   static Rect imageRect(Size size, double closeness) {
     final full = Offset.zero & size;
     if (closeness <= 0) return full;
-
-    // The visible part of the canvas, head to knees, spans from the headroom
-    // line to the bottom edge.
-    final height = size.height * (1 - kneesHeadroom) / (kneesVisibleFraction - spriteHeadInset);
-    final width = height * spriteAspectRatio;
-    final top = size.height * kneesHeadroom - height * spriteHeadInset;
-    final knees = Rect.fromLTWH((size.width - width) / 2, top, width, height);
-    return Rect.lerp(full, knees, closeness)!;
+    final knees = _shot(size, kneesVisibleFraction);
+    if (closeness <= 1) return Rect.lerp(full, knees, closeness)!;
+    final waist = _shot(size, waistVisibleFraction);
+    return Rect.lerp(knees, waist, (closeness - 1).clamp(0.0, 1.0))!;
   }
+
+  static double _closeness(SpriteFraming framing) => switch (framing) {
+    SpriteFraming.full => 0,
+    SpriteFraming.knees => 1,
+    SpriteFraming.waist => 2,
+  };
 
   @override
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<double>(
-      tween: Tween(end: framing == SpriteFraming.knees ? 1 : 0),
+      tween: Tween(end: _closeness(framing)),
       duration: duration,
       curve: curve,
       child: Image(image: image, fit: BoxFit.contain),

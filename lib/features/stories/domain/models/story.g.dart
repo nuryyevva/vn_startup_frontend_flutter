@@ -112,6 +112,7 @@ Map<String, dynamic> _$$SceneImplToJson(_$SceneImpl instance) =>
 const _$SpriteFramingEnumMap = {
   SpriteFraming.full: 'full',
   SpriteFraming.knees: 'knees',
+  SpriteFraming.waist: 'waist',
 };
 
 _$SceneSummaryImpl _$$SceneSummaryImplFromJson(Map<String, dynamic> json) =>

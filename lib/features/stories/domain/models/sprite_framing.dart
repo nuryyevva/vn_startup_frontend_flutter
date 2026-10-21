@@ -14,7 +14,11 @@ enum SpriteFraming {
 
   /// A closer shot, cut just below the knees.
   @JsonValue('knees')
-  knees;
+  knees,
+
+  /// The closest shot, cropped at the waist: the usual shot of a conversation.
+  @JsonValue('waist')
+  waist;
 
   /// Parses a script line's `sprite_framing`. Unknown values (a shot added
   /// by a newer backend) yield null, i.e. "keep the current shot", so new
@@ -22,6 +26,7 @@ enum SpriteFraming {
   static SpriteFraming? tryParse(Object? raw) => switch (raw) {
     'full' => SpriteFraming.full,
     'knees' => SpriteFraming.knees,
+    'waist' => SpriteFraming.waist,
     _ => null,
   };
 }

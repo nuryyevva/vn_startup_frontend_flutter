@@ -93,7 +93,7 @@ void main() {
         {'speaker': 'narrator', 'text': 'a'},
         {'speaker': 'narrator', 'text': 'b', 'sprite_framing': 'full'},
         {'speaker': 'narrator', 'text': 'c'},
-        {'speaker': 'narrator', 'text': 'd', 'sprite_framing': 'waist'},
+        {'speaker': 'narrator', 'text': 'd', 'sprite_framing': 'closeup'},
         {'speaker': 'narrator', 'text': 'e', 'sprite_framing': 'knees'},
       ]).copyWith(spriteFraming: SpriteFraming.knees);
 
@@ -118,7 +118,8 @@ void main() {
       });
       expect(scene.spriteFraming, SpriteFraming.full);
       expect(Scene.fromJson({...scene.toJson(), 'sprite_framing': 'knees'}).spriteFraming, SpriteFraming.knees);
-      expect(Scene.fromJson({...scene.toJson(), 'sprite_framing': 'waist'}).spriteFraming, SpriteFraming.full);
+      expect(Scene.fromJson({...scene.toJson(), 'sprite_framing': 'waist'}).spriteFraming, SpriteFraming.waist);
+      expect(Scene.fromJson({...scene.toJson(), 'sprite_framing': 'closeup'}).spriteFraming, SpriteFraming.full);
     });
   });
 
