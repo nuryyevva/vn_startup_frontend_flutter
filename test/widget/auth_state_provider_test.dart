@@ -67,13 +67,4 @@ void main() {
     expect(container.read(authStateProvider).status, AuthStatus.unauthenticated);
     verify(() => repository.logout()).called(1);
   });
-
-  test('continueAsGuest moves state to guest without calling the repository', () {
-    when(() => repository.hasStoredSession()).thenAnswer((_) async => false);
-    container = buildContainer();
-
-    container.read(authStateProvider.notifier).continueAsGuest();
-
-    expect(container.read(authStateProvider).status, AuthStatus.guest);
-  });
 }

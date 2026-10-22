@@ -15,6 +15,7 @@ _$DialogSessionImpl _$$DialogSessionImplFromJson(Map<String, dynamic> json) =>
       limitType: json['limit_type'] as String,
       limitValue: json['limit_value'] as int?,
       messageCount: json['message_count'] as int? ?? 0,
+      messageCost: json['message_cost'] as int?,
       startedAt: DateTime.parse(json['started_at'] as String),
       endedAt: json['ended_at'] == null
           ? null
@@ -31,6 +32,7 @@ Map<String, dynamic> _$$DialogSessionImplToJson(_$DialogSessionImpl instance) =>
       'limit_type': instance.limitType,
       'limit_value': instance.limitValue,
       'message_count': instance.messageCount,
+      'message_cost': instance.messageCost,
       'started_at': instance.startedAt.toIso8601String(),
       'ended_at': instance.endedAt?.toIso8601String(),
       'end_reason': instance.endReason,

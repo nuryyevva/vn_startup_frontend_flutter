@@ -62,7 +62,16 @@ class StoryCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                if (progress != null)
+                if (story.comingSoon) ...[
+                  // Dimmed, still recognisable: it's on its way, not gone.
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.35),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  const Positioned(top: 8, left: 8, child: _ComingSoonBadge()),
+                ] else if (progress != null)
                   Positioned(
                     top: 8,
                     left: 8,
@@ -99,6 +108,31 @@ class StoryCard extends StatelessWidget {
             const SizedBox(height: 2),
             Text(genreLabelKeyFor(story.genre).tr(), style: textTheme.labelMedium?.copyWith(color: colors.textMuted)),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _ComingSoonBadge extends StatelessWidget {
+  const _ComingSoonBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(color: colors.surfaceElevated.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(8)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(LucideIcons.sparkles, size: 12, color: colors.accent),
+          const SizedBox(width: 4),
+          Text(
+            'stories.comingSoon'.tr(),
+            style: textTheme.labelSmall?.copyWith(color: colors.textPrimary, fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );

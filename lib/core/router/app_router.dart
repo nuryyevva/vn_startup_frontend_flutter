@@ -16,7 +16,7 @@ import '../../features/story_detail/presentation/screens/story_detail_screen.dar
 import 'app_shell.dart';
 
 /// Bridges Riverpod's [authStateProvider] to go_router's [Listenable]-based
-/// `refreshListenable`, so a login/logout/guest-mode change re-evaluates
+/// `refreshListenable`, so a login/logout change re-evaluates
 /// [_redirect] without the widget tree needing to poll or rebuild the
 /// router itself.
 class _RouterRefreshNotifier extends ChangeNotifier {
@@ -39,7 +39,6 @@ String? _redirect(Ref ref, GoRouterState state) {
     case AuthStatus.unauthenticated:
       return isAuthRoute ? null : '/auth';
     case AuthStatus.authenticated:
-    case AuthStatus.guest:
       // Onboarding is entered explicitly right after a successful
       // registration (see AuthScreen), not gated here on every launch —
       // the backend has no "onboarding completed" flag to check against.

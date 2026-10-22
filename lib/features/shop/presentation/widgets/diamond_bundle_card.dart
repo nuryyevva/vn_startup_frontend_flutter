@@ -5,21 +5,17 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/config/diamond_bundle_config.dart';
 import '../../../../core/theme/app_colors.dart';
 
-/// One bundle row in the shop list. [isDevMode] switches the button
-/// between the real (currently non-functional — no payment provider
-/// exists yet, see README "known limitations") price and the explicit
-/// "(dev mode)" free-grant label, so a dev/staging build never implies a
-/// real charge is happening.
+/// One bundle row in the shop list. Its button says "get", not a price:
+/// there are no payments yet — see the shop screen for what a tap does.
 ///
 /// Horizontal layout: gem count on the left, buy button on the right. The
 /// highlight badge (when present) floats above the card's top-right corner
 /// as a little tab, via [Stack]/[Positioned] rather than sitting inline —
 /// same badge styling as before, just repositioned for the wider card.
 class DiamondBundleCard extends StatelessWidget {
-  const DiamondBundleCard({super.key, required this.bundle, required this.isDevMode, required this.isPurchasing, required this.onBuy});
+  const DiamondBundleCard({super.key, required this.bundle, required this.isPurchasing, required this.onBuy});
 
   final DiamondBundleConfig bundle;
-  final bool isDevMode;
   final bool isPurchasing;
   final VoidCallback? onBuy;
 
@@ -61,7 +57,7 @@ class DiamondBundleCard extends StatelessWidget {
                 onPressed: isPurchasing ? null : onBuy,
                 child: isPurchasing
                     ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                    : Text(isDevMode ? 'shop.getFreeDevMode'.tr() : '\$${bundle.priceUsd.toStringAsFixed(2)}'),
+                    : Text('shop.get'.tr()),
               ),
             ],
           ),

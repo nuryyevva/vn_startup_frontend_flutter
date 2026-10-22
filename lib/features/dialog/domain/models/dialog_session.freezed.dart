@@ -32,6 +32,10 @@ mixin _$DialogSession {
   int? get limitValue => throw _privateConstructorUsedError;
   @JsonKey(name: 'message_count')
   int get messageCount => throw _privateConstructorUsedError;
+
+  /// Diamonds each message costs; null from a backend that doesn't say.
+  @JsonKey(name: 'message_cost')
+  int? get messageCost => throw _privateConstructorUsedError;
   @JsonKey(name: 'started_at')
   DateTime get startedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'ended_at')
@@ -59,6 +63,7 @@ abstract class $DialogSessionCopyWith<$Res> {
       @JsonKey(name: 'limit_type') String limitType,
       @JsonKey(name: 'limit_value') int? limitValue,
       @JsonKey(name: 'message_count') int messageCount,
+      @JsonKey(name: 'message_cost') int? messageCost,
       @JsonKey(name: 'started_at') DateTime startedAt,
       @JsonKey(name: 'ended_at') DateTime? endedAt,
       @JsonKey(name: 'end_reason') String? endReason});
@@ -84,6 +89,7 @@ class _$DialogSessionCopyWithImpl<$Res, $Val extends DialogSession>
     Object? limitType = null,
     Object? limitValue = freezed,
     Object? messageCount = null,
+    Object? messageCost = freezed,
     Object? startedAt = null,
     Object? endedAt = freezed,
     Object? endReason = freezed,
@@ -117,6 +123,10 @@ class _$DialogSessionCopyWithImpl<$Res, $Val extends DialogSession>
           ? _value.messageCount
           : messageCount // ignore: cast_nullable_to_non_nullable
               as int,
+      messageCost: freezed == messageCost
+          ? _value.messageCost
+          : messageCost // ignore: cast_nullable_to_non_nullable
+              as int?,
       startedAt: null == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -149,6 +159,7 @@ abstract class _$$DialogSessionImplCopyWith<$Res>
       @JsonKey(name: 'limit_type') String limitType,
       @JsonKey(name: 'limit_value') int? limitValue,
       @JsonKey(name: 'message_count') int messageCount,
+      @JsonKey(name: 'message_cost') int? messageCost,
       @JsonKey(name: 'started_at') DateTime startedAt,
       @JsonKey(name: 'ended_at') DateTime? endedAt,
       @JsonKey(name: 'end_reason') String? endReason});
@@ -172,6 +183,7 @@ class __$$DialogSessionImplCopyWithImpl<$Res>
     Object? limitType = null,
     Object? limitValue = freezed,
     Object? messageCount = null,
+    Object? messageCost = freezed,
     Object? startedAt = null,
     Object? endedAt = freezed,
     Object? endReason = freezed,
@@ -205,6 +217,10 @@ class __$$DialogSessionImplCopyWithImpl<$Res>
           ? _value.messageCount
           : messageCount // ignore: cast_nullable_to_non_nullable
               as int,
+      messageCost: freezed == messageCost
+          ? _value.messageCost
+          : messageCost // ignore: cast_nullable_to_non_nullable
+              as int?,
       startedAt: null == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -232,6 +248,7 @@ class _$DialogSessionImpl implements _DialogSession {
       @JsonKey(name: 'limit_type') required this.limitType,
       @JsonKey(name: 'limit_value') this.limitValue,
       @JsonKey(name: 'message_count') this.messageCount = 0,
+      @JsonKey(name: 'message_cost') this.messageCost,
       @JsonKey(name: 'started_at') required this.startedAt,
       @JsonKey(name: 'ended_at') this.endedAt,
       @JsonKey(name: 'end_reason') this.endReason});
@@ -258,6 +275,11 @@ class _$DialogSessionImpl implements _DialogSession {
   @override
   @JsonKey(name: 'message_count')
   final int messageCount;
+
+  /// Diamonds each message costs; null from a backend that doesn't say.
+  @override
+  @JsonKey(name: 'message_cost')
+  final int? messageCost;
   @override
   @JsonKey(name: 'started_at')
   final DateTime startedAt;
@@ -270,7 +292,7 @@ class _$DialogSessionImpl implements _DialogSession {
 
   @override
   String toString() {
-    return 'DialogSession(id: $id, characterId: $characterId, sceneId: $sceneId, status: $status, limitType: $limitType, limitValue: $limitValue, messageCount: $messageCount, startedAt: $startedAt, endedAt: $endedAt, endReason: $endReason)';
+    return 'DialogSession(id: $id, characterId: $characterId, sceneId: $sceneId, status: $status, limitType: $limitType, limitValue: $limitValue, messageCount: $messageCount, messageCost: $messageCost, startedAt: $startedAt, endedAt: $endedAt, endReason: $endReason)';
   }
 
   @override
@@ -289,6 +311,8 @@ class _$DialogSessionImpl implements _DialogSession {
                 other.limitValue == limitValue) &&
             (identical(other.messageCount, messageCount) ||
                 other.messageCount == messageCount) &&
+            (identical(other.messageCost, messageCost) ||
+                other.messageCost == messageCost) &&
             (identical(other.startedAt, startedAt) ||
                 other.startedAt == startedAt) &&
             (identical(other.endedAt, endedAt) || other.endedAt == endedAt) &&
@@ -298,8 +322,19 @@ class _$DialogSessionImpl implements _DialogSession {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, characterId, sceneId, status,
-      limitType, limitValue, messageCount, startedAt, endedAt, endReason);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      characterId,
+      sceneId,
+      status,
+      limitType,
+      limitValue,
+      messageCount,
+      messageCost,
+      startedAt,
+      endedAt,
+      endReason);
 
   @JsonKey(ignore: true)
   @override
@@ -324,6 +359,7 @@ abstract class _DialogSession implements DialogSession {
           @JsonKey(name: 'limit_type') required final String limitType,
           @JsonKey(name: 'limit_value') final int? limitValue,
           @JsonKey(name: 'message_count') final int messageCount,
+          @JsonKey(name: 'message_cost') final int? messageCost,
           @JsonKey(name: 'started_at') required final DateTime startedAt,
           @JsonKey(name: 'ended_at') final DateTime? endedAt,
           @JsonKey(name: 'end_reason') final String? endReason}) =
@@ -351,6 +387,11 @@ abstract class _DialogSession implements DialogSession {
   @override
   @JsonKey(name: 'message_count')
   int get messageCount;
+  @override
+
+  /// Diamonds each message costs; null from a backend that doesn't say.
+  @JsonKey(name: 'message_cost')
+  int? get messageCost;
   @override
   @JsonKey(name: 'started_at')
   DateTime get startedAt;

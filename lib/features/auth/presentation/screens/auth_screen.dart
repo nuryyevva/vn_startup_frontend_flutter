@@ -64,25 +64,6 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     }
   }
 
-  Future<void> _continueAsGuest() async {
-    final notifier = ref.read(authStateProvider.notifier);
-    if (ref.read(appConfigProvider).offline) {
-      notifier.continueAsGuest();
-      return;
-    }
-    setState(() {
-      _isSubmitting = true;
-      _error = null;
-    });
-    try {
-      await notifier.registerGuest();
-    } on DioException catch (e) {
-      setState(() => _error = mapDioException(e));
-    } finally {
-      if (mounted) setState(() => _isSubmitting = false);
-    }
-  }
-
   String? _validateEmail(String? value) {
     final v = value?.trim() ?? '';
     if (v.isEmpty) return 'auth.validation.emailRequired'.tr();
@@ -169,8 +150,6 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                             )
                           : Text(_isSignUp ? 'auth.signUp'.tr() : 'auth.signIn'.tr()),
                     ),
-                    const SizedBox(height: 16),
-                    TextButton(onPressed: _isSubmitting ? null : _continueAsGuest, child: Text('auth.continueAsGuest'.tr())),
                   ],
                 ),
               ),

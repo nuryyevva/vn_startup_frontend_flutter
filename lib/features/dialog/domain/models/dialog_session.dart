@@ -14,6 +14,9 @@ class DialogSession with _$DialogSession {
     @JsonKey(name: 'limit_type') required String limitType,
     @JsonKey(name: 'limit_value') int? limitValue,
     @JsonKey(name: 'message_count') @Default(0) int messageCount,
+
+    /// Diamonds each message costs; null from a backend that doesn't say.
+    @JsonKey(name: 'message_cost') int? messageCost,
     @JsonKey(name: 'started_at') required DateTime startedAt,
     @JsonKey(name: 'ended_at') DateTime? endedAt,
     @JsonKey(name: 'end_reason') String? endReason,

@@ -12,6 +12,7 @@ import '../../../../core/widgets/diamond_badge.dart';
 import '../../../../core/widgets/genre_chip.dart';
 import '../../../../core/widgets/shimmer_placeholder.dart';
 import '../../../wallet/presentation/providers/wallet_balance_provider.dart';
+import '../open_story.dart';
 import '../providers/bookmarks_provider.dart';
 import '../providers/stories_providers.dart';
 import '../widgets/continue_reading_card.dart';
@@ -56,7 +57,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
     final myProgressAsync = ref.watch(myProgressProvider);
 
     final continueReading = (myProgressAsync.valueOrNull ?? const [])
-        .where((p) => !p.isFinished && p.currentSceneOrderIndex > 0)
+        .where((p) => !p.isFinished && p.currentSceneOrderIndex > 0 && !p.story.comingSoon)
         .toList();
 
     return Scaffold(
@@ -107,7 +108,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
                         final progress = continueReading[index];
                         return ContinueReadingCard(
                           progress: progress,
-                          onTap: () => context.push('/story/${progress.story.id}'),
+                          onTap: () => openStory(context, progress.story),
                         );
                       },
                     ),
@@ -168,7 +169,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
                             progress: progress,
                             isBookmarked: bookmarks.contains(story.id),
                             onBookmarkTap: () => ref.read(bookmarksProvider.notifier).toggle(story.id),
-                            onTap: () => context.push('/story/${story.id}'),
+                            onTap: () => openStory(context, story),
                           ).animate(delay: Motion.staggerStep * (index % 6)).fadeIn(duration: Motion.staggerItemDuration);
                         },
                         childCount: stories.length,

@@ -17,6 +17,7 @@ sealed class AppException with _$AppException implements Exception {
   const factory AppException.weakPassword() = WeakPasswordException;
   const factory AppException.sessionExpired() = SessionExpiredException;
   const factory AppException.insufficientDiamonds() = InsufficientDiamondsException;
+  const factory AppException.topUpUnavailable() = TopUpUnavailableException;
   const factory AppException.sessionLimitReached() = SessionLimitReachedException;
   const factory AppException.sceneLocked() = SceneLockedException;
   const factory AppException.notFound() = NotFoundException;
@@ -39,6 +40,7 @@ extension AppExceptionLocalization on AppException {
       WeakPasswordException() => 'errors.weakPassword'.tr(),
       SessionExpiredException() => 'errors.sessionExpired'.tr(),
       InsufficientDiamondsException() => 'errors.insufficientDiamonds'.tr(),
+      TopUpUnavailableException() => 'shop.comingSoon'.tr(),
       SessionLimitReachedException() => 'errors.sessionLimitReached'.tr(),
       SceneLockedException() => 'errors.insufficientDiamonds'.tr(),
       NotFoundException() => 'errors.unknownError'.tr(),
@@ -107,6 +109,7 @@ AppException mapDioException(DioException error) {
   if (code == 'invalid_email') return const AppException.invalidEmail();
   if (code == 'weak_password') return const AppException.weakPassword();
   if (code == 'insufficient_funds') return const AppException.insufficientDiamonds();
+  if (code == 'top_up_unavailable') return const AppException.topUpUnavailable();
   if (code == 'scene_locked') return const AppException.sceneLocked();
   if (code == 'rate_limited') return const AppException.rateLimited();
   if (_sessionExpiredCodes.contains(code)) return const AppException.sessionExpired();

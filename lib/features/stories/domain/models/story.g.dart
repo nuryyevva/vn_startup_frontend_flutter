@@ -15,6 +15,7 @@ _$StoryImpl _$$StoryImplFromJson(Map<String, dynamic> json) => _$StoryImpl(
       status: json['status'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       playerTheme: json['player_theme'] as Map<String, dynamic>?,
+      comingSoon: json['coming_soon'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$StoryImplToJson(_$StoryImpl instance) =>
@@ -27,6 +28,7 @@ Map<String, dynamic> _$$StoryImplToJson(_$StoryImpl instance) =>
       'status': instance.status,
       'created_at': instance.createdAt.toIso8601String(),
       'player_theme': instance.playerTheme,
+      'coming_soon': instance.comingSoon,
     };
 
 _$StoryPageImpl _$$StoryPageImplFromJson(Map<String, dynamic> json) =>

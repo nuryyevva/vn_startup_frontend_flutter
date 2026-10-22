@@ -24,6 +24,7 @@ mixin _$AppException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -41,6 +42,7 @@ mixin _$AppException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -58,6 +60,7 @@ mixin _$AppException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -78,6 +81,7 @@ mixin _$AppException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -97,6 +101,7 @@ mixin _$AppException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -114,6 +119,7 @@ mixin _$AppException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -191,6 +197,7 @@ class _$InvalidCredentialsExceptionImpl implements InvalidCredentialsException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -211,6 +218,7 @@ class _$InvalidCredentialsExceptionImpl implements InvalidCredentialsException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -231,6 +239,7 @@ class _$InvalidCredentialsExceptionImpl implements InvalidCredentialsException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -257,6 +266,7 @@ class _$InvalidCredentialsExceptionImpl implements InvalidCredentialsException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -279,6 +289,7 @@ class _$InvalidCredentialsExceptionImpl implements InvalidCredentialsException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -299,6 +310,7 @@ class _$InvalidCredentialsExceptionImpl implements InvalidCredentialsException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -365,6 +377,7 @@ class _$EmailTakenExceptionImpl implements EmailTakenException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -385,6 +398,7 @@ class _$EmailTakenExceptionImpl implements EmailTakenException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -405,6 +419,7 @@ class _$EmailTakenExceptionImpl implements EmailTakenException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -431,6 +446,7 @@ class _$EmailTakenExceptionImpl implements EmailTakenException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -453,6 +469,7 @@ class _$EmailTakenExceptionImpl implements EmailTakenException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -473,6 +490,7 @@ class _$EmailTakenExceptionImpl implements EmailTakenException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -539,6 +557,7 @@ class _$InvalidEmailExceptionImpl implements InvalidEmailException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -559,6 +578,7 @@ class _$InvalidEmailExceptionImpl implements InvalidEmailException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -579,6 +599,7 @@ class _$InvalidEmailExceptionImpl implements InvalidEmailException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -605,6 +626,7 @@ class _$InvalidEmailExceptionImpl implements InvalidEmailException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -627,6 +649,7 @@ class _$InvalidEmailExceptionImpl implements InvalidEmailException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -647,6 +670,7 @@ class _$InvalidEmailExceptionImpl implements InvalidEmailException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -713,6 +737,7 @@ class _$WeakPasswordExceptionImpl implements WeakPasswordException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -733,6 +758,7 @@ class _$WeakPasswordExceptionImpl implements WeakPasswordException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -753,6 +779,7 @@ class _$WeakPasswordExceptionImpl implements WeakPasswordException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -779,6 +806,7 @@ class _$WeakPasswordExceptionImpl implements WeakPasswordException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -801,6 +829,7 @@ class _$WeakPasswordExceptionImpl implements WeakPasswordException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -821,6 +850,7 @@ class _$WeakPasswordExceptionImpl implements WeakPasswordException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -888,6 +918,7 @@ class _$SessionExpiredExceptionImpl implements SessionExpiredException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -908,6 +939,7 @@ class _$SessionExpiredExceptionImpl implements SessionExpiredException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -928,6 +960,7 @@ class _$SessionExpiredExceptionImpl implements SessionExpiredException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -954,6 +987,7 @@ class _$SessionExpiredExceptionImpl implements SessionExpiredException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -976,6 +1010,7 @@ class _$SessionExpiredExceptionImpl implements SessionExpiredException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -996,6 +1031,7 @@ class _$SessionExpiredExceptionImpl implements SessionExpiredException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -1065,6 +1101,7 @@ class _$InsufficientDiamondsExceptionImpl
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -1085,6 +1122,7 @@ class _$InsufficientDiamondsExceptionImpl
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -1105,6 +1143,7 @@ class _$InsufficientDiamondsExceptionImpl
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -1131,6 +1170,7 @@ class _$InsufficientDiamondsExceptionImpl
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -1153,6 +1193,7 @@ class _$InsufficientDiamondsExceptionImpl
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -1173,6 +1214,7 @@ class _$InsufficientDiamondsExceptionImpl
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -1192,6 +1234,187 @@ class _$InsufficientDiamondsExceptionImpl
 abstract class InsufficientDiamondsException implements AppException {
   const factory InsufficientDiamondsException() =
       _$InsufficientDiamondsExceptionImpl;
+}
+
+/// @nodoc
+abstract class _$$TopUpUnavailableExceptionImplCopyWith<$Res> {
+  factory _$$TopUpUnavailableExceptionImplCopyWith(
+          _$TopUpUnavailableExceptionImpl value,
+          $Res Function(_$TopUpUnavailableExceptionImpl) then) =
+      __$$TopUpUnavailableExceptionImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$TopUpUnavailableExceptionImplCopyWithImpl<$Res>
+    extends _$AppExceptionCopyWithImpl<$Res, _$TopUpUnavailableExceptionImpl>
+    implements _$$TopUpUnavailableExceptionImplCopyWith<$Res> {
+  __$$TopUpUnavailableExceptionImplCopyWithImpl(
+      _$TopUpUnavailableExceptionImpl _value,
+      $Res Function(_$TopUpUnavailableExceptionImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$TopUpUnavailableExceptionImpl implements TopUpUnavailableException {
+  const _$TopUpUnavailableExceptionImpl();
+
+  @override
+  String toString() {
+    return 'AppException.topUpUnavailable()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TopUpUnavailableExceptionImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() invalidCredentials,
+    required TResult Function() emailTaken,
+    required TResult Function() invalidEmail,
+    required TResult Function() weakPassword,
+    required TResult Function() sessionExpired,
+    required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
+    required TResult Function() sessionLimitReached,
+    required TResult Function() sceneLocked,
+    required TResult Function() notFound,
+    required TResult Function() rateLimited,
+    required TResult Function() networkError,
+    required TResult Function(String rawMessage) validation,
+    required TResult Function(String? code, String rawMessage) unknown,
+  }) {
+    return topUpUnavailable();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? invalidCredentials,
+    TResult? Function()? emailTaken,
+    TResult? Function()? invalidEmail,
+    TResult? Function()? weakPassword,
+    TResult? Function()? sessionExpired,
+    TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
+    TResult? Function()? sessionLimitReached,
+    TResult? Function()? sceneLocked,
+    TResult? Function()? notFound,
+    TResult? Function()? rateLimited,
+    TResult? Function()? networkError,
+    TResult? Function(String rawMessage)? validation,
+    TResult? Function(String? code, String rawMessage)? unknown,
+  }) {
+    return topUpUnavailable?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? invalidCredentials,
+    TResult Function()? emailTaken,
+    TResult Function()? invalidEmail,
+    TResult Function()? weakPassword,
+    TResult Function()? sessionExpired,
+    TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
+    TResult Function()? sessionLimitReached,
+    TResult Function()? sceneLocked,
+    TResult Function()? notFound,
+    TResult Function()? rateLimited,
+    TResult Function()? networkError,
+    TResult Function(String rawMessage)? validation,
+    TResult Function(String? code, String rawMessage)? unknown,
+    required TResult orElse(),
+  }) {
+    if (topUpUnavailable != null) {
+      return topUpUnavailable();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(InvalidCredentialsException value)
+        invalidCredentials,
+    required TResult Function(EmailTakenException value) emailTaken,
+    required TResult Function(InvalidEmailException value) invalidEmail,
+    required TResult Function(WeakPasswordException value) weakPassword,
+    required TResult Function(SessionExpiredException value) sessionExpired,
+    required TResult Function(InsufficientDiamondsException value)
+        insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
+    required TResult Function(SessionLimitReachedException value)
+        sessionLimitReached,
+    required TResult Function(SceneLockedException value) sceneLocked,
+    required TResult Function(NotFoundException value) notFound,
+    required TResult Function(RateLimitedException value) rateLimited,
+    required TResult Function(NetworkErrorException value) networkError,
+    required TResult Function(ValidationException value) validation,
+    required TResult Function(UnknownException value) unknown,
+  }) {
+    return topUpUnavailable(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(InvalidCredentialsException value)? invalidCredentials,
+    TResult? Function(EmailTakenException value)? emailTaken,
+    TResult? Function(InvalidEmailException value)? invalidEmail,
+    TResult? Function(WeakPasswordException value)? weakPassword,
+    TResult? Function(SessionExpiredException value)? sessionExpired,
+    TResult? Function(InsufficientDiamondsException value)?
+        insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
+    TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
+    TResult? Function(SceneLockedException value)? sceneLocked,
+    TResult? Function(NotFoundException value)? notFound,
+    TResult? Function(RateLimitedException value)? rateLimited,
+    TResult? Function(NetworkErrorException value)? networkError,
+    TResult? Function(ValidationException value)? validation,
+    TResult? Function(UnknownException value)? unknown,
+  }) {
+    return topUpUnavailable?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(InvalidCredentialsException value)? invalidCredentials,
+    TResult Function(EmailTakenException value)? emailTaken,
+    TResult Function(InvalidEmailException value)? invalidEmail,
+    TResult Function(WeakPasswordException value)? weakPassword,
+    TResult Function(SessionExpiredException value)? sessionExpired,
+    TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
+    TResult Function(SessionLimitReachedException value)? sessionLimitReached,
+    TResult Function(SceneLockedException value)? sceneLocked,
+    TResult Function(NotFoundException value)? notFound,
+    TResult Function(RateLimitedException value)? rateLimited,
+    TResult Function(NetworkErrorException value)? networkError,
+    TResult Function(ValidationException value)? validation,
+    TResult Function(UnknownException value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (topUpUnavailable != null) {
+      return topUpUnavailable(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class TopUpUnavailableException implements AppException {
+  const factory TopUpUnavailableException() = _$TopUpUnavailableExceptionImpl;
 }
 
 /// @nodoc
@@ -1242,6 +1465,7 @@ class _$SessionLimitReachedExceptionImpl
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -1262,6 +1486,7 @@ class _$SessionLimitReachedExceptionImpl
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -1282,6 +1507,7 @@ class _$SessionLimitReachedExceptionImpl
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -1308,6 +1534,7 @@ class _$SessionLimitReachedExceptionImpl
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -1330,6 +1557,7 @@ class _$SessionLimitReachedExceptionImpl
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -1350,6 +1578,7 @@ class _$SessionLimitReachedExceptionImpl
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -1416,6 +1645,7 @@ class _$SceneLockedExceptionImpl implements SceneLockedException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -1436,6 +1666,7 @@ class _$SceneLockedExceptionImpl implements SceneLockedException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -1456,6 +1687,7 @@ class _$SceneLockedExceptionImpl implements SceneLockedException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -1482,6 +1714,7 @@ class _$SceneLockedExceptionImpl implements SceneLockedException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -1504,6 +1737,7 @@ class _$SceneLockedExceptionImpl implements SceneLockedException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -1524,6 +1758,7 @@ class _$SceneLockedExceptionImpl implements SceneLockedException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -1588,6 +1823,7 @@ class _$NotFoundExceptionImpl implements NotFoundException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -1608,6 +1844,7 @@ class _$NotFoundExceptionImpl implements NotFoundException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -1628,6 +1865,7 @@ class _$NotFoundExceptionImpl implements NotFoundException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -1654,6 +1892,7 @@ class _$NotFoundExceptionImpl implements NotFoundException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -1676,6 +1915,7 @@ class _$NotFoundExceptionImpl implements NotFoundException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -1696,6 +1936,7 @@ class _$NotFoundExceptionImpl implements NotFoundException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -1761,6 +2002,7 @@ class _$RateLimitedExceptionImpl implements RateLimitedException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -1781,6 +2023,7 @@ class _$RateLimitedExceptionImpl implements RateLimitedException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -1801,6 +2044,7 @@ class _$RateLimitedExceptionImpl implements RateLimitedException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -1827,6 +2071,7 @@ class _$RateLimitedExceptionImpl implements RateLimitedException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -1849,6 +2094,7 @@ class _$RateLimitedExceptionImpl implements RateLimitedException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -1869,6 +2115,7 @@ class _$RateLimitedExceptionImpl implements RateLimitedException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -1935,6 +2182,7 @@ class _$NetworkErrorExceptionImpl implements NetworkErrorException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -1955,6 +2203,7 @@ class _$NetworkErrorExceptionImpl implements NetworkErrorException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -1975,6 +2224,7 @@ class _$NetworkErrorExceptionImpl implements NetworkErrorException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -2001,6 +2251,7 @@ class _$NetworkErrorExceptionImpl implements NetworkErrorException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -2023,6 +2274,7 @@ class _$NetworkErrorExceptionImpl implements NetworkErrorException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -2043,6 +2295,7 @@ class _$NetworkErrorExceptionImpl implements NetworkErrorException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -2135,6 +2388,7 @@ class _$ValidationExceptionImpl implements ValidationException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -2155,6 +2409,7 @@ class _$ValidationExceptionImpl implements ValidationException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -2175,6 +2430,7 @@ class _$ValidationExceptionImpl implements ValidationException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -2201,6 +2457,7 @@ class _$ValidationExceptionImpl implements ValidationException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -2223,6 +2480,7 @@ class _$ValidationExceptionImpl implements ValidationException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -2243,6 +2501,7 @@ class _$ValidationExceptionImpl implements ValidationException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,
@@ -2349,6 +2608,7 @@ class _$UnknownExceptionImpl implements UnknownException {
     required TResult Function() weakPassword,
     required TResult Function() sessionExpired,
     required TResult Function() insufficientDiamonds,
+    required TResult Function() topUpUnavailable,
     required TResult Function() sessionLimitReached,
     required TResult Function() sceneLocked,
     required TResult Function() notFound,
@@ -2369,6 +2629,7 @@ class _$UnknownExceptionImpl implements UnknownException {
     TResult? Function()? weakPassword,
     TResult? Function()? sessionExpired,
     TResult? Function()? insufficientDiamonds,
+    TResult? Function()? topUpUnavailable,
     TResult? Function()? sessionLimitReached,
     TResult? Function()? sceneLocked,
     TResult? Function()? notFound,
@@ -2389,6 +2650,7 @@ class _$UnknownExceptionImpl implements UnknownException {
     TResult Function()? weakPassword,
     TResult Function()? sessionExpired,
     TResult Function()? insufficientDiamonds,
+    TResult Function()? topUpUnavailable,
     TResult Function()? sessionLimitReached,
     TResult Function()? sceneLocked,
     TResult Function()? notFound,
@@ -2415,6 +2677,7 @@ class _$UnknownExceptionImpl implements UnknownException {
     required TResult Function(SessionExpiredException value) sessionExpired,
     required TResult Function(InsufficientDiamondsException value)
         insufficientDiamonds,
+    required TResult Function(TopUpUnavailableException value) topUpUnavailable,
     required TResult Function(SessionLimitReachedException value)
         sessionLimitReached,
     required TResult Function(SceneLockedException value) sceneLocked,
@@ -2437,6 +2700,7 @@ class _$UnknownExceptionImpl implements UnknownException {
     TResult? Function(SessionExpiredException value)? sessionExpired,
     TResult? Function(InsufficientDiamondsException value)?
         insufficientDiamonds,
+    TResult? Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult? Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult? Function(SceneLockedException value)? sceneLocked,
     TResult? Function(NotFoundException value)? notFound,
@@ -2457,6 +2721,7 @@ class _$UnknownExceptionImpl implements UnknownException {
     TResult Function(WeakPasswordException value)? weakPassword,
     TResult Function(SessionExpiredException value)? sessionExpired,
     TResult Function(InsufficientDiamondsException value)? insufficientDiamonds,
+    TResult Function(TopUpUnavailableException value)? topUpUnavailable,
     TResult Function(SessionLimitReachedException value)? sessionLimitReached,
     TResult Function(SceneLockedException value)? sceneLocked,
     TResult Function(NotFoundException value)? notFound,

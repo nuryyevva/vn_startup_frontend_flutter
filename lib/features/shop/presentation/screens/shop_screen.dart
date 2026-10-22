@@ -1,10 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/config/app_config.dart';
+import '../../../../core/network/error_mapper.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/coming_soon_snack_bar.dart';
+import '../../../profile/presentation/providers/user_profile_provider.dart';
 import '../../../wallet/presentation/providers/wallet_balance_provider.dart';
 import '../widgets/diamond_bundle_card.dart';
 
@@ -24,7 +28,6 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
     final textTheme = Theme.of(context).textTheme;
     final config = ref.watch(appConfigProvider);
     final balanceAsync = ref.watch(walletBalanceProvider);
-    final isDevMode = config.enableDevWalletGrant;
 
     return Scaffold(
       appBar: AppBar(title: Text('nav.shop'.tr())),
@@ -63,9 +66,8 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                 padding: const EdgeInsets.only(bottom: 16),
                 child: DiamondBundleCard(
                   bundle: bundle,
-                  isDevMode: isDevMode,
                   isPurchasing: _purchasingBundleId == bundle.id,
-                  onBuy: isDevMode ? () => _buy(bundle.id, bundle.diamonds) : null,
+                  onBuy: () => _get(bundle.id, bundle.diamonds),
                 ),
               ),
           ],
@@ -74,25 +76,41 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
     );
   }
 
-  Future<void> _buy(String bundleId, int diamonds) async {
+  /// Diamonds can't be bought yet: an admin can top a wallet up, for
+  /// everyone else getting more is "coming soon" — said right away, with no
+  /// request. The server checks the role on its own either way.
+  Future<void> _get(String bundleId, int diamonds) async {
+    final role = await ref.read(userProfileNotifierProvider.future).then((p) => p.role, onError: (_) => null);
+    if (role != 'admin') {
+      _showComingSoon();
+      return;
+    }
+
     setState(() => _purchasingBundleId = bundleId);
     try {
-      // TODO: replace with a real payment flow once a PaymentProvider
-      // exists on the backend — this dev-grant endpoint is a deliberate,
-      // temporary stand-in (see project README "known limitations").
       final granted = await ref.read(walletRepositoryProvider).devGrant(diamonds);
       ref.read(walletBalanceProvider.notifier).applyOptimisticDelta(granted);
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('shop.purchaseSuccess'.tr(args: ['$granted']))));
-      }
-    } catch (_) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('shop.purchaseFailed'.tr())));
+      _showSnack(Text('shop.purchaseSuccess'.tr(args: ['$granted'])));
+    } on Object catch (error) {
+      final mapped = error is DioException ? mapDioException(error) : error;
+      if (mapped is TopUpUnavailableException) {
+        _showComingSoon();
+      } else {
+        _showSnack(Text('shop.purchaseFailed'.tr()));
       }
     } finally {
       if (mounted) setState(() => _purchasingBundleId = null);
     }
+  }
+
+  void _showComingSoon() {
+    if (mounted) showComingSoonSnackBar(context, 'shop.comingSoon'.tr());
+  }
+
+  void _showSnack(Widget content) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: content, behavior: SnackBarBehavior.floating));
   }
 }

@@ -25,7 +25,6 @@ class AppConfig {
     required this.defaultLocale,
     required this.supportedLocales,
     required this.defaultThemeMode,
-    required this.enableDevWalletGrant,
     required this.termsPrivacyUrl,
     this.offline = false,
     this.diamondBundles = kDiamondBundles,
@@ -45,10 +44,6 @@ class AppConfig {
   final List<String> supportedLocales;
   final ThemeMode defaultThemeMode;
 
-  /// Mirrors the backend's `ENABLE_DEV_ENDPOINTS` flag — gates the
-  /// temporary "buy with dev grant" flow in the shop (see §11.5 of the
-  /// project spec / README "known limitations").
-  final bool enableDevWalletGrant;
   final String termsPrivacyUrl;
 
   /// Run without a server: stories from the app bundle, the player's state
@@ -70,7 +65,6 @@ class AppConfig {
     const defaultLocale = String.fromEnvironment('DEFAULT_LOCALE', defaultValue: 'ru');
     const supportedLocalesRaw = String.fromEnvironment('SUPPORTED_LOCALES', defaultValue: 'ru,en');
     const defaultThemeModeRaw = String.fromEnvironment('DEFAULT_THEME_MODE', defaultValue: 'dark');
-    const enableDevWalletGrant = bool.fromEnvironment('ENABLE_DEV_WALLET_GRANT');
     const offline = bool.fromEnvironment('OFFLINE_MODE');
     const termsPrivacyUrl = String.fromEnvironment(
       'TERMS_PRIVACY_URL',
@@ -88,7 +82,6 @@ class AppConfig {
       defaultLocale: defaultLocale,
       supportedLocales: _splitCsv(supportedLocalesRaw),
       defaultThemeMode: _parseThemeMode(defaultThemeModeRaw),
-      enableDevWalletGrant: enableDevWalletGrant,
       termsPrivacyUrl: termsPrivacyUrl,
       offline: offline,
     );

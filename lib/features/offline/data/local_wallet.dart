@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import '../../../core/network/error_mapper.dart';
 import '../../wallet/data/wallet_repository.dart';
 import 'local_store.dart';
 
-/// The diamond wallet kept on the device. There are no real purchases
-/// offline: the shop's "get" button simply adds diamonds (the same path the
-/// dev-grant flow uses against the server).
+/// The diamond wallet kept on the device, under the same rules as an account
+/// on the server: it starts with [startingBalance] diamonds (also applied
+/// once to wallets from older builds), and getting more is "coming soon".
 class LocalWallet implements WalletRepository {
   LocalWallet(this._store);
 
@@ -12,8 +14,19 @@ class LocalWallet implements WalletRepository {
 
   static const _balanceKey = 'wallet.balance';
   static const _spentKey = 'wallet.spent';
+  static const _startedKey = 'wallet.startingBalanceApplied';
 
-  int get balance => _store.readInt(_balanceKey);
+  /// What every wallet starts with (the server's wallet.StartingBalance).
+  static const startingBalance = 600;
+
+  int get balance {
+    if (_store.readInt(_startedKey) == 0) {
+      unawaited(_store.writeInt(_balanceKey, startingBalance));
+      unawaited(_store.writeInt(_startedKey, 1));
+      return startingBalance;
+    }
+    return _store.readInt(_balanceKey);
+  }
 
   /// Total diamonds ever spent — feeds the spending achievements.
   int get spent => _store.readInt(_spentKey);
@@ -22,10 +35,7 @@ class LocalWallet implements WalletRepository {
   Future<int> getBalance() async => balance;
 
   @override
-  Future<int> devGrant(int amount) async {
-    await _store.writeInt(_balanceKey, balance + amount);
-    return amount;
-  }
+  Future<int> devGrant(int amount) async => throw const AppException.topUpUnavailable();
 
   /// Takes [amount] diamonds, or throws [InsufficientDiamondsException] and
   /// takes nothing.

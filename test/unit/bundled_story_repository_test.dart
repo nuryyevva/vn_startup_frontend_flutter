@@ -112,11 +112,19 @@ void main() {
     expect(await offered('hub'), ['coat', 'photo', 'exit']);
   });
 
+  // Wallets start at LocalWallet.startingBalance and can't be topped up;
+  // tests that need a particular balance set it directly.
+  Future<void> setBalance(int diamonds) async {
+    await store.writeInt('wallet.startingBalanceApplied', 1);
+    await store.writeInt('wallet.balance', diamonds);
+  }
+
   test('paid choices and scene unlocks debit the local wallet', () async {
+    await setBalance(0);
     await expectLater(repo.submitChoice('start', 'buy'), throwsA(isA<InsufficientDiamondsException>()));
     expect((await repo.getStoryProgress('story')).choicesMade, isEmpty);
 
-    await wallet.devGrant(40);
+    await setBalance(40);
     await repo.submitChoice('start', 'buy');
     expect(wallet.balance, 30);
 
@@ -136,7 +144,7 @@ void main() {
 
     expect(unlocked(await achievements.getAchievements(), 'first_story_finished'), isFalse);
 
-    await wallet.devGrant(25);
+    await setBalance(25);
     await repo.submitChoice('start', 'enter');
     await repo.submitChoice('hub', 'exit');
     await repo.unlockScene('paid');

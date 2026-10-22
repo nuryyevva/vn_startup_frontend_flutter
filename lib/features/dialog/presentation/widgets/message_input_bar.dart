@@ -4,16 +4,19 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
-/// Text field + send button. Shows a diamond hint icon (not an exact
-/// price — the backend's per-message cost is a flat server-side config
-/// value never exposed to the client ahead of time; the real charge only
-/// appears after sending, on the message's `cost_diamonds`) and disables
-/// itself while a send is in flight.
+/// Text field + send button. The button carries the price of a message
+/// ([messageCost], from the session — the backend's own number) as a quiet
+/// part of itself, "send · 10 💎": what it costs is visible before sending,
+/// without a warning or a confirmation step around it. Disables itself while
+/// a send is in flight.
 class MessageInputBar extends StatefulWidget {
-  const MessageInputBar({super.key, required this.onSend, required this.enabled});
+  const MessageInputBar({super.key, required this.onSend, required this.enabled, this.messageCost});
 
   final ValueChanged<String> onSend;
   final bool enabled;
+
+  /// Diamonds per message; null hides the price (an older backend).
+  final int? messageCost;
 
   @override
   State<MessageInputBar> createState() => _MessageInputBarState();
@@ -37,15 +40,12 @@ class _MessageInputBarState extends State<MessageInputBar> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
     return SafeArea(
       top: false,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            Icon(LucideIcons.gem, size: 16, color: colors.accent),
-            const SizedBox(width: 8),
             Expanded(
               child: TextField(
                 controller: _controller,
@@ -56,11 +56,57 @@ class _MessageInputBarState extends State<MessageInputBar> {
               ),
             ),
             const SizedBox(width: 8),
-            IconButton(
-              onPressed: widget.enabled ? _submit : null,
-              icon: Icon(LucideIcons.send, color: widget.enabled ? colors.accent : colors.textMuted),
-            ),
+            _SendButton(enabled: widget.enabled, messageCost: widget.messageCost, onPressed: _submit),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SendButton extends StatelessWidget {
+  const _SendButton({required this.enabled, required this.messageCost, required this.onPressed});
+
+  final bool enabled;
+  final int? messageCost;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final foreground = enabled ? Colors.white : colors.textMuted;
+    final cost = messageCost;
+    final label = cost == null ? 'dialog.send'.tr() : 'dialog.sendWithCost'.tr(args: ['$cost']);
+
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      label: label,
+      excludeSemantics: true,
+      child: Material(
+        color: enabled ? colors.accent : colors.accentMuted,
+        shape: const StadiumBorder(),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: enabled ? onPressed : null,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: cost == null ? 12 : 14, vertical: 10),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(LucideIcons.send, size: 18, color: foreground),
+                if (cost != null) ...[
+                  const SizedBox(width: 8),
+                  Text(
+                    '$cost',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(color: foreground, fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(width: 3),
+                  Icon(LucideIcons.gem, size: 14, color: foreground),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );

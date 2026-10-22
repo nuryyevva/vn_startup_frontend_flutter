@@ -24,7 +24,6 @@ void main() {
       defaultLocale: 'en',
       supportedLocales: ['en', 'ru'],
       defaultThemeMode: ThemeMode.dark,
-      enableDevWalletGrant: true,
       termsPrivacyUrl: 'https://example.com',
     );
 

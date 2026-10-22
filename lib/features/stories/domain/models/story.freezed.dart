@@ -35,6 +35,11 @@ mixin _$Story {
   @JsonKey(name: 'player_theme')
   Map<String, dynamic>? get playerTheme => throw _privateConstructorUsedError;
 
+  /// Listed in the catalog but not playable yet: its card says "soon" and
+  /// opening it only says so (see openStory).
+  @JsonKey(name: 'coming_soon')
+  bool get comingSoon => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $StoryCopyWith<Story> get copyWith => throw _privateConstructorUsedError;
@@ -53,7 +58,8 @@ abstract class $StoryCopyWith<$Res> {
       String genre,
       String status,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'player_theme') Map<String, dynamic>? playerTheme});
+      @JsonKey(name: 'player_theme') Map<String, dynamic>? playerTheme,
+      @JsonKey(name: 'coming_soon') bool comingSoon});
 }
 
 /// @nodoc
@@ -77,6 +83,7 @@ class _$StoryCopyWithImpl<$Res, $Val extends Story>
     Object? status = null,
     Object? createdAt = null,
     Object? playerTheme = freezed,
+    Object? comingSoon = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -111,6 +118,10 @@ class _$StoryCopyWithImpl<$Res, $Val extends Story>
           ? _value.playerTheme
           : playerTheme // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
+      comingSoon: null == comingSoon
+          ? _value.comingSoon
+          : comingSoon // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -130,7 +141,8 @@ abstract class _$$StoryImplCopyWith<$Res> implements $StoryCopyWith<$Res> {
       String genre,
       String status,
       @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'player_theme') Map<String, dynamic>? playerTheme});
+      @JsonKey(name: 'player_theme') Map<String, dynamic>? playerTheme,
+      @JsonKey(name: 'coming_soon') bool comingSoon});
 }
 
 /// @nodoc
@@ -152,6 +164,7 @@ class __$$StoryImplCopyWithImpl<$Res>
     Object? status = null,
     Object? createdAt = null,
     Object? playerTheme = freezed,
+    Object? comingSoon = null,
   }) {
     return _then(_$StoryImpl(
       id: null == id
@@ -186,6 +199,10 @@ class __$$StoryImplCopyWithImpl<$Res>
           ? _value._playerTheme
           : playerTheme // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
+      comingSoon: null == comingSoon
+          ? _value.comingSoon
+          : comingSoon // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -201,7 +218,8 @@ class _$StoryImpl implements _Story {
       required this.genre,
       required this.status,
       @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'player_theme') final Map<String, dynamic>? playerTheme})
+      @JsonKey(name: 'player_theme') final Map<String, dynamic>? playerTheme,
+      @JsonKey(name: 'coming_soon') this.comingSoon = false})
       : _playerTheme = playerTheme;
 
   factory _$StoryImpl.fromJson(Map<String, dynamic> json) =>
@@ -240,9 +258,15 @@ class _$StoryImpl implements _Story {
     return EqualUnmodifiableMapView(value);
   }
 
+  /// Listed in the catalog but not playable yet: its card says "soon" and
+  /// opening it only says so (see openStory).
+  @override
+  @JsonKey(name: 'coming_soon')
+  final bool comingSoon;
+
   @override
   String toString() {
-    return 'Story(id: $id, title: $title, description: $description, coverUrl: $coverUrl, genre: $genre, status: $status, createdAt: $createdAt, playerTheme: $playerTheme)';
+    return 'Story(id: $id, title: $title, description: $description, coverUrl: $coverUrl, genre: $genre, status: $status, createdAt: $createdAt, playerTheme: $playerTheme, comingSoon: $comingSoon)';
   }
 
   @override
@@ -261,7 +285,9 @@ class _$StoryImpl implements _Story {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality()
-                .equals(other._playerTheme, _playerTheme));
+                .equals(other._playerTheme, _playerTheme) &&
+            (identical(other.comingSoon, comingSoon) ||
+                other.comingSoon == comingSoon));
   }
 
   @JsonKey(ignore: true)
@@ -275,7 +301,8 @@ class _$StoryImpl implements _Story {
       genre,
       status,
       createdAt,
-      const DeepCollectionEquality().hash(_playerTheme));
+      const DeepCollectionEquality().hash(_playerTheme),
+      comingSoon);
 
   @JsonKey(ignore: true)
   @override
@@ -300,8 +327,8 @@ abstract class _Story implements Story {
       required final String genre,
       required final String status,
       @JsonKey(name: 'created_at') required final DateTime createdAt,
-      @JsonKey(name: 'player_theme')
-      final Map<String, dynamic>? playerTheme}) = _$StoryImpl;
+      @JsonKey(name: 'player_theme') final Map<String, dynamic>? playerTheme,
+      @JsonKey(name: 'coming_soon') final bool comingSoon}) = _$StoryImpl;
 
   factory _Story.fromJson(Map<String, dynamic> json) = _$StoryImpl.fromJson;
 
@@ -327,6 +354,12 @@ abstract class _Story implements Story {
   /// for the app's default — see `ScenePlayerSkin`.
   @JsonKey(name: 'player_theme')
   Map<String, dynamic>? get playerTheme;
+  @override
+
+  /// Listed in the catalog but not playable yet: its card says "soon" and
+  /// opening it only says so (see openStory).
+  @JsonKey(name: 'coming_soon')
+  bool get comingSoon;
   @override
   @JsonKey(ignore: true)
   _$$StoryImplCopyWith<_$StoryImpl> get copyWith =>

@@ -15,6 +15,7 @@ import '../../../../core/widgets/image_placeholder.dart';
 import '../../../achievements/presentation/providers/achievements_provider.dart';
 import '../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../stats/presentation/providers/reading_stats_provider.dart';
+import '../../../stories/presentation/open_story.dart';
 import '../../../stories/presentation/providers/stories_providers.dart';
 import '../../../stories/presentation/widgets/story_card.dart';
 import '../../../wallet/presentation/providers/wallet_balance_provider.dart';
@@ -87,7 +88,7 @@ class ProfileScreen extends ConsumerWidget {
                           story: p.story,
                           progress: p,
                           compact: true,
-                          onTap: () => context.push('/story/${p.story.id}'),
+                          onTap: () => openStory(context, p.story),
                         );
                       },
                     ),

@@ -7,8 +7,7 @@ import '../config/app_config.dart';
 import '../storage/secure_token_storage.dart';
 import 'websocket_client.dart';
 
-/// Null while not authenticated (guest mode never opens a socket — see
-/// project spec §8.1 guest limitations). Recreated whenever auth status
+/// Null while not authenticated. Recreated whenever auth status
 /// changes, so signing out cleanly tears down the old connection and
 /// signing back in opens a fresh one.
 final webSocketClientProvider = Provider<WebSocketClient?>((ref) {

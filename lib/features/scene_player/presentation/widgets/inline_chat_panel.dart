@@ -51,7 +51,7 @@ class InlineChatPanel extends StatelessWidget {
         _CharacterLine(name: name, state: s),
         SkinPanel(
           padding: EdgeInsets.zero,
-          child: MessageInputBar(enabled: canSend, onSend: onSend),
+          child: MessageInputBar(enabled: canSend, onSend: onSend, messageCost: s?.session.messageCost),
         ),
       ],
     );

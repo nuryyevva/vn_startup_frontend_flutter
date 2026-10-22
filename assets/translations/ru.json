@@ -38,9 +38,6 @@
     "email": "Email",
     "password": "Пароль",
     "emailHint": "you@example.com",
-    "continueAsGuest": "Продолжить как гость",
-    "guestLimitTitle": "Нужна авторизация",
-    "guestLimitBody": "Зарегистрируйтесь бесплатно, чтобы получить доступ к библиотеке, кошельку и разговорам с персонажами.",
     "validation": {
       "emailRequired": "Введите email",
       "emailInvalid": "Введите корректный email",
@@ -69,7 +66,9 @@
     "completed": "Завершена",
     "chapterCount": "{} гл.",
     "emptyCatalogTitle": "Пока нет историй",
-    "emptyCatalogBody": "Загляните позже — в этом жанре скоро появятся новые истории."
+    "emptyCatalogBody": "Загляните позже — в этом жанре скоро появятся новые истории.",
+    "comingSoon": "Скоро",
+    "comingSoonToast": "Эта история скоро появится"
   },
   "storyDetail": {
     "reads": "{} прочтений",
@@ -133,21 +132,22 @@
       "backToStory": "Вернуться к истории"
     },
     "remainingMessages": "Осталось сообщений: {}",
-    "remainingSeconds": "Осталось: {}с"
+    "remainingSeconds": "Осталось: {}с",
+    "sendWithCost": "Отправить, {} алмазов"
   },
   "shop": {
     "yourBalance": "Ваш баланс",
     "diamondBundles": "Наборы алмазов",
     "bonus": "+{}% бонус",
     "buy": "Купить",
-    "getFreeDevMode": "Получить",
-    "devBadge": "(dev)",
     "purchaseSuccess": "Начислено {} алмазов",
     "purchaseFailed": "Не удалось совершить покупку",
     "badge": {
       "mostPopular": "Популярный выбор",
       "bestValue": "Выгоднее всего"
-    }
+    },
+    "get": "Получить",
+    "comingSoon": "Скоро здесь можно будет пополнить алмазы"
   },
   "profile": {
     "readerSince": "С нами с {} года",

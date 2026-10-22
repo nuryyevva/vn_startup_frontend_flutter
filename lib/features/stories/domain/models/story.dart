@@ -22,6 +22,10 @@ class Story with _$Story {
     /// Design tokens for the scene player's look in this story, or null
     /// for the app's default — see `ScenePlayerSkin`.
     @JsonKey(name: 'player_theme') Map<String, dynamic>? playerTheme,
+
+    /// Listed in the catalog but not playable yet: its card says "soon" and
+    /// opening it only says so (see openStory).
+    @JsonKey(name: 'coming_soon') @Default(false) bool comingSoon,
   }) = _Story;
 
   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
