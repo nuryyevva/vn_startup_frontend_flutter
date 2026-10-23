@@ -78,6 +78,7 @@ _$SceneImpl _$$SceneImplFromJson(Map<String, dynamic> json) => _$SceneImpl(
       dialogLimitValue: json['dialog_limit_value'] as int?,
       unlockCostDiamonds: json['unlock_cost_diamonds'] as int?,
       characterSpriteUrl: json['character_sprite_url'] as String?,
+      characterName: json['character_name'] as String?,
       spriteFraming: $enumDecodeNullable(
               _$SpriteFramingEnumMap, json['sprite_framing'],
               unknownValue: SpriteFraming.full) ??
@@ -104,6 +105,7 @@ Map<String, dynamic> _$$SceneImplToJson(_$SceneImpl instance) =>
       'dialog_limit_value': instance.dialogLimitValue,
       'unlock_cost_diamonds': instance.unlockCostDiamonds,
       'character_sprite_url': instance.characterSpriteUrl,
+      'character_name': instance.characterName,
       'sprite_framing': _$SpriteFramingEnumMap[instance.spriteFraming]!,
       'background_music_url': instance.backgroundMusicUrl,
       'chapter_title': instance.chapterTitle,

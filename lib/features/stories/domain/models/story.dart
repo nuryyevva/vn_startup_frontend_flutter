@@ -77,6 +77,10 @@ class Scene with _$Scene {
     @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
     @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
 
+    /// The name of the character a free dialog in this scene is held with (chat header, talk button). A pure talk
+    /// beat has no line to take it from.
+    @JsonKey(name: 'character_name') String? characterName,
+
     /// The shot the scene opens with; script lines may switch it. Missing
     /// (older backends, older offline bundles) or unknown values fall back
     /// to the full figure.

@@ -404,9 +404,11 @@ class _ScenePlaybackBodyState extends ConsumerState<_ScenePlaybackBody> with Wid
     ]).timeout(_artTimeout, onTimeout: () => const []);
   }
 
-  /// Name of the character a free dialog in [scene] would be held with: whoever speaks under the scene's own
-  /// character sprite. Null when no line of the scene shows them (a pure hub beat).
+  /// Name of the character a free dialog in [scene] would be held with: the name the scene itself carries, else
+  /// whoever speaks under the scene's own character sprite. Null when neither is known.
   String? _partnerName(Scene scene, List<DialogueLine> lines) {
+    final named = scene.characterName;
+    if (named != null && named.isNotEmpty) return named;
     final partnerSprite = scene.characterSpriteUrl;
     if (partnerSprite == null) return null;
     for (final line in lines) {

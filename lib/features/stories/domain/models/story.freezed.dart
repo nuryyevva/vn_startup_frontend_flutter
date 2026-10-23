@@ -835,6 +835,11 @@ mixin _$Scene {
   @JsonKey(name: 'character_sprite_url')
   String? get characterSpriteUrl => throw _privateConstructorUsedError;
 
+  /// The name of the character a free dialog in this scene is held with (chat header, talk button). A pure talk
+  /// beat has no line to take it from.
+  @JsonKey(name: 'character_name')
+  String? get characterName => throw _privateConstructorUsedError;
+
   /// The shot the scene opens with; script lines may switch it. Missing
   /// (older backends, older offline bundles) or unknown values fall back
   /// to the full figure.
@@ -871,6 +876,7 @@ abstract class $SceneCopyWith<$Res> {
       @JsonKey(name: 'dialog_limit_value') int? dialogLimitValue,
       @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
       @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
+      @JsonKey(name: 'character_name') String? characterName,
       @JsonKey(name: 'sprite_framing', unknownEnumValue: SpriteFraming.full)
       SpriteFraming spriteFraming,
       @JsonKey(name: 'background_music_url') String? backgroundMusicUrl,
@@ -903,6 +909,7 @@ class _$SceneCopyWithImpl<$Res, $Val extends Scene>
     Object? dialogLimitValue = freezed,
     Object? unlockCostDiamonds = freezed,
     Object? characterSpriteUrl = freezed,
+    Object? characterName = freezed,
     Object? spriteFraming = null,
     Object? backgroundMusicUrl = freezed,
     Object? chapterTitle = freezed,
@@ -954,6 +961,10 @@ class _$SceneCopyWithImpl<$Res, $Val extends Scene>
           ? _value.characterSpriteUrl
           : characterSpriteUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      characterName: freezed == characterName
+          ? _value.characterName
+          : characterName // ignore: cast_nullable_to_non_nullable
+              as String?,
       spriteFraming: null == spriteFraming
           ? _value.spriteFraming
           : spriteFraming // ignore: cast_nullable_to_non_nullable
@@ -997,6 +1008,7 @@ abstract class _$$SceneImplCopyWith<$Res> implements $SceneCopyWith<$Res> {
       @JsonKey(name: 'dialog_limit_value') int? dialogLimitValue,
       @JsonKey(name: 'unlock_cost_diamonds') int? unlockCostDiamonds,
       @JsonKey(name: 'character_sprite_url') String? characterSpriteUrl,
+      @JsonKey(name: 'character_name') String? characterName,
       @JsonKey(name: 'sprite_framing', unknownEnumValue: SpriteFraming.full)
       SpriteFraming spriteFraming,
       @JsonKey(name: 'background_music_url') String? backgroundMusicUrl,
@@ -1027,6 +1039,7 @@ class __$$SceneImplCopyWithImpl<$Res>
     Object? dialogLimitValue = freezed,
     Object? unlockCostDiamonds = freezed,
     Object? characterSpriteUrl = freezed,
+    Object? characterName = freezed,
     Object? spriteFraming = null,
     Object? backgroundMusicUrl = freezed,
     Object? chapterTitle = freezed,
@@ -1078,6 +1091,10 @@ class __$$SceneImplCopyWithImpl<$Res>
           ? _value.characterSpriteUrl
           : characterSpriteUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      characterName: freezed == characterName
+          ? _value.characterName
+          : characterName // ignore: cast_nullable_to_non_nullable
+              as String?,
       spriteFraming: null == spriteFraming
           ? _value.spriteFraming
           : spriteFraming // ignore: cast_nullable_to_non_nullable
@@ -1118,6 +1135,7 @@ class _$SceneImpl implements _Scene {
       @JsonKey(name: 'dialog_limit_value') this.dialogLimitValue,
       @JsonKey(name: 'unlock_cost_diamonds') this.unlockCostDiamonds,
       @JsonKey(name: 'character_sprite_url') this.characterSpriteUrl,
+      @JsonKey(name: 'character_name') this.characterName,
       @JsonKey(name: 'sprite_framing', unknownEnumValue: SpriteFraming.full)
       this.spriteFraming = SpriteFraming.full,
       @JsonKey(name: 'background_music_url') this.backgroundMusicUrl,
@@ -1169,6 +1187,12 @@ class _$SceneImpl implements _Scene {
   @JsonKey(name: 'character_sprite_url')
   final String? characterSpriteUrl;
 
+  /// The name of the character a free dialog in this scene is held with (chat header, talk button). A pure talk
+  /// beat has no line to take it from.
+  @override
+  @JsonKey(name: 'character_name')
+  final String? characterName;
+
   /// The shot the scene opens with; script lines may switch it. Missing
   /// (older backends, older offline bundles) or unknown values fall back
   /// to the full figure.
@@ -1196,7 +1220,7 @@ class _$SceneImpl implements _Scene {
 
   @override
   String toString() {
-    return 'Scene(id: $id, storyId: $storyId, orderIndex: $orderIndex, backgroundUrl: $backgroundUrl, characterId: $characterId, dialogueScript: $dialogueScript, freeDialogEnabled: $freeDialogEnabled, dialogLimitType: $dialogLimitType, dialogLimitValue: $dialogLimitValue, unlockCostDiamonds: $unlockCostDiamonds, characterSpriteUrl: $characterSpriteUrl, spriteFraming: $spriteFraming, backgroundMusicUrl: $backgroundMusicUrl, chapterTitle: $chapterTitle, title: $title, choices: $choices)';
+    return 'Scene(id: $id, storyId: $storyId, orderIndex: $orderIndex, backgroundUrl: $backgroundUrl, characterId: $characterId, dialogueScript: $dialogueScript, freeDialogEnabled: $freeDialogEnabled, dialogLimitType: $dialogLimitType, dialogLimitValue: $dialogLimitValue, unlockCostDiamonds: $unlockCostDiamonds, characterSpriteUrl: $characterSpriteUrl, characterName: $characterName, spriteFraming: $spriteFraming, backgroundMusicUrl: $backgroundMusicUrl, chapterTitle: $chapterTitle, title: $title, choices: $choices)';
   }
 
   @override
@@ -1224,6 +1248,8 @@ class _$SceneImpl implements _Scene {
                 other.unlockCostDiamonds == unlockCostDiamonds) &&
             (identical(other.characterSpriteUrl, characterSpriteUrl) ||
                 other.characterSpriteUrl == characterSpriteUrl) &&
+            (identical(other.characterName, characterName) ||
+                other.characterName == characterName) &&
             (identical(other.spriteFraming, spriteFraming) ||
                 other.spriteFraming == spriteFraming) &&
             (identical(other.backgroundMusicUrl, backgroundMusicUrl) ||
@@ -1249,6 +1275,7 @@ class _$SceneImpl implements _Scene {
       dialogLimitValue,
       unlockCostDiamonds,
       characterSpriteUrl,
+      characterName,
       spriteFraming,
       backgroundMusicUrl,
       chapterTitle,
@@ -1284,6 +1311,7 @@ abstract class _Scene implements Scene {
       @JsonKey(name: 'dialog_limit_value') final int? dialogLimitValue,
       @JsonKey(name: 'unlock_cost_diamonds') final int? unlockCostDiamonds,
       @JsonKey(name: 'character_sprite_url') final String? characterSpriteUrl,
+      @JsonKey(name: 'character_name') final String? characterName,
       @JsonKey(name: 'sprite_framing', unknownEnumValue: SpriteFraming.full)
       final SpriteFraming spriteFraming,
       @JsonKey(name: 'background_music_url') final String? backgroundMusicUrl,
@@ -1325,6 +1353,12 @@ abstract class _Scene implements Scene {
   @override
   @JsonKey(name: 'character_sprite_url')
   String? get characterSpriteUrl;
+  @override
+
+  /// The name of the character a free dialog in this scene is held with (chat header, talk button). A pure talk
+  /// beat has no line to take it from.
+  @JsonKey(name: 'character_name')
+  String? get characterName;
   @override
 
   /// The shot the scene opens with; script lines may switch it. Missing
