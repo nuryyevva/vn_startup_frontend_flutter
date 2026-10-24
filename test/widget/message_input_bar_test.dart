@@ -25,4 +25,14 @@ void main() {
     expect(find.byIcon(LucideIcons.send), findsOneWidget);
     expect(find.byIcon(LucideIcons.gem), findsNothing);
   });
+
+  testWidgets('a text longer than the backend accepts cannot be typed or pasted', (tester) async {
+    final sent = <String>[];
+    await tester.pumpWidget(_host(MessageInputBar(onSend: sent.add, enabled: true)));
+
+    await tester.enterText(find.byType(TextField), 'я' * (maxMessageLength + 200));
+    await tester.tap(find.byIcon(LucideIcons.send));
+
+    expect(sent.single.length, maxMessageLength);
+  });
 }

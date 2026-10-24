@@ -4,6 +4,10 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
+/// The longest message the backend accepts in a free dialog (`dialog.MaxMessageLength`); a longer text is refused
+/// there, so the field stops it here.
+const maxMessageLength = 1000;
+
 /// Text field + send button. The button carries the price of a message
 /// ([messageCost], from the session — the backend's own number) as a quiet
 /// part of itself, "send · 10 💎": what it costs is visible before sending,
@@ -50,6 +54,10 @@ class _MessageInputBarState extends State<MessageInputBar> {
               child: TextField(
                 controller: _controller,
                 enabled: widget.enabled,
+                maxLength: maxMessageLength,
+                // The counter only shows when the limit is near, so it does not clutter every message.
+                buildCounter: (context, {required currentLength, required isFocused, maxLength}) =>
+                    currentLength > maxMessageLength * 0.8 ? Text('$currentLength / $maxLength') : null,
                 decoration: InputDecoration(hintText: 'dialog.messageHint'.tr()),
                 textInputAction: TextInputAction.send,
                 onSubmitted: (_) => _submit(),

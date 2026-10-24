@@ -57,6 +57,7 @@ const _validationCodes = {
   'missing_fields',
   'invalid_session_id',
   'empty_message',
+  'message_too_long',
   'invalid_story_id',
   'invalid_scene_id',
   'missing_choice_id',
